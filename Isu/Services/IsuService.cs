@@ -7,8 +7,6 @@ namespace Isu.Services
     public class IsuService : IIsuService
     {
         private List<Group> groups = new List<Group>();
-        public static int IDcounter { get; set; } // Для создания айдишников
-
         public Group AddGroup(string name)
         {
             Group newGroup = new Group(name);
@@ -27,9 +25,8 @@ namespace Isu.Services
 
                 if (i.CourseNum == group.CourseNum && i.GroupNumber == group.GroupNumber)
                 {
-                    IDcounter++;
                     i.StudentCounter++;
-                    Student stu = new Student(name, IDcounter, i);
+                    Student stu = new Student(name, i);
                     i.Students1.Add(stu);
                     i.StudentCounter++;
                     return stu;
