@@ -2,12 +2,6 @@ namespace Shops.Entities
 {
     public class ProductDescription
     {
-        public ProductDescription()
-        {
-            Amount = 0;
-            Price = 0;
-        }
-
         public ProductDescription(int amount, int price)
         {
             Amount = amount;

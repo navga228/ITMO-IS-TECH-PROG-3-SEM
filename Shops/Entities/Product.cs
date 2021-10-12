@@ -4,12 +4,6 @@ namespace Shops.Entities
     {
         private static int _nextProductID;
 
-        public Product()
-        {
-            ID = 0;
-            ProductName = null;
-        }
-
         public Product(string name)
         {
             ID = _nextProductID;

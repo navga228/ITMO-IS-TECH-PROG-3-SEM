@@ -11,14 +11,6 @@ namespace Shops.Entities
         private static uint _nextShopID;
         private uint _shopID;
         private long _cashbox;
-        public Shop()
-        {
-            ProductsList = new Dictionary<Product, ProductDescription>();
-            _shopID = _nextShopID;
-            _nextShopID++;
-            ShopName = null;
-            _cashbox = 0;
-        }
 
         public Shop(string name, long cash)
         {
@@ -34,28 +26,48 @@ namespace Shops.Entities
 
         public void ChangePrice(Product prod, int newPrice)
         {
-            ProductsList[prod].Price = newPrice;
+            for (int i = 0; i < ProductsList.Count; i++)
+            {
+                if (ProductsList.ElementAt(i).Key.ID == prod.ID)
+                {
+                    ProductsList.ElementAt(i).Value.Price = newPrice;
+                }
+            }
         }
 
         public void Buy(Customer person, Dictionary<Product, int> products)
-        {// В словаре значениями является кол-во товара, которое хочет купить покупатель
-            int customerMoneyBefore = person.Money;
+        {
             for (int i = 0; i < products.Count; i++)
-            {// Если товар который хочет купить покупатель есть в магазе и его кол-во > 0
-                if (!ProductsList.ContainsKey(products.ElementAt(i).Key) && ProductsList.ElementAt(i).Value.Amount <= 0)
+            {
+                bool haveProduct = false;
+                for (int j = 0; j < ProductsList.Count; j++)
                 {
-                    throw new ShopsExceptions(products.ElementAt(i).Key.ProductName + " does not exist in the shop");
+                    if (ProductsList.ElementAt(j).Key.ID == products.ElementAt(i).Key.ID)
+                    {// Существует ли продукт который хочет купить покупатель в магазине
+                        haveProduct = true;
+                        if (person.Money - (ProductsList.ElementAt(j).Value.Price * products.ElementAt(i).Value) >= 0)
+                        {// Хватает ли денег у покупателя на покупку
+                            if (ProductsList.ElementAt(j).Value.Amount - products.ElementAt(i).Value >= 0)
+                            {// Хватает ли продуктов в магазине
+                                person.Money -= ProductsList.ElementAt(j).Value.Price * products.ElementAt(i).Value;
+                                _cashbox += ProductsList.ElementAt(j).Value.Price * products.ElementAt(i).Value;
+                                ProductsList.ElementAt(j).Value.Amount -= products.ElementAt(i).Value;
+                            }
+                            else
+                            {
+                                throw new ShopsExceptions("Товра который хочет купить покупатель недостаточно в магазине");
+                            }
+                        }
+                        else
+                        {
+                            throw new ShopsExceptions("У покупателя недостаточно средств");
+                        }
+                    }
                 }
 
-                if (person.Money - ProductsList.ElementAt(i).Value.Price >= 0)
-                {// Если у покупаетля достаточно средств для покупки товара
-                    person.Money -= ProductsList.ElementAt(i).Value.Price;
-                    _cashbox += ProductsList.ElementAt(i).Value.Price;
-                    ProductsList[products.ElementAt(i).Key].Amount -= products.ElementAt(i).Value;
-                }
-                else
+                if (!haveProduct)
                 {
-                    throw new ShopsExceptions("The customer does not have enough money");
+                    throw new ShopsExceptions("Товар который хочет купить покупатель отсутствует в магазине");
                 }
             }
         }

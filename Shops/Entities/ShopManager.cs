@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Linq.Expressions;
 using System.Security;
 using Shops.Tools;
@@ -39,26 +40,23 @@ namespace Shops.Entities
             int minBatchPrice = int.MaxValue;
             int priceCounter = 0;
             bool flag = false; // Флаг того что хоть один магазин содержащий партию найден
-
-            // bool flag1 = false; // Нйден магазин где есть весь товар, но недостаточно по кол-ву
-            foreach (Shop i in _shops)
+            for (int shop = 0; shop < _shops.Count; shop++)
             {
-                bool flag2 = false; // Флаг того что какого-то товара в магазине уже нет и чтоб лишний раз не перебирать
-                foreach (var j in products)
-                {// Проверяем каждый товар на наличие
-                    if (i.ProductsList.ContainsKey(j.Key) && i.ProductsList[j.Key].Amount >= j.Value)
+                for (int i = 0; i < products.Count; i++)
+                {
+                    for (int j = 0; j < _shops.ElementAt(shop).ProductsList.Count; j++)
                     {
-                        priceCounter = priceCounter + (i.ProductsList[j.Key].Price * j.Value);
-                    }
-                    else
-                    {
-                        flag2 = true;
+                        if (_shops.ElementAt(shop).ProductsList.ElementAt(j).Key.ID == products.ElementAt(i).Key.ID && _shops.ElementAt(shop).ProductsList.ElementAt(j).Value.Amount >= products.ElementAt(i).Value)
+                        {// Проверяем каждый товар на наличие
+                            priceCounter = priceCounter + (_shops.ElementAt(shop).ProductsList.ElementAt(j).Value.Price * products.ElementAt(i).Value);
+                        }
                     }
                 }
 
-                if (!flag2 && priceCounter < minBatchPrice)
+                if (priceCounter < minBatchPrice)
                 {
-                    ans = i;
+                    minBatchPrice = priceCounter;
+                    ans = _shops.ElementAt(shop);
                     flag = true;
                 }
             }
