@@ -4,25 +4,18 @@ namespace Isu
 {
     public class Student
     {
-        private static int _nextID;
-        public Student()
+        private static int _nextId;
+
+        public Student(string name, Group group)
         {
-            StudName = null;
-            StudGroup = null;
-            StudID = _nextID;
-            _nextID++;
+            StudentName = name;
+            StudentId = _nextId;
+            _nextId++;
+            StudentGroup = group;
         }
 
-        public Student(string name, Group gr)
-        {
-            StudName = name;
-            StudID = _nextID;
-            _nextID++;
-            StudGroup = gr;
-        }
-
-        public string StudName { get; set; }
-        public int StudID { get; }
-        public Group StudGroup { get; set; }
+        public string StudentName { get; }
+        public int StudentId { get; }
+        public Group StudentGroup { get; set; }
     }
 }

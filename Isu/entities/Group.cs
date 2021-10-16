@@ -6,36 +6,31 @@ namespace Isu
 {
     public class Group
     {
-        private List<Student> students = new List<Student>();
+        private List<Student> _students = new List<Student>();
 
-        public Group()
+        public Group(string groupName)
         {
-            GroupNumber = -1;
-            CourseNum = -1;
-            Groupname = null;
-        }
+            if (string.IsNullOrEmpty(groupName))
+            {
+                throw new IsuException("Name of group is null or empty");
+            }
 
-        public Group(string groupname)
-        {
-            string m3 = groupname.Substring(0, groupname.Length - 3);
-            int courseNum = int.Parse(groupname.Substring(2, 1));
-            if (groupname.Length != 5 || !m3.Equals("M3") || courseNum > 4)
+            string m3 = groupName.Substring(0, groupName.Length - 3);
+            int courseNum = int.Parse(groupName.Substring(2, 1));
+            if (groupName.Length != 5 || !m3.Equals("M3") || courseNum > 4)
                 throw new IsuException("Invalid name to group");
-            CourseNum = int.Parse(groupname.Substring(2, 1));
-            GroupNumber = int.Parse(groupname.Substring(3, 2));
-            Groupname = groupname;
-            StudentCounter = 0;
+            CourseNumber = int.Parse(groupName.Substring(2, 1));
+            GroupNumber = int.Parse(groupName.Substring(3, 2));
+            GroupName = groupName;
         }
 
-        public List<Student> Students1
+        public List<Student> Students
         {
-            get => students;
-            set => students = value;
+            get => _students;
         }
 
         public int GroupNumber { get; }
-        public int CourseNum { get; }
-        public string Groupname { get; set; }
-        public int StudentCounter { get; set; }
+        public int CourseNumber { get; }
+        public string GroupName { get; }
     }
 }

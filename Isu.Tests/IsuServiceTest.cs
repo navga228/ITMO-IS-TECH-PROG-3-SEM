@@ -19,8 +19,8 @@ namespace Isu.Tests
         {
             Group testGroup = _isuService.AddGroup("M3208");
             Student teststudent = _isuService.AddStudent(testGroup, "Петр");
-            Assert.That(teststudent.StudGroup, Is.SameAs(testGroup));
-            Assert.That(_isuService.FindStudents(testGroup.Groupname).Contains(teststudent), Is.True); 
+            Assert.That(teststudent.StudentGroup, Is.SameAs(testGroup));
+            Assert.That(_isuService.FindStudents(testGroup.GroupName).Contains(teststudent), Is.True);
         }
 
         [Test]
@@ -52,14 +52,12 @@ namespace Isu.Tests
         [Test]
         public void TransferStudentToAnotherGroup_GroupChanged()
         {
-            Assert.Catch<IsuException>(() =>
-            {
-                Group newGroup = _isuService.AddGroup("M3208");
-                Group oldGroup = _isuService.AddGroup("M3206");
-                Student testStudent = _isuService.AddStudent(oldGroup,"Гога");
-                _isuService.ChangeStudentGroup(testStudent, newGroup);
-                Assert.That(testStudent.StudGroup, Is.SameAs(newGroup));
-            });
+
+            Group newGroup = _isuService.AddGroup("M3208");
+            Group oldGroup = _isuService.AddGroup("M3206");
+            Student testStudent = _isuService.AddStudent(oldGroup, "Гога");
+            _isuService.ChangeStudentGroup(testStudent, newGroup);
+            Assert.That(testStudent.StudentGroup, Is.SameAs(newGroup));
         }
     }
 }

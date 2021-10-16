@@ -4,6 +4,11 @@ namespace Isu
 {
     public class CourseNumber
     {
-        public int Coursenum { get; set; }
+        public CourseNumber(int courseNum)
+        {
+            CourseNum = courseNum;
+        }
+
+        public int CourseNum { get; }
     }
 }
