@@ -37,15 +37,16 @@ namespace Isu.Tests
         }
 
         [Test]
-        public void CreateGroupWithInvalidName_ThrowException()
+        [TestCase("M320800")]
+        [TestCase("Вацок")]
+        [TestCase("M3908")]
+        [TestCase("M1208")]
+        public void CreateGroupWithInvalidName_ThrowException(string groupName)
         {
 
             Assert.Catch<IsuException>(() =>
             {
-                _isuService.AddGroup("M320800");
-                _isuService.AddGroup("Вацок");
-                _isuService.AddGroup("M3908");
-                _isuService.AddGroup("M1208");
+                _isuService.AddGroup(groupName);
             });
         }
 

@@ -9,6 +9,7 @@ namespace Isu.Services
     public class IsuService : IIsuService
     {
         private List<Group> groups = new List<Group>();
+        private int maxStudentInGroup = 25;
 
         public Group AddGroup(string name)
         {
@@ -21,7 +22,7 @@ namespace Isu.Services
         {
             foreach (Group i in groups)
             {
-                if (i.Students.Count >= 25)
+                if (i.Students.Count >= maxStudentInGroup)
                 {
                     throw new IsuException("The limit of students for the group has been exceeded");
                 }
@@ -44,7 +45,7 @@ namespace Isu.Services
                 return j;
             }
 
-            throw new IsuException("No such student exists");
+            throw new IsuException("No such student exist");
         }
 
         public Student FindStudent(string name)
@@ -54,19 +55,36 @@ namespace Isu.Services
                 return student;
             }
 
-            throw new IsuException("No such student exists");
+            return null;
         }
 
         public List<Student> FindStudents(string groupName)
         {
-            int courseNumber = int.Parse(groupName.Substring(2, 1));
-            int groupNumber = int.Parse(groupName.Substring(3, 2));
+            if (string.IsNullOrEmpty(groupName))
+            {
+                throw new IsuException("Name of group is null or empty");
+            }
+
+            if (groupName.Length != 5)
+            {
+                throw new IsuException("Invalid name to group");
+            }
+
+            int courseNumber = 0;
+            int groupNumber = 0;
+            if (!int.TryParse(groupName.Substring(2, 1), out courseNumber) || !int.TryParse(groupName.Substring(3, 2), out groupNumber))
+            {
+                throw new IsuException("Invalid name to group");
+            }
+
+            courseNumber = int.Parse(groupName.Substring(2, 1));
+            groupNumber = int.Parse(groupName.Substring(3, 2));
             foreach (Group group in groups.Where(group => group.GroupNumber == groupNumber).Where(group => group.CourseNumber == courseNumber))
             {
                 return group.Students;
             }
 
-            throw new IsuException("No such group exists");
+            return new List<Student>();
         }
 
         public List<Student> FindStudents(CourseNumber courseNumber)
@@ -82,7 +100,7 @@ namespace Isu.Services
                 return ans;
             }
 
-            throw new IsuException("On this course no students");
+            return new List<Student>();
         }
 
         public Group FindGroup(string groupName)
@@ -95,7 +113,7 @@ namespace Isu.Services
                 return group;
             }
 
-            throw new IsuException("No such group exists");
+            return null;
         }
 
         public List<Group> FindGroups(CourseNumber courseNumber)
@@ -111,12 +129,12 @@ namespace Isu.Services
                 return ans;
             }
 
-            throw new IsuException("On this course no groups");
+            return new List<Group>();
         }
 
         public void ChangeStudentGroup(Student student, Group newGroup)
         {
-            if (newGroup.Students.Count >= 25)
+            if (newGroup.Students.Count >= maxStudentInGroup)
             {
                 throw new IsuException("Group is full");
             }
@@ -127,12 +145,10 @@ namespace Isu.Services
                 {
                     if (groups[i].Students[j].StudentId == student.StudentId)
                     {
-                        if (groups[i].Students.Remove(groups[i].Students[j]))
-                        {
-                            student.StudentGroup = newGroup;
-                            newGroup.Students.Add(student);
-                            return;
-                        }
+                        groups[i].Students.Remove(groups[i].Students[j]);
+                        student.StudentGroup = newGroup;
+                        newGroup.Students.Add(student);
+                        return;
                     }
                 }
             }

@@ -2,28 +2,28 @@ namespace Shops.Entities
 {
     public class Product
     {
-        private static int _nextProductID;
+        private static int _nextProductId;
 
         public Product(string name)
         {
-            ID = _nextProductID;
-            _nextProductID++;
+            Id = _nextProductId;
+            _nextProductId++;
             ProductName = name;
         }
 
         public Product(string name, int id)
         {
             ProductName = name;
-            ID = id;
+            Id = id;
         }
 
         public string ProductName { get; }
 
-        public int ID { get; }
+        public int Id { get; }
 
         public override int GetHashCode()
         {
-            return ID;
+            return Id;
         }
     }
 }
