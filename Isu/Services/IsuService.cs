@@ -20,19 +20,16 @@ namespace Isu.Services
 
         public Student AddStudent(Group group, string name)
         {
-            foreach (Group i in groups)
+            if (groups.Contains(group))
             {
-                if (i.Students.Count >= maxStudentInGroup)
+                if (group.Students.Count >= maxStudentInGroup)
                 {
                     throw new IsuException("The limit of students for the group has been exceeded");
                 }
 
-                if (i.CourseNumber == group.CourseNumber && i.GroupNumber == group.GroupNumber)
-                {
-                    Student stu = new Student(name, i);
-                    i.Students.Add(stu);
-                    return stu;
-                }
+                Student stu = new Student(name, group);
+                group.Students.Add(stu);
+                return stu;
             }
 
             throw new IsuException("No such group exists");
@@ -40,9 +37,10 @@ namespace Isu.Services
 
         public Student GetStudent(int id)
         {
-            foreach (Student j in groups.SelectMany(i => i.Students.Where(j => j.StudentId == id)))
+            Student ans = groups.SelectMany(i => i.Students.Where(j => j.StudentId == id)).FirstOrDefault();
+            if (ans != null)
             {
-                return j;
+                return ans;
             }
 
             throw new IsuException("No such student exist");
@@ -50,9 +48,10 @@ namespace Isu.Services
 
         public Student FindStudent(string name)
         {
-            foreach (Student student in groups.SelectMany(i => i.Students.Where(student => student.StudentName == name)))
+            Student ans = groups.SelectMany(i => i.Students.Where(student => student.StudentName == name)).FirstOrDefault();
+            if (ans != null)
             {
-                return student;
+                return ans;
             }
 
             return null;
@@ -72,6 +71,8 @@ namespace Isu.Services
 
             int courseNumber = 0;
             int groupNumber = 0;
+
+            // FormatException
             if (!int.TryParse(groupName.Substring(2, 1), out courseNumber) || !int.TryParse(groupName.Substring(3, 2), out groupNumber))
             {
                 throw new IsuException("Invalid name to group");
@@ -79,9 +80,11 @@ namespace Isu.Services
 
             courseNumber = int.Parse(groupName.Substring(2, 1));
             groupNumber = int.Parse(groupName.Substring(3, 2));
-            foreach (Group group in groups.Where(group => group.GroupNumber == groupNumber).Where(group => group.CourseNumber == courseNumber))
+            var selectedStudents = groups.Where(group => group.GroupNumber == groupNumber)
+                        .Where(group => group.CourseNumber == courseNumber).Select(stud => stud.Students).FirstOrDefault();
+            if (selectedStudents.Any())
             {
-                return group.Students;
+                return selectedStudents;
             }
 
             return new List<Student>();
@@ -89,15 +92,10 @@ namespace Isu.Services
 
         public List<Student> FindStudents(CourseNumber courseNumber)
         {
-            List<Student> ans = new List<Student>();
-            foreach (Group group in groups.Where(group => group.CourseNumber == courseNumber.CourseNum))
+            var selectedStudents = groups.Where(group => group.CourseNumber == courseNumber.CourseNum).SelectMany(i => i.Students);
+            if (selectedStudents.Any())
             {
-                ans.AddRange(group.Students);
-            }
-
-            if (ans.Count > 0)
-            {
-                return ans;
+                return new List<Student>(selectedStudents);
             }
 
             return new List<Student>();
@@ -105,12 +103,33 @@ namespace Isu.Services
 
         public Group FindGroup(string groupName)
         {
-            int courseNumber = int.Parse(groupName.Substring(2, 1));
-            int groupNumber = int.Parse(groupName.Substring(3, 2));
-
-            foreach (Group group in groups.Where(group => group.CourseNumber == courseNumber).Where(group => group.GroupNumber == groupNumber))
+            if (string.IsNullOrEmpty(groupName))
             {
-                return group;
+                throw new IsuException("Name of group is null or empty");
+            }
+
+            if (groupName.Length != 5)
+            {
+                throw new IsuException("Invalid name to group");
+            }
+
+            int courseNumber = 0;
+            int groupNumber = 0;
+
+            // FormatException
+            if (!int.TryParse(groupName.Substring(2, 1), out courseNumber) || !int.TryParse(groupName.Substring(3, 2), out groupNumber))
+            {
+                throw new IsuException("Invalid name to group");
+            }
+
+            courseNumber = int.Parse(groupName.Substring(2, 1));
+            groupNumber = int.Parse(groupName.Substring(3, 2));
+
+            var selectedGroup = groups.Where(group => group.CourseNumber == courseNumber).Where(group => group.GroupNumber == groupNumber).FirstOrDefault();
+
+            if (selectedGroup != null)
+            {
+                return selectedGroup;
             }
 
             return null;
@@ -118,15 +137,10 @@ namespace Isu.Services
 
         public List<Group> FindGroups(CourseNumber courseNumber)
         {
-            List<Group> ans = new List<Group>();
-            foreach (Group group in groups.Where(group => group.CourseNumber == courseNumber.CourseNum))
+            var selectedGrops = groups.Where(group => group.CourseNumber == courseNumber.CourseNum);
+            if (selectedGrops.Any())
             {
-                ans.Add(group);
-            }
-
-            if (ans.Count > 0)
-            {
-                return ans;
+                return new List<Group>(selectedGrops);
             }
 
             return new List<Group>();
@@ -139,18 +153,12 @@ namespace Isu.Services
                 throw new IsuException("Group is full");
             }
 
-            for (int i = 0; i < groups.Count; i++)
+            if (groups.Contains(student.StudentGroup))
             {
-                for (int j = 0; j < groups[i].Students.Count; j++)
-                {
-                    if (groups[i].Students[j].StudentId == student.StudentId)
-                    {
-                        groups[i].Students.Remove(groups[i].Students[j]);
-                        student.StudentGroup = newGroup;
-                        newGroup.Students.Add(student);
-                        return;
-                    }
-                }
+                student.StudentGroup.Students.Remove(student);
+                student.StudentGroup = newGroup;
+                newGroup.Students.Add(student);
+                return;
             }
 
             throw new IsuException("Group not changed(error)");

@@ -22,14 +22,17 @@ namespace Isu
             }
 
             string m3 = groupName.Substring(0, groupName.Length - 3);
-            int courseNum = 0;
-            if (!int.TryParse(groupName.Substring(2, 1), out courseNum))
+            int courseNumber = 0;
+            int groupNumber = 0;
+
+            // FormatException
+            if (!int.TryParse(groupName.Substring(2, 1), out courseNumber) || !int.TryParse(groupName.Substring(3, 2), out groupNumber))
             {
                 throw new IsuException("Invalid name to group");
             }
 
-            courseNum = int.Parse(groupName.Substring(2, 1));
-            if (groupName.Length != 5 || !m3.Equals("M3") || courseNum > 4 || courseNum == 0)
+            courseNumber = int.Parse(groupName.Substring(2, 1));
+            if (groupName.Length != 5 || !m3.Equals("M3") || courseNumber > 4 || courseNumber == 0)
                 throw new IsuException("Invalid name to group");
             CourseNumber = int.Parse(groupName.Substring(2, 1));
             GroupNumber = int.Parse(groupName.Substring(3, 2));
