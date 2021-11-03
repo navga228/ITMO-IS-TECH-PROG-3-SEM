@@ -10,7 +10,5 @@ namespace Shops.Entities
 
         public int Amount { get; set; } // Количество
         public int Price { get; set; }
-
-        // public Product DescriptionOfProduct { get; set; } // К какому продукту привязано описание
     }
 }

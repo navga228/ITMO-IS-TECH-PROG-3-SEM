@@ -1,3 +1,5 @@
+using Shops.Tools;
+
 namespace Shops.Entities
 {
     public class Customer
@@ -5,6 +7,11 @@ namespace Shops.Entities
         private string _name;
         public Customer(string name, int money)
         {
+            if (string.IsNullOrEmpty(name))
+            {
+                throw new CustomerException("Name of customer is null or empty");
+            }
+
             Money = money;
             _name = name;
         }

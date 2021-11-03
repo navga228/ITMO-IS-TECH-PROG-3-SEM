@@ -4,144 +4,188 @@ using Microsoft.VisualStudio.TestPlatform.ObjectModel;
 using Shops.Entities;
 using Shops.Tools;
 using NUnit.Framework;
+using Shops.Entities.Delivery;
 
 namespace Shops.Tests
 {
     public class ShopTests
     {
-        private ShopManager _shopManager;
-
+        private ShopService _shopService;
+        private ProductService _productService;
+        private SupplierServise _supplierServise;
+        private CustomerServise _customerServise;
         [SetUp]
         public void Setup()
         {
-            _shopManager = new ShopManager();
+            _shopService = new ShopService();
+            _productService = new ProductService();
+            _supplierServise = new SupplierServise();
+            _customerServise = new CustomerServise();
         }
 
         [Test]
-        [TestCase(1000, 40, 10, 2)]
+        [TestCase(10000, 40, 10, 2)]
         public void DeliveryProductsAfterDeliveryCanBuyProducts(int moneyBefore, int productPrice, int productAmount, int productToBuyAmount)
         {
-            var customer = new Customer("Вацок", moneyBefore);
-            var newShop = _shopManager.AddShop("Дикси", 100000);
-            var product = _shopManager.RegisterProduct("Батон");
-            
-            // Создаем список продуктов доставляемых в магазин с описанием цены и количества 
-            var productListToShop = new Dictionary<Product, ProductDescription>();
-            productListToShop.Add(product, new ProductDescription(productAmount, productPrice));
+            // Создаем магаз
+            Shop newShop = new Shop("Магнит", 1000000);
 
-            //Поставляем эти продукты в магаз
-            newShop.AddProducts(productListToShop);
+            // Создаем покупателя
+            Customer customer1 = _customerServise.AddCustomer("Вацок", moneyBefore);
+
+            // Создаем товар сникерс
+            Product snikers = _productService.AddProduct("Сникерс");
+            ProductDescription snikersDescription = new ProductDescription(productAmount, productPrice);
+
+            // Создаем вендера
+            Supplier supplier1 = _supplierServise.AddSupplier("Вендер1");
+
+            // Создаем список для доставки
+            Dictionary<Product, ProductDescription> listToDelivery = new Dictionary<Product, ProductDescription>();
+            listToDelivery.Add(snikers, snikersDescription);
+
+            // Поставляем
+            _supplierServise.Delivery(supplier1, newShop, listToDelivery);
             
-            // Создаем список того какие продукты хочет купить покупатель и в каком количестве
-            var productListToBuy = new Dictionary<Product, int>();
-            productListToBuy.Add(product, productToBuyAmount);
+            // Создаем список для покупки
+            Dictionary<Product, int> listToBuy = new Dictionary<Product, int>();
+            listToBuy.Add(snikers, productToBuyAmount);
+
+            // Покупаем
+            _customerServise.Buy(customer1, newShop, listToBuy);
             
-            // Покупаем 2 батона в магните
-            newShop.Buy(customer, productListToBuy);
-            
-            Assert.AreEqual(moneyBefore - productPrice * productToBuyAmount, customer.Money);
-            Assert.AreEqual(productAmount - productToBuyAmount, newShop.ProductsList.ElementAt(0).Value.Amount);
+            // Проверяем
+            Assert.AreEqual(moneyBefore - productPrice * productToBuyAmount, customer1.Money);
+            Assert.AreEqual(productAmount - productToBuyAmount, newShop.CommodityList.ElementAt(0).ProductDescription.Amount);
         }
 
         [Test]
         [TestCase(10, 20)]
         public void ChangeProductPriceAndPriceChanged(int oldPrice, int newPrice)
         {
-            var newShop = _shopManager.AddShop("Дикси", 100000);
-            var product = _shopManager.RegisterProduct("Батон");
+            // Создаем поставщика
+            Supplier supplier1 = _supplierServise.AddSupplier("Вендер1");
             
-            // Создаем список продуктов доставляемых в магазин с описанием цены и количества 
+            //Создаем магазин
+            var newShop = _shopService.AddShop("Дикси", 100000);
+
+            // Создаем список продуктов доставляемых в магазин
             var productListToShop = new Dictionary<Product, ProductDescription>();
-            productListToShop.Add(product, new ProductDescription(10, oldPrice));
+            var product = _productService.AddProduct("Батон");
+            var productDescription = new ProductDescription(10, oldPrice);
+            productListToShop.Add(product, productDescription);
             
             //Поставляем эти продукты в магаз
-            newShop.AddProducts(productListToShop);
+            _supplierServise.Delivery(supplier1, newShop, productListToShop);
             
             // Меняем цену
-            newShop.ChangePrice(product, newPrice);
-            Assert.AreEqual(newPrice, newShop.ProductsList.ElementAt(0).Value.Price);
+            newShop.ChangeCommodityPrice(newShop.CommodityList[0], newPrice);
+            
+            Assert.AreEqual(newPrice, newShop.CommodityList.ElementAt(0).ProductDescription.Price);
         }
 
         [Test]
-        public void BuyCheapestBatchOfProducts_CheapestBatchBought()
-        {// Создать 3 магазина; Тот который подходит, и 3 которые не подходят; Обрабоать ситуацию что товара может быть недостаточно и товара мо
-            // может быть нигде;
-            // Ситуация 1: Во всех магазинах есть товары нужные но в одном дешевле
-            // Ситуация 2: Ни в каком магазине нет нужной партии
-            // Ситуация 3: Во всех магазинах есть продукты из партии, но нигде не хватает их кол-ва
-            
-            
+        public void SearchShopWithCheapestBatch_ShopWithCheapestBatchSearched()
+        {
+            Supplier supplier1 = _supplierServise.AddSupplier("Вендер1");
             //Создаем магазины
-            Shop magnitExpect = _shopManager.AddShop("Магнит", 100000);
-            Shop piatorochka = _shopManager.AddShop("Пятерочка", 100000);
-            Shop diksy = _shopManager.AddShop("Дикси", 100000);
+            Shop magnitExpect = _shopService.AddShop("Магнит", 100000);
+            Shop piatorochka = _shopService.AddShop("Пятерочка", 100000);
+            Shop diksy = _shopService.AddShop("Дикси", 100000);
             
             //Заполняем магазины продуктами
             Product banan = new Product("Банан");
             Product snikers = new Product("Сникерс");
             Product apple = new Product("Яблоко");
-            var productListToShopExpect = new Dictionary<Product, ProductDescription>();
-            productListToShopExpect.Add(banan, new ProductDescription(10,20));
-            productListToShopExpect.Add(snikers, new ProductDescription(50,40));
-            productListToShopExpect.Add(apple, new ProductDescription(100,150));
-            magnitExpect.AddProducts(productListToShopExpect);
-            var productListToShop1 = new Dictionary<Product, ProductDescription>();
-            productListToShop1.Add(banan, new ProductDescription(10,30));
-            productListToShop1.Add(snikers, new ProductDescription(50,50));
-            productListToShop1.Add(apple, new ProductDescription(100,100));
-            piatorochka.AddProducts(productListToShop1);
-            var productListToShop2 = new Dictionary<Product, ProductDescription>();
-            productListToShop2.Add(banan, new ProductDescription(10,30));
-            productListToShop2.Add(snikers, new ProductDescription(50,190));
-            productListToShop2.Add(apple, new ProductDescription(100,150));
-            diksy.AddProducts(productListToShop2);
+
+            // Поставка в магазин который ожидается
+            Dictionary<Product, ProductDescription> productListToShopEcspect = new Dictionary<Product, ProductDescription>();
+            productListToShopEcspect.Add(snikers, new ProductDescription(100, 25));
+            productListToShopEcspect.Add(banan, new ProductDescription(200, 10));
+            productListToShopEcspect.Add(apple, new ProductDescription(50, 40));
+            _supplierServise.Delivery(supplier1, magnitExpect, productListToShopEcspect);
+
+            // Поставка продуктов во второй магазин
+            var productListToPiatorochka = new Dictionary<Product, ProductDescription>();
+            productListToPiatorochka.Add(snikers, new ProductDescription(100,20));
+            productListToPiatorochka.Add(banan, new ProductDescription(200,30));
+            productListToPiatorochka.Add(apple, new ProductDescription(50,100));
+            _supplierServise.Delivery(supplier1, piatorochka, productListToPiatorochka);
             
+            // Поставка продуктов в третий магазин
+            var productListToDiksy = new Dictionary<Product, ProductDescription>();
+            productListToDiksy.Add(snikers, new ProductDescription(100,40));
+            productListToDiksy.Add(banan, new ProductDescription(200,10));
+            productListToDiksy.Add(apple, new ProductDescription(50,40));
+            _supplierServise.Delivery(supplier1, diksy, productListToDiksy);
+
             // Партия продуктов которую ищем
             var productListToSearch = new Dictionary<Product, int>();
             productListToSearch.Add(banan, 5);
             productListToSearch.Add(snikers, 10);
             productListToSearch.Add(apple, 20);
             
-            Assert.AreEqual(magnitExpect, _shopManager.SerchBatch(productListToSearch));
+            Assert.AreEqual(magnitExpect, _shopService.SerchCheapestBatch(productListToSearch));
+            
+            
+            // Ситуация когда когда товара может быть недостаточно или не быть нигде
+            var productListToSearch2 = new Dictionary<Product, int>();
+            productListToSearch2.Add(banan, 10000000);
+            productListToSearch2.Add(snikers, 10000);
+            productListToSearch2.Add(apple, 100000);
+
+            Shop shopExpected = null;
+            
+            Assert.AreEqual(shopExpected, _shopService.SerchCheapestBatch(productListToSearch2));
         }
 
         [Test]
-        public void BuyBatchInShop_AmountChangedAndMoneyChanged()
+        [TestCase(1000000, 10000)]
+        public void BuyBatchInShop_AmountChangedAndMoneyChanged(int moneyInShopBefore, int moneyCustomerBefore)
         {
-            int moneyInShopBefore = 100000;
-            int moneyCustomerBefore = 4000;
+            Supplier supplier1 = _supplierServise.AddSupplier("Вендер1");
+            var customer = _customerServise.AddCustomer("Никола", moneyCustomerBefore);
             
-            var customer = new Customer("Никола", moneyCustomerBefore);
-            
-            Shop diksy = _shopManager.AddShop("Дикси", moneyInShopBefore);
-            
-            Product banan = new Product("Банан");
-            Product snikers = new Product("Сникерс");
-            Product apple = new Product("Яблоко");
+            Shop diksy = _shopService.AddShop("Дикси", moneyInShopBefore);
 
-            int bananInShopBefore = 10;
             int snikersInShopBefore = 50;
-            int appleInShopBefore = 100;
+            int bananInShopBefore = 10;
+            int appleInShopBefore = 20;
+
+            // Создаем товар сникерс
+            Product snikers = _productService.AddProduct("Сникерс");
+            ProductDescription snikersDescription = new ProductDescription(snikersInShopBefore, 50);
+
+            // Создаем товар банан
+            Product banan = _productService.AddProduct("Банан");
+            ProductDescription bananDescription = new ProductDescription(bananInShopBefore, 20);
+
+            // Создаем товар яблоко
+            Product apple = _productService.AddProduct("Яблоко");
+            ProductDescription appleDescription = new ProductDescription(appleInShopBefore, 100);
+
+            // Создаем список для доставки
+            Dictionary<Product, ProductDescription> listToDelivery = new Dictionary<Product, ProductDescription>();
+            listToDelivery.Add(snikers, snikersDescription);
+            listToDelivery.Add(banan, bananDescription);
+            listToDelivery.Add(apple, appleDescription);
             
-            var productListToShop = new Dictionary<Product, ProductDescription>();
-            productListToShop.Add(banan, new ProductDescription(bananInShopBefore,30));
-            productListToShop.Add(snikers, new ProductDescription(snikersInShopBefore,50));
-            productListToShop.Add(apple, new ProductDescription(appleInShopBefore,100));
-            diksy.AddProducts(productListToShop);
+            // Поставляем
+            _supplierServise.Delivery(supplier1, diksy, listToDelivery);
             
             var productListToBuy = new Dictionary<Product, int>();
-            productListToBuy.Add(banan, 5); // Общая стоимость бананов 5 * 30 = 150
             productListToBuy.Add(snikers, 10);// Общая стоимость сникерсов 10 * 50 = 500
+            productListToBuy.Add(banan, 5); // Общая стоимость бананов 5 * 20 = 100
             productListToBuy.Add(apple, 20);// Общая стоимость яблок 20 * 100 = 2000
 
-            int BatchPrice = 2650; // Общая стоимость покупок 
+            int BatchPrice = 2600; // Общая стоимость покупок 
             
-            diksy.Buy(customer, productListToBuy);
+            _customerServise.Buy(customer, diksy, productListToBuy);
             
             Assert.AreEqual(moneyCustomerBefore - BatchPrice, customer.Money);
-            Assert.AreEqual(bananInShopBefore - productListToBuy.ElementAt(0).Value, diksy.ProductsList.ElementAt(0).Value.Amount);
-            Assert.AreEqual(snikersInShopBefore - productListToBuy.ElementAt(1).Value, diksy.ProductsList.ElementAt(1).Value.Amount);
-            Assert.AreEqual(appleInShopBefore - productListToBuy.ElementAt(2).Value, diksy.ProductsList.ElementAt(2).Value.Amount);
+            Assert.AreEqual(snikersInShopBefore - productListToBuy.ElementAt(0).Value, diksy.CommodityList.ElementAt(0).ProductDescription.Amount);
+            Assert.AreEqual(bananInShopBefore - productListToBuy.ElementAt(1).Value, diksy.CommodityList.ElementAt(1).ProductDescription.Amount);
+            Assert.AreEqual(appleInShopBefore - productListToBuy.ElementAt(2).Value, diksy.CommodityList.ElementAt(2).ProductDescription.Amount);
         }
         
     }
