@@ -11,31 +11,41 @@ namespace Isu.Tests
         [SetUp]
         public void Setup()
         {
-            //TODO: implement
-            _isuService = null;
+            _isuService = new IsuService();
         }
 
         [Test]
         public void AddStudentToGroup_StudentHasGroupAndGroupContainsStudent()
         {
-            Assert.Fail();
+            Group testGroup = _isuService.AddGroup("M3208");
+            Student teststudent = _isuService.AddStudent(testGroup, "Петр");
+            Assert.That(teststudent.StudGroup, Is.SameAs(testGroup));
+            Assert.That(_isuService.FindStudents(testGroup.Groupname).Contains(teststudent), Is.True); 
         }
 
         [Test]
         public void ReachMaxStudentPerGroup_ThrowException()
         {
+            Group testGroup = _isuService.AddGroup("M3208");
             Assert.Catch<IsuException>(() =>
             {
-                
+                for (int i = 0; i < 26; i++)
+                {
+                    Student testStudent = _isuService.AddStudent(testGroup, i.ToString());
+                }
             });
         }
 
         [Test]
         public void CreateGroupWithInvalidName_ThrowException()
         {
+
             Assert.Catch<IsuException>(() =>
             {
-
+                _isuService.AddGroup("M320800");
+                _isuService.AddGroup("Вацок");
+                _isuService.AddGroup("M3908");
+                _isuService.AddGroup("M1208");
             });
         }
 
@@ -44,7 +54,11 @@ namespace Isu.Tests
         {
             Assert.Catch<IsuException>(() =>
             {
-
+                Group newGroup = _isuService.AddGroup("M3208");
+                Group oldGroup = _isuService.AddGroup("M3206");
+                Student testStudent = _isuService.AddStudent(oldGroup,"Гога");
+                _isuService.ChangeStudentGroup(testStudent, newGroup);
+                Assert.That(testStudent.StudGroup, Is.SameAs(newGroup));
             });
         }
     }
