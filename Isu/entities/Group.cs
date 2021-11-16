@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using Isu;
 using Isu.Tools;
@@ -6,36 +7,45 @@ namespace Isu
 {
     public class Group
     {
-        private List<Student> students = new List<Student>();
+        private List<Student> _students = new List<Student>();
 
-        public Group()
+        public Group(string groupName)
         {
-            GroupNumber = -1;
-            CourseNum = -1;
-            Groupname = null;
-        }
+            if (string.IsNullOrEmpty(groupName))
+            {
+                throw new IsuException("Name of group is null or empty");
+            }
 
-        public Group(string groupname)
-        {
-            string m3 = groupname.Substring(0, groupname.Length - 3);
-            int courseNum = int.Parse(groupname.Substring(2, 1));
-            if (groupname.Length != 5 || !m3.Equals("M3") || courseNum > 4)
+            if (groupName.Length != 5)
+            {
                 throw new IsuException("Invalid name to group");
-            CourseNum = int.Parse(groupname.Substring(2, 1));
-            GroupNumber = int.Parse(groupname.Substring(3, 2));
-            Groupname = groupname;
-            StudentCounter = 0;
+            }
+
+            string m3 = groupName.Substring(0, groupName.Length - 3);
+            int courseNumber = 0;
+            int groupNumber = 0;
+
+            // FormatException
+            if (!int.TryParse(groupName.Substring(2, 1), out courseNumber) || !int.TryParse(groupName.Substring(3, 2), out groupNumber))
+            {
+                throw new IsuException("Invalid name to group");
+            }
+
+            courseNumber = int.Parse(groupName.Substring(2, 1));
+            if (groupName.Length != 5 || !m3.Equals("M3") || courseNumber > 4 || courseNumber == 0)
+                throw new IsuException("Invalid name to group");
+            CourseNumber = int.Parse(groupName.Substring(2, 1));
+            GroupNumber = int.Parse(groupName.Substring(3, 2));
+            GroupName = groupName;
         }
 
-        public List<Student> Students1
+        public List<Student> Students
         {
-            get => students;
-            set => students = value;
+            get => _students;
         }
 
         public int GroupNumber { get; }
-        public int CourseNum { get; }
-        public string Groupname { get; set; }
-        public int StudentCounter { get; set; }
+        public int CourseNumber { get; }
+        public string GroupName { get; }
     }
 }
