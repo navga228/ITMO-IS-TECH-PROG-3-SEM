@@ -9,11 +9,6 @@ namespace Shops.Entities
     {
         public Customer AddCustomer(string name, int money)
         {
-            if (string.IsNullOrEmpty(name))
-            {
-                throw new CustomerException("Name of customer is null or empty");
-            }
-
             Customer newCustomer = new Customer(name, money);
             return newCustomer;
         }
@@ -43,14 +38,9 @@ namespace Shops.Entities
                         throw new CustomerException("Not enough commodity in the shop");
                     }
 
-                    // Достаточно ли денег у покупателя для покупки
-                    if (customer.Money - (shop.CommodityList[index].ProductDescription.Price * product.Value) < 0)
-                    {
-                        throw new CustomerException("The customer does not have enough money");
-                    }
-
-                    shop.Cashbox += shop.CommodityList[index].ProductDescription.Price * product.Value;
-                    customer.Money -= shop.CommodityList[index].ProductDescription.Price * product.Value;
+                    int productPrice = shop.CommodityList[index].ProductDescription.Price;
+                    shop.AddMoneyInCashbox(productPrice * product.Value);
+                    customer.ChangeCustomerMoney(productPrice * product.Value);
                     shop.CommodityList[index].ProductDescription.Amount -= product.Value;
                 }
                 else

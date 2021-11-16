@@ -7,14 +7,14 @@ namespace Shops.Entities
     public class ShopService
     {
         private List<Shop> _shops = new List<Shop>();
-        public Shop AddShop(string name, long cash)
+        public Shop AddShop(string name, int cash)
         {
             Shop newShop = new Shop(name, cash);
             _shops.Add(newShop);
             return newShop;
         }
 
-        public Shop SerchCheapestBatch(Dictionary<Product, int> productListToBuy)
+        public Shop FindCheapestBatch(Dictionary<Product, int> productListToBuy)
         {
             if (productListToBuy == null || !productListToBuy.Any())
             {

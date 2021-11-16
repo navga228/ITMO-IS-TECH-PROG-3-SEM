@@ -11,8 +11,9 @@ namespace Shops.Entities
     {
         private static uint _nextShopID;
         private uint _shopID;
+        private int _cashbox;
 
-        public Shop(string name, long cash)
+        public Shop(string name, int cash)
         {
             if (string.IsNullOrEmpty(name))
             {
@@ -24,12 +25,11 @@ namespace Shops.Entities
             _shopID = _nextShopID;
             _nextShopID++;
             ShopName = name;
-            Cashbox = cash;
+            _cashbox = cash;
         }
 
         public List<Commodity> CommodityList { get; } // товары которые есть в магазе
         public string ShopName { get; }
-        public long Cashbox { get; set; }
         public List<(Supplier supplier, Dictionary<Product, ProductDescription> commodityListToDelivery)> BatchesOfCommodities { get; } // Учет всех поставок
 
         public void ChangeCommodityPrice(Commodity commodity, int newPrice)
@@ -37,6 +37,16 @@ namespace Shops.Entities
             var serchedCommodity = CommodityList.Where(item => item.Product.ID == commodity.Product.ID).FirstOrDefault();
             var index = CommodityList.IndexOf(serchedCommodity);
             CommodityList[index].ProductDescription.Price = newPrice;
+        }
+
+        public void AddMoneyInCashbox(int sumToAdd)
+        {
+            _cashbox += sumToAdd;
+        }
+
+        public void SubstractMoneyFromCashbox(int sumToSubstract)
+        {
+            _cashbox -= sumToSubstract;
         }
     }
 }

@@ -14,6 +14,7 @@ namespace Shops.Tests
         private ProductService _productService;
         private SupplierServise _supplierServise;
         private CustomerServise _customerServise;
+        private Delivery _delivery;
         [SetUp]
         public void Setup()
         {
@@ -21,6 +22,7 @@ namespace Shops.Tests
             _productService = new ProductService();
             _supplierServise = new SupplierServise();
             _customerServise = new CustomerServise();
+            _delivery = new Delivery();
         }
 
         [Test]
@@ -45,7 +47,7 @@ namespace Shops.Tests
             listToDelivery.Add(snikers, snikersDescription);
 
             // Поставляем
-            _supplierServise.Delivery(supplier1, newShop, listToDelivery);
+            _delivery.DeliveryBatchToShop(supplier1, newShop, listToDelivery);
             
             // Создаем список для покупки
             Dictionary<Product, int> listToBuy = new Dictionary<Product, int>();
@@ -55,7 +57,7 @@ namespace Shops.Tests
             _customerServise.Buy(customer1, newShop, listToBuy);
             
             // Проверяем
-            Assert.AreEqual(moneyBefore - productPrice * productToBuyAmount, customer1.Money);
+            Assert.AreEqual(moneyBefore - productPrice * productToBuyAmount, customer1.ShowBalance());
             Assert.AreEqual(productAmount - productToBuyAmount, newShop.CommodityList.ElementAt(0).ProductDescription.Amount);
         }
 
@@ -76,7 +78,7 @@ namespace Shops.Tests
             productListToShop.Add(product, productDescription);
             
             //Поставляем эти продукты в магаз
-            _supplierServise.Delivery(supplier1, newShop, productListToShop);
+            _delivery.DeliveryBatchToShop(supplier1, newShop, productListToShop);
             
             // Меняем цену
             newShop.ChangeCommodityPrice(newShop.CommodityList[0], newPrice);
@@ -103,21 +105,21 @@ namespace Shops.Tests
             productListToShopEcspect.Add(snikers, new ProductDescription(100, 25));
             productListToShopEcspect.Add(banan, new ProductDescription(200, 10));
             productListToShopEcspect.Add(apple, new ProductDescription(50, 40));
-            _supplierServise.Delivery(supplier1, magnitExpect, productListToShopEcspect);
-
+            _delivery.DeliveryBatchToShop(supplier1, magnitExpect, productListToShopEcspect);
+            
             // Поставка продуктов во второй магазин
             var productListToPiatorochka = new Dictionary<Product, ProductDescription>();
             productListToPiatorochka.Add(snikers, new ProductDescription(100,20));
             productListToPiatorochka.Add(banan, new ProductDescription(200,30));
             productListToPiatorochka.Add(apple, new ProductDescription(50,100));
-            _supplierServise.Delivery(supplier1, piatorochka, productListToPiatorochka);
+            _delivery.DeliveryBatchToShop(supplier1, piatorochka, productListToPiatorochka);
             
             // Поставка продуктов в третий магазин
             var productListToDiksy = new Dictionary<Product, ProductDescription>();
             productListToDiksy.Add(snikers, new ProductDescription(100,40));
             productListToDiksy.Add(banan, new ProductDescription(200,10));
             productListToDiksy.Add(apple, new ProductDescription(50,40));
-            _supplierServise.Delivery(supplier1, diksy, productListToDiksy);
+            _delivery.DeliveryBatchToShop(supplier1, diksy, productListToDiksy);
 
             // Партия продуктов которую ищем
             var productListToSearch = new Dictionary<Product, int>();
@@ -125,7 +127,7 @@ namespace Shops.Tests
             productListToSearch.Add(snikers, 10);
             productListToSearch.Add(apple, 20);
             
-            Assert.AreEqual(magnitExpect, _shopService.SerchCheapestBatch(productListToSearch));
+            Assert.AreEqual(magnitExpect, _shopService.FindCheapestBatch(productListToSearch));
             
             
             // Ситуация когда когда товара может быть недостаточно или не быть нигде
@@ -136,7 +138,7 @@ namespace Shops.Tests
 
             Shop shopExpected = null;
             
-            Assert.AreEqual(shopExpected, _shopService.SerchCheapestBatch(productListToSearch2));
+            Assert.AreEqual(shopExpected, _shopService.FindCheapestBatch(productListToSearch2));
         }
 
         [Test]
@@ -171,7 +173,7 @@ namespace Shops.Tests
             listToDelivery.Add(apple, appleDescription);
             
             // Поставляем
-            _supplierServise.Delivery(supplier1, diksy, listToDelivery);
+            _delivery.DeliveryBatchToShop(supplier1, diksy, listToDelivery);
             
             var productListToBuy = new Dictionary<Product, int>();
             productListToBuy.Add(snikers, 10);// Общая стоимость сникерсов 10 * 50 = 500
@@ -182,7 +184,7 @@ namespace Shops.Tests
             
             _customerServise.Buy(customer, diksy, productListToBuy);
             
-            Assert.AreEqual(moneyCustomerBefore - BatchPrice, customer.Money);
+            Assert.AreEqual(moneyCustomerBefore - BatchPrice, customer.ShowBalance());
             Assert.AreEqual(snikersInShopBefore - productListToBuy.ElementAt(0).Value, diksy.CommodityList.ElementAt(0).ProductDescription.Amount);
             Assert.AreEqual(bananInShopBefore - productListToBuy.ElementAt(1).Value, diksy.CommodityList.ElementAt(1).ProductDescription.Amount);
             Assert.AreEqual(appleInShopBefore - productListToBuy.ElementAt(2).Value, diksy.CommodityList.ElementAt(2).ProductDescription.Amount);
