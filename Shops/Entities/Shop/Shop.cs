@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.IO.Compression;
 using System.Linq;
-using Shops.Entities.Delivery;
+using Shops.Entities;
 using Shops.Tools;
 
 namespace Shops.Entities
@@ -21,7 +21,7 @@ namespace Shops.Entities
             }
 
             CommodityList = new List<Commodity>();
-            BatchesOfCommodities = new List<(Supplier supplier, Dictionary<Product, ProductDescription> commodityListToDelivery)>();
+            BatchesOfCommodities = new List<Batches>();
             _shopID = _nextShopID;
             _nextShopID++;
             ShopName = name;
@@ -30,7 +30,7 @@ namespace Shops.Entities
 
         public List<Commodity> CommodityList { get; } // товары которые есть в магазе
         public string ShopName { get; }
-        public List<(Supplier supplier, Dictionary<Product, ProductDescription> commodityListToDelivery)> BatchesOfCommodities { get; } // Учет всех поставок
+        public List<Batches> BatchesOfCommodities { get; set; }// Учет всех поставок
 
         public void ChangeCommodityPrice(Commodity commodity, int newPrice)
         {

@@ -14,7 +14,6 @@ namespace Shops.Tests
         private ProductService _productService;
         private SupplierServise _supplierServise;
         private CustomerServise _customerServise;
-        private Delivery _delivery;
         [SetUp]
         public void Setup()
         {
@@ -22,7 +21,6 @@ namespace Shops.Tests
             _productService = new ProductService();
             _supplierServise = new SupplierServise();
             _customerServise = new CustomerServise();
-            _delivery = new Delivery();
         }
 
         [Test]
@@ -47,7 +45,7 @@ namespace Shops.Tests
             listToDelivery.Add(snikers, snikersDescription);
 
             // Поставляем
-            _delivery.DeliveryBatchToShop(supplier1, newShop, listToDelivery);
+            _supplierServise.Delivery(supplier1, newShop, listToDelivery);
             
             // Создаем список для покупки
             Dictionary<Product, int> listToBuy = new Dictionary<Product, int>();
@@ -78,7 +76,7 @@ namespace Shops.Tests
             productListToShop.Add(product, productDescription);
             
             //Поставляем эти продукты в магаз
-            _delivery.DeliveryBatchToShop(supplier1, newShop, productListToShop);
+            _supplierServise.Delivery(supplier1, newShop, productListToShop);
             
             // Меняем цену
             newShop.ChangeCommodityPrice(newShop.CommodityList[0], newPrice);
@@ -105,21 +103,21 @@ namespace Shops.Tests
             productListToShopEcspect.Add(snikers, new ProductDescription(100, 25));
             productListToShopEcspect.Add(banan, new ProductDescription(200, 10));
             productListToShopEcspect.Add(apple, new ProductDescription(50, 40));
-            _delivery.DeliveryBatchToShop(supplier1, magnitExpect, productListToShopEcspect);
-            
+            _supplierServise.Delivery(supplier1, magnitExpect, productListToShopEcspect);
+
             // Поставка продуктов во второй магазин
             var productListToPiatorochka = new Dictionary<Product, ProductDescription>();
             productListToPiatorochka.Add(snikers, new ProductDescription(100,20));
             productListToPiatorochka.Add(banan, new ProductDescription(200,30));
             productListToPiatorochka.Add(apple, new ProductDescription(50,100));
-            _delivery.DeliveryBatchToShop(supplier1, piatorochka, productListToPiatorochka);
+            _supplierServise.Delivery(supplier1, piatorochka, productListToPiatorochka);
             
             // Поставка продуктов в третий магазин
             var productListToDiksy = new Dictionary<Product, ProductDescription>();
             productListToDiksy.Add(snikers, new ProductDescription(100,40));
             productListToDiksy.Add(banan, new ProductDescription(200,10));
             productListToDiksy.Add(apple, new ProductDescription(50,40));
-            _delivery.DeliveryBatchToShop(supplier1, diksy, productListToDiksy);
+            _supplierServise.Delivery(supplier1, diksy, productListToDiksy);
 
             // Партия продуктов которую ищем
             var productListToSearch = new Dictionary<Product, int>();
@@ -173,7 +171,7 @@ namespace Shops.Tests
             listToDelivery.Add(apple, appleDescription);
             
             // Поставляем
-            _delivery.DeliveryBatchToShop(supplier1, diksy, listToDelivery);
+            _supplierServise.Delivery(supplier1, diksy, listToDelivery);
             
             var productListToBuy = new Dictionary<Product, int>();
             productListToBuy.Add(snikers, 10);// Общая стоимость сникерсов 10 * 50 = 500
