@@ -5,7 +5,6 @@ namespace IsuExtra.Entities
 {
     public class Potok
     {
-        private string potokName;
         public Potok(string name, List<Lesson> potokSchedule, int maxStudentInPotok)
         {
             if (string.IsNullOrEmpty(name))
@@ -18,12 +17,13 @@ namespace IsuExtra.Entities
                 throw new OgnpException("Potok schedule is null");
             }
 
-            potokName = name;
+            PotokName = name;
             PotokSchedule = potokSchedule;
             Students = new List<ExtraStudent.ExtraStudent>();
             MaxStudentInPotok = maxStudentInPotok;
         }
 
+        public string PotokName { get; }
         public List<Lesson> PotokSchedule { get; }
         public List<ExtraStudent.ExtraStudent> Students { get; }
         public int MaxStudentInPotok { get; }

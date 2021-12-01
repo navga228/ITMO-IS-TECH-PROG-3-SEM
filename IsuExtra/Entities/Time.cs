@@ -6,27 +6,39 @@ namespace IsuExtra.Entities
 {
     public class Time
     {
-        public Time(int hour, int minutes, string dayOfWeek)
-        { // Проверка на соответсвие дню недели
-            string[] daysOfWeek = { "monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday" };
-            if (string.IsNullOrEmpty(dayOfWeek))
-            {
-                throw new OgnpException("Day of week is null or empty");
-            }
-
-            string lowerDayOfWeek = dayOfWeek.ToLower();
-            if (!daysOfWeek.Contains(lowerDayOfWeek))
-            {
-                throw new OgnpException("Invalid day of week");
-            }
-
+        public Time(int hour, int minutes, DaysOfWeek dayOfWeek)
+        {
             Hour = hour;
             Minutes = minutes;
-            DayOfWeek = lowerDayOfWeek;
+            DayOfWeek = dayOfWeek;
+        }
+
+        public enum DaysOfWeek
+        {
+            /// <summary>The first value</summary>
+            Monday,
+
+            /// <summary>The second value</summary>
+            Tuesday,
+
+            /// <summary>The third value</summary>
+            Wednesday,
+
+            /// <summary>The fourth value</summary>
+            Thursday,
+
+            /// <summary>The fifth value</summary>
+            Friday,
+
+            /// <summary>The sixth value</summary>
+            Saturday,
+
+            /// <summary>The seventh value</summary>
+            Sunday,
         }
 
         public int Hour { get; }
         public int Minutes { get; }
-        public string DayOfWeek { get; }
+        public Enum DayOfWeek { get; }
     }
 }

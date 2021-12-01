@@ -30,14 +30,14 @@ namespace IsuExtra.Tests
             
             // Создаем первый предмет
             string lesson1Name = "Math";
-            Time startTimeLesson1 = new Time(14, 30, "Monday");
-            Time endTimeLesson1 = new Time(16, 0, "Monday");
+            Time startTimeLesson1 = new Time(14, 30, Time.DaysOfWeek.Monday);
+            Time endTimeLesson1 = new Time(16, 0, Time.DaysOfWeek.Monday);
             Lesson lesson1 = new Lesson(lesson1Name, startTimeLesson1, endTimeLesson1, group, "Анна Александровна", "25");
             
             // Создаем второй предмет
             string lesson2Name = "OOP";
-            Time startTimeLesson2 = new Time(10, 0, "Monday");
-            Time endTimeLesson2 = new Time(11, 30, "Monday");
+            Time startTimeLesson2 = new Time(10, 0, Time.DaysOfWeek.Monday);
+            Time endTimeLesson2 = new Time(11, 30, Time.DaysOfWeek.Monday);
             Lesson lesson2 = new Lesson(lesson1Name, startTimeLesson2, endTimeLesson2, group, "Марина Олеговна", "30");
             
             groupShedule.Add(lesson1);
@@ -48,8 +48,8 @@ namespace IsuExtra.Tests
 
             // Создаем расписание для потока огнп
             string lessonPotokName = "Marketing";
-            Time startTimeLessonPotok = new Time(10, 0, "Monday");
-            Time endTimeLessonPotok = new Time(11, 30, "Monday");
+            Time startTimeLessonPotok = new Time(10, 0, Time.DaysOfWeek.Monday);
+            Time endTimeLessonPotok = new Time(11, 30, Time.DaysOfWeek.Monday);
             Lesson potokLesson = new Lesson(lessonPotokName, startTimeLessonPotok, endTimeLessonPotok, group, "Михаил Андреевич", "30");
 
             List<Lesson> potokSchedule = new List<Lesson>();
@@ -79,13 +79,13 @@ namespace IsuExtra.Tests
             List<Lesson> groupShedule = new List<Lesson>();
 
             string lesson1Name = "Math";
-            Time startTimeLesson1 = new Time(14, 30, "Monday");
-            Time endTimeLesson1 = new Time(16, 0, "Monday");
+            Time startTimeLesson1 = new Time(14, 30, Time.DaysOfWeek.Monday);
+            Time endTimeLesson1 = new Time(16, 0, Time.DaysOfWeek.Monday);
             Lesson lesson1 = new Lesson(lesson1Name, startTimeLesson1, endTimeLesson1, group, "Анна Александровна", "25");
             
             string lesson2Name = "OOP";
-            Time startTimeLesson2 = new Time(10, 0, "Monday");
-            Time endTimeLesson2 = new Time(11, 30, "Monday");
+            Time startTimeLesson2 = new Time(10, 0, Time.DaysOfWeek.Monday);
+            Time endTimeLesson2 = new Time(11, 30, Time.DaysOfWeek.Monday);
             Lesson lesson2 = new Lesson(lesson1Name, startTimeLesson2, endTimeLesson2, group, "Марина Олеговна", "30");
             
             groupShedule.Add(lesson1);
@@ -94,8 +94,8 @@ namespace IsuExtra.Tests
             ExtraStudent newExtraStudent = _extraStudentService.AddExtraStudent(student, groupShedule);
 
             string lessonPotokName = "Marketing";
-            Time startTimeLessonPotok = new Time(18, 0, "Monday");
-            Time endTimeLessonPotok = new Time(19, 30, "Monday");
+            Time startTimeLessonPotok = new Time(18, 0, Time.DaysOfWeek.Monday);
+            Time endTimeLessonPotok = new Time(19, 30, Time.DaysOfWeek.Monday);
             Lesson potokLesson = new Lesson(lessonPotokName, startTimeLessonPotok, endTimeLessonPotok, group, "Михаил Андреевич", "30");
 
             List<Lesson> potokSchedule = new List<Lesson>();
@@ -126,13 +126,13 @@ namespace IsuExtra.Tests
             List<Lesson> groupShedule = new List<Lesson>();
 
             string lesson1Name = "Math";
-            Time startTimeLesson1 = new Time(14, 30, "Monday");
-            Time endTimeLesson1 = new Time(16, 0, "Monday");
+            Time startTimeLesson1 = new Time(14, 30, Time.DaysOfWeek.Monday);
+            Time endTimeLesson1 = new Time(16, 0, Time.DaysOfWeek.Monday);
             Lesson lesson1 = new Lesson(lesson1Name, startTimeLesson1, endTimeLesson1, group, "Анна Александровна", "25");
             
             string lesson2Name = "OOP";
-            Time startTimeLesson2 = new Time(10, 0, "Monday");
-            Time endTimeLesson2 = new Time(11, 30, "Monday");
+            Time startTimeLesson2 = new Time(10, 0, Time.DaysOfWeek.Monday);
+            Time endTimeLesson2 = new Time(11, 30, Time.DaysOfWeek.Monday);
             Lesson lesson2 = new Lesson(lesson1Name, startTimeLesson2, endTimeLesson2, group, "Марина Олеговна", "30");
             
             groupShedule.Add(lesson1);
@@ -141,8 +141,8 @@ namespace IsuExtra.Tests
             ExtraStudent newExtraStudent = _extraStudentService.AddExtraStudent(student, groupShedule);
 
             string lessonPotokName = "Marketing";
-            Time startTimeLessonPotok = new Time(18, 0, "Monday");
-            Time endTimeLessonPotok = new Time(19, 30, "Monday");
+            Time startTimeLessonPotok = new Time(18, 0, Time.DaysOfWeek.Monday);
+            Time endTimeLessonPotok = new Time(19, 30, Time.DaysOfWeek.Monday);
             Lesson potokLesson = new Lesson(lessonPotokName, startTimeLessonPotok, endTimeLessonPotok, group, "Михаил Андреевич", "30");
 
             List<Lesson> potokSchedule = new List<Lesson>();

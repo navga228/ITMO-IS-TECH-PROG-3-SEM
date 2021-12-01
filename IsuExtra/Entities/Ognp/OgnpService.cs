@@ -117,8 +117,8 @@ namespace IsuExtra.Entities.Ognp
                 throw new OgnpException("Ognp is null");
             }
 
-            int index = ognp.Potoks.IndexOf(potok);
-            return ognp.Potoks[index].Students;
+            var potokAnsver = ognp.Potoks.Where(ognpPotok => ognpPotok.PotokName == potok.PotokName).FirstOrDefault();
+            return potokAnsver.Students;
         }
     }
 }
