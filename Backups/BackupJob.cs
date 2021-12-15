@@ -5,14 +5,14 @@ namespace Backups
 {
     public class BackupJob
     {
-      public BackupJob(string name, IRepository repository, IBackupAlgorithm backupAlgorithm)
+      public BackupJob(string name, string projectPath, IRepository repository, IBackupAlgorithm backupAlgorithm)
       {
           Repository = repository;
           Name = name;
           BackupAlgorithm = backupAlgorithm;
           JobObjects = new List<JobObject>();
           RestorePoints = new List<RestorePoint>();
-          Repository.CreateDerictory(string.Empty, name); // Empty потому что мы не используем в локал файловой сист путь, он нужен для других файловых сист
+          Repository.CreateDerictory(projectPath, name); // Empty потому что мы не используем в локал файловой сист путь, он нужен для других файловых сист
           Repository.CreateDerictory(name + "/", "JobObject");
       }
 

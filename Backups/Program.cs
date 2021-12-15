@@ -9,7 +9,7 @@ namespace Backups
         {
             LocalFilesRepository repository = new LocalFilesRepository(@"/Users/navga228/");
             SingleStorageAlgorithm singleAlgorithm = new SingleStorageAlgorithm();
-            BackupJob backupJob = new BackupJob("BackUpJob1", repository, singleAlgorithm);
+            BackupJob backupJob = new BackupJob("BackUpJob1", string.Empty, repository, singleAlgorithm);
 
             JobObject file1 = new JobObject(@"/Users/navga228/", "JobObject1");
             repository.CreateFile(@"/Users/navga228/", "JobObject1");
