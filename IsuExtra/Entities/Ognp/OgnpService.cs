@@ -118,6 +118,11 @@ namespace IsuExtra.Entities.Ognp
             }
 
             var potokAnsver = ognp.Potoks.Where(ognpPotok => ognpPotok.PotokName == potok.PotokName).FirstOrDefault();
+            if (potokAnsver != null)
+            {
+                throw new OgnpException("Potok not found");
+            }
+
             return potokAnsver.Students;
         }
     }
