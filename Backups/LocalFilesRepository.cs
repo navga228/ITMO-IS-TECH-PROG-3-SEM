@@ -13,15 +13,15 @@ namespace Backups
             _root = root;
         }
 
-        public void CreateFile(string root, string fileName)
+        public void CreateFile(string path, string fileName)
         {
-            if (!File.Exists(_root + root + fileName))
+            if (!File.Exists(path + fileName))
             {
-                File.CreateText(_root + root + fileName);
+                File.CreateText(path + fileName);
             }
         }
 
-        public void DeleteFile(string path)
+        public void DeleteFile(string path, string fileName)
         {
             if (File.Exists(_root + path))
             {
@@ -37,11 +37,11 @@ namespace Backups
             }
         }
 
-        public void DeleteDerictory(string path)
+        public void DeleteDerictory(string path, string derictoryName)
         {
-            if (Directory.Exists(_root + path))
+            if (Directory.Exists(_root + path + derictoryName))
             {
-                Directory.CreateDirectory(_root + path);
+                Directory.CreateDirectory(_root + path + derictoryName);
             }
         }
 
@@ -73,7 +73,7 @@ namespace Backups
         {
             if (File.Exists(path))
             {
-                File.Copy(path, _root + newPath);
+                File.Copy(path, _root + newPath, true);
             }
         }
     }

@@ -43,7 +43,7 @@ namespace Backups
           if (JobObjects.Contains(jobObject))
           {
               JobObjects.Remove(jobObject);
-              Repository.DeleteFile(Name + "/JobObject/" + jobObject.Name);
+              Repository.DeleteFile(Name + "/JobObject/", jobObject.Name);
           }
       }
 

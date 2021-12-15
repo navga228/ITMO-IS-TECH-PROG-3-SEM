@@ -4,12 +4,12 @@ namespace Backups
 {
     public interface IRepository
     {
-        public void CreateFile(string root, string fileName);
-        public void DeleteFile(string path);
-        public void CreateDerictory(string root, string fileName);
-        public void DeleteDerictory(string path);
-        public void CompressFiles(List<JobObject> jobObjects, string pathToDerictoryWithCompressedFiles);
-        public void MakeArchive(string pathToDirectory, string newArchiveFileName);
-        public void CopyFile(string path, string newPath);
+        void CreateFile(string path, string fileName);
+        void DeleteFile(string path, string fileName);
+        void CreateDerictory(string path, string derictoryName);
+        void DeleteDerictory(string path, string derictoryName);
+        void CompressFiles(List<JobObject> jobObjects, string pathToDerictoryWithCompressedFiles);
+        void MakeArchive(string pathToDirectory, string newArchiveFileName);
+        void CopyFile(string path, string newPath);
     }
 }
