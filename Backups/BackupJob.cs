@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Backups.Tools;
 
 namespace Backups
 {
@@ -8,12 +9,13 @@ namespace Backups
       public BackupJob(string name, string projectPath, IRepository repository, IBackupAlgorithm backupAlgorithm)
       {
           Repository = repository;
+          ProjectPath = projectPath;
           Name = name;
           BackupAlgorithm = backupAlgorithm;
           JobObjects = new List<JobObject>();
           RestorePoints = new List<RestorePoint>();
-          Repository.CreateDerictory(projectPath, name); // Empty потому что мы не используем в локал файловой сист путь, он нужен для других файловых сист
-          Repository.CreateDerictory(name + "/", "JobObject");
+          Repository.CreateDerictory(projectPath, name);
+          Repository.CreateDerictory(projectPath + name + "/", "JobObject");
       }
 
       public string Name { get; }
@@ -21,15 +23,15 @@ namespace Backups
       public List<RestorePoint> RestorePoints { get; }
       public IBackupAlgorithm BackupAlgorithm { get; }
       public IRepository Repository { get; }
-      public string Path { get; }
+      public string ProjectPath { get; }
       public void AddJobObject(JobObject jobObject)
       {
           if (jobObject == null)
           {
-              throw new Exception();
+              throw new BackupsException("jobObject is null");
           }
 
-          Repository.CopyFile(jobObject.FilePath, Name + "/JobObject/" + jobObject.Name);
+          Repository.CopyFile(jobObject.FilePath, ProjectPath + Name + "/JobObject/" + jobObject.Name);
           JobObjects.Add(jobObject);
       }
 
@@ -37,7 +39,7 @@ namespace Backups
       {
           if (jobObject == null)
           {
-              throw new Exception();
+              throw new BackupsException("jobObject is null");
           }
 
           if (JobObjects.Contains(jobObject))

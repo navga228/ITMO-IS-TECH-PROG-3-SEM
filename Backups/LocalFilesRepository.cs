@@ -45,14 +45,14 @@ namespace Backups
             }
         }
 
-        public void CompressFiles(List<JobObject> jobObjects, string pathToDerictoryWithCompressedFiles)
+        public void CompressFiles(List<JobObject> jobObjects, string restorePointName, string backupJobName)
         {
             foreach (var jobObject in jobObjects)
             {
                 using (FileStream sourceStream = new FileStream(jobObject.FilePath, FileMode.OpenOrCreate))
                 {
                     // поток для записи сжатого файла
-                    using (FileStream targetStream = File.Create(_root + pathToDerictoryWithCompressedFiles))
+                    using (FileStream targetStream = File.Create(_root + "/" + backupJobName + "/" + restorePointName))
                     {
                         // поток архивации
                         using (GZipStream compressionStream = new GZipStream(targetStream, CompressionMode.Compress))
