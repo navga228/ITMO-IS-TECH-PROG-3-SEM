@@ -21,21 +21,26 @@ namespace Isu
                 throw new IsuException("Invalid name to group");
             }
 
-            string m3 = groupName.Substring(0, groupName.Length - 3);
+            char derectionLetter = char.Parse(groupName.Substring(0, 1));
+            int function = 0;
             int courseNumber = 0;
             int groupNumber = 0;
 
             // FormatException
-            if (!int.TryParse(groupName.Substring(2, 1), out courseNumber) || !int.TryParse(groupName.Substring(3, 2), out groupNumber))
+            if (!int.TryParse(groupName.Substring(2, 1), out courseNumber)
+                || !int.TryParse(groupName.Substring(3, 2), out groupNumber)
+                || !int.TryParse(groupName.Substring(1, 1), out function))
             {
                 throw new IsuException("Invalid name to group");
             }
 
             courseNumber = int.Parse(groupName.Substring(2, 1));
-            if (groupName.Length != 5 || !m3.Equals("M3") || courseNumber > 4 || courseNumber == 0)
-                throw new IsuException("Invalid name to group");
+            if (groupName.Length != 5 || !char.IsLetter(derectionLetter) || courseNumber > 4 || courseNumber == 0 || (function != 3 && function != 4))
+                throw new IsuException("Invalid name to group test");
             CourseNumber = int.Parse(groupName.Substring(2, 1));
             GroupNumber = int.Parse(groupName.Substring(3, 2));
+            Function = int.Parse(groupName.Substring(1, 1));
+            DerectionLetter = derectionLetter;
             GroupName = groupName;
         }
 
@@ -47,5 +52,7 @@ namespace Isu
         public int GroupNumber { get; }
         public int CourseNumber { get; }
         public string GroupName { get; }
+        public char DerectionLetter { get; }
+        public int Function { get; }
     }
 }
