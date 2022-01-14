@@ -44,7 +44,10 @@ namespace Isu
             GroupName = groupName;
         }
 
-        public List<Student> Students { get; }
+        public List<Student> Students
+        {
+            get => _students;
+        }
 
         public int GroupNumber { get; }
         public int CourseNumber { get; }
