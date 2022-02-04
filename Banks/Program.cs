@@ -8,7 +8,7 @@ namespace Banks
 {
     internal static class Program
     {
-        private static CentralBank _centralBank = new CentralBank("ЦБРФ", 2232);
+        private static CentralBank _centralBank = new CentralBank("ЦБРФ");
         private static OperationManager _operationManager = new OperationManager();
         private static List<Interest> interests = new List<Interest>() { new Interest(0, 50000, 1.00f), new Interest(50000, float.MaxValue, 2.00f) };
         private static Bank _bank = _centralBank.AddNewBank("Сбер", interests, 100000, 50000, 500, 1.00f, 1.00f, 365);

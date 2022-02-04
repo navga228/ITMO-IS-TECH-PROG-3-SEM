@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 
 namespace Banks
@@ -5,18 +6,17 @@ namespace Banks
     public class CentralBank
     {
         private OperationManager _operationManager = new OperationManager();
-        public CentralBank(string name, int id)
+        public CentralBank(string name)
         {
             Name = name;
-            Id = id;
         }
 
-        public int Id { get; }
+        public Guid Id { get; } = Guid.NewGuid();
         public List<Bank> Banks { get; } = new List<Bank>();
         private string Name { get; }
-        public Bank AddNewBank(string name, List<Interest> bankInterest, float unverifiedLimit, float creditLimit, float comission, float interestOnDepositBalance, float interestOnCreditBalance, int timeToWithdrawOnDepositeAccount)
+        public Bank AddNewBank(string name, List<Interest> bankInterest, float unverifiedLimit, float creditLimit, float comission, float interestOnDebitBalance, float interestOnCreditBalance, int timeToWithdrawOnDepositeAccount)
         {
-            Bank bank = new Bank(name, bankInterest, unverifiedLimit, creditLimit, comission, interestOnDepositBalance, interestOnCreditBalance, timeToWithdrawOnDepositeAccount);
+            Bank bank = new Bank(name, bankInterest, unverifiedLimit, creditLimit, comission, interestOnDebitBalance, interestOnCreditBalance, timeToWithdrawOnDepositeAccount);
             Banks.Add(bank);
             return bank;
         }
@@ -38,20 +38,6 @@ namespace Banks
         public void CancelOperation(string id)
         {
             _operationManager.CancelOperation(id);
-        }
-
-        public void TimeRewindMechanism()
-        {
-            foreach (var bank in Banks)
-            {
-                foreach (var client in bank.Clients)
-                {
-                    foreach (var account in client.Accounts)
-                    {
-                        account.AfterOneDay();
-                    }
-                }
-            }
         }
     }
 }

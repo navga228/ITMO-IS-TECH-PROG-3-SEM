@@ -33,8 +33,10 @@ namespace Banks
                 _payerAccount.Transfer(_money, _payeeAccount);
                 _isComplete = true;
             }
-
-            throw new BankException("Перевод для неверифицированных пользователей в другие банки невозможен");
+            else
+            {
+                throw new BankException("Перевод для неверифицированных пользователей в другие банки невозможен");
+            }
         }
 
         public void CancelOperation()

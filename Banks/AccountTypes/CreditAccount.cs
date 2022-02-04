@@ -26,7 +26,7 @@ namespace Banks
         public float Balance { get; set; }
         public void Withdraw(float money)
         {
-            if (_creditLimit > Balance - money)
+            if (Balance - money < Balance - _creditLimit)
             {
                 throw new BankException("Сумма которую вы хотите вывести превышает ваш кредитный лимит");
             }
