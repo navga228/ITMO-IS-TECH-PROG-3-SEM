@@ -41,7 +41,7 @@ namespace Backups
         {
             if (Directory.Exists(_root + path + derictoryName))
             {
-                Directory.CreateDirectory(_root + path + derictoryName);
+                Directory.Delete(_root + path + derictoryName);
             }
         }
 
