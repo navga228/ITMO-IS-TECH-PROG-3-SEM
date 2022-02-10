@@ -15,37 +15,31 @@ namespace BackupsExtra
         {
             if (string.IsNullOrEmpty(name))
             {
-                LogInfo($"{InfoAboutClass()} Message: Name is null or empty!");
                 throw new BackupsExtraException("Name is null or empty");
             }
 
             if (projectPath == null)
             {
-                LogInfo($"{InfoAboutClass()} Message: Project path is null!");
                 throw new BackupsExtraException("Project path is null");
             }
 
             if (repository == null)
             {
-                LogInfo($"{InfoAboutClass()} Message: Repository is null!");
                 throw new BackupsExtraException("Repository is null");
             }
 
             if (backupAlgorithm == null)
             {
-                LogInfo($"{InfoAboutClass()} Message: backupAlgorithm is null!");
                 throw new BackupsExtraException("Backup Algorithm is null");
             }
 
             if (repositoryExtra == null)
             {
-                LogInfo($"{InfoAboutClass()} Message: RepositoryExtra is null!");
                 throw new BackupsExtraException("RepositoryExtra is null");
             }
 
             if (logger == null)
             {
-                LogInfo($"{InfoAboutClass()} Message: Logger is null!");
                 throw new BackupsExtraException("Logger is null");
             }
 
@@ -63,19 +57,17 @@ namespace BackupsExtra
         {
             if (string.IsNullOrEmpty(newRestorePointName))
             {
-                LogInfo($"{InfoAboutClass()} Message: newRestorePointName is null or empty!");
                 throw new BackupsExtraException("newRestorePointName is null or empty");
             }
 
             _backupJob.BackupProcessing(newRestorePointName);
-            LogInfo($"{InfoAboutClass()} Message: Restore point was successfully created!");
+            _logger.Print($"{InfoAboutClass()} Message: Restore point was successfully created!");
         }
 
         public void DeleteRestorePoints(string restorePointName)
         {
             if (string.IsNullOrEmpty(restorePointName))
             {
-                LogInfo($"{InfoAboutClass()} Message: RestorePointName is null or empty!");
                 throw new BackupsExtraException("restorePointName is null or empty");
             }
 
@@ -86,20 +78,18 @@ namespace BackupsExtra
                 break;
             }
 
-            LogInfo($"{InfoAboutClass()} Message: Restore points was successfully deleted!");
+            _logger.Print($"{InfoAboutClass()} Message: Restore points was successfully deleted!");
         }
 
         public void MergeRestorePoints(RestorePoint oldRestorePoint, RestorePoint newRestorePoint)
         {
             if (oldRestorePoint == null)
             {
-                LogInfo($"{InfoAboutClass()} Message: oldRestorePoint is null!");
                 throw new BackupsExtraException("oldRestorePoint is null");
             }
 
             if (newRestorePoint == null)
             {
-                LogInfo($"{InfoAboutClass()} Message: newRestorePoint is null!");
                 throw new BackupsExtraException("newRestorePoint is null");
             }
 
@@ -120,17 +110,7 @@ namespace BackupsExtra
                 DeleteRestorePoints(oldRestorePoint.Name);
             }
 
-            LogInfo($"{InfoAboutClass()} Message: Restore points was successfully merged!");
-        }
-
-        private void LogInfo(string message)
-        {
-            _logger?.Print(LogLevel.Info, message);
-        }
-
-        private void LogError(string message)
-        {
-            _logger?.Print(LogLevel.Error, message);
+            _logger.Print($"{InfoAboutClass()} Message: Restore points was successfully merged!");
         }
 
         private string InfoAboutClass()

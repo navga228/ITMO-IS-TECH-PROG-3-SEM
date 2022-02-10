@@ -49,7 +49,7 @@ namespace BackupsExtra
             }
 
             Directory.Delete(_root + backupJobExtra.GetBackupJob.Name + "/" + restorePoint.Name);
-            LogInfo($"{InfoAboutClass()} Message: Restore point was successfully deleted!");
+            _logger.Print($"{InfoAboutClass()} Message: Restore point was successfully deleted!");
         }
 
         public void CreateFile(string path, string fileName)
@@ -65,7 +65,7 @@ namespace BackupsExtra
             }
 
             _localFilesRepository.CreateFile(path, fileName);
-            LogInfo($"{InfoAboutClass()} Message: File was successfully created!");
+            _logger.Print($"{InfoAboutClass()} Message: File was successfully created!");
         }
 
         public void DeleteFile(string path, string fileName)
@@ -86,7 +86,7 @@ namespace BackupsExtra
             }
 
             _localFilesRepository.DeleteFile(path, fileName);
-            LogInfo($"{InfoAboutClass()} Message: File was successfully deleted!");
+            _logger.Print($"{InfoAboutClass()} Message: File was successfully deleted!");
         }
 
         public void CreateDerictory(string path, string derictoryName)
@@ -102,7 +102,7 @@ namespace BackupsExtra
             }
 
             _localFilesRepository.CreateDerictory(path, derictoryName);
-            LogInfo($"{InfoAboutClass()} Message: Derictory was successfully created!");
+            _logger.Print($"{InfoAboutClass()} Message: Derictory was successfully created!");
         }
 
         public void DeleteDerictory(string path, string derictoryName)
@@ -118,7 +118,7 @@ namespace BackupsExtra
             }
 
             _localFilesRepository.DeleteDerictory(path, derictoryName);
-            LogInfo($"{InfoAboutClass()} Message: Derictory was successfully deleted!");
+            _logger.Print($"{InfoAboutClass()} Message: Derictory was successfully deleted!");
         }
 
         public void CompressFiles(List<JobObject> jobObjects, string restorePointName, string backupJobName)
@@ -139,7 +139,7 @@ namespace BackupsExtra
             }
 
             _localFilesRepository.CompressFiles(jobObjects, restorePointName, backupJobName);
-            LogInfo($"{InfoAboutClass()} Message: Files was successfully comressed!");
+            _logger.Print($"{InfoAboutClass()} Message: Files was successfully comressed!");
         }
 
         public void MakeArchive(string pathToDirectory, string newArchiveFileName)
@@ -155,7 +155,7 @@ namespace BackupsExtra
             }
 
             _localFilesRepository.MakeArchive(pathToDirectory, newArchiveFileName);
-            LogInfo($"{InfoAboutClass()} Message: Archive was successfully made!");
+            _logger.Print($"{InfoAboutClass()} Message: Archive was successfully made!");
         }
 
         public void CopyFile(string path, string newPath)
@@ -171,7 +171,7 @@ namespace BackupsExtra
             }
 
             File.Copy(_root + "/" + path, _root + "/" + newPath);
-            LogInfo($"{InfoAboutClass()} Message: File was successfully copied!");
+            _logger.Print($"{InfoAboutClass()} Message: File was successfully copied!");
         }
 
         public void ExtractFileFromAcrchive(string archivePath, string jobObjectName, string destination)
@@ -203,16 +203,6 @@ namespace BackupsExtra
                     destination);
                 break;
             }
-        }
-
-        private void LogInfo(string message)
-        {
-            _logger?.Print(LogLevel.Info, message);
-        }
-
-        private void LogError(string message)
-        {
-            _logger?.Print(LogLevel.Error, message);
         }
 
         private string InfoAboutClass()

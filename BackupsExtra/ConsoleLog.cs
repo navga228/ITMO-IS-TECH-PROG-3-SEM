@@ -11,20 +11,10 @@ namespace BackupsExtra
             _includeTime = includeTime;
         }
 
-        public void Print(LogLevel logLevel, string message)
+        public void Print(string message)
         {
             string finalLogMessage = string.Empty;
             if (_includeTime) finalLogMessage += "[" + DateTime.Now.ToString() + "] ";
-            switch (logLevel)
-            {
-                case LogLevel.Info:
-                    finalLogMessage += "[INFO] ";
-                    break;
-                case LogLevel.Error:
-                    finalLogMessage += "[ERROR] ";
-                    break;
-            }
-
             finalLogMessage += message;
             Console.WriteLine(finalLogMessage);
         }
