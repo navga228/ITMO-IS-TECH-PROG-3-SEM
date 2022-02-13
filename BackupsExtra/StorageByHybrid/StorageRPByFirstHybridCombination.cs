@@ -1,8 +1,10 @@
 using System;
+using System.Collections.Generic;
+using Backups;
 
 namespace BackupsExtra
 {
-    public class StorageRPByFirstHybridCombination : IStorageRPByHybrid, IDeleteRestorePoints
+    public class StorageRPByFirstHybridCombination : IStorageRPByHybridCombination
     { // нужно удалить точку, если она не подходит хотя бы под один установленный лимит
         private DateTime _date;
         private int _quantity;
@@ -13,15 +15,16 @@ namespace BackupsExtra
             _quantity = quantity;
         }
 
-        public void Delete(BackupJobExtra backupJobExtra)
+        public List<RestorePoint> Select(BackupJobExtra backupJobExtra)
         {
+            List<RestorePoint> restorePointsToDelete = new List<RestorePoint>();
             DateTime dateOfLastRestorePointCreation = backupJobExtra.GetBackupJob.RestorePoints[backupJobExtra.GetBackupJob.RestorePoints.Count - 1].DateOfCreation;
-            if (dateOfLastRestorePointCreation < _date && _quantity == 0) return; // Условие на то чтобы не удалить все ресторпоинты
+            if (dateOfLastRestorePointCreation < _date && _quantity == 0) return null; // Условие на то чтобы не удалить все ресторпоинты
             for (int rp = 0; rp < backupJobExtra.GetBackupJob.RestorePoints.Count; rp++)
             {
                 if (backupJobExtra.GetBackupJob.RestorePoints[rp].DateOfCreation < _date)
                 {
-                    backupJobExtra.DeleteRestorePoints(backupJobExtra.GetBackupJob.RestorePoints[rp].Name);
+                    restorePointsToDelete.Add(backupJobExtra.GetBackupJob.RestorePoints[rp]);
                 }
             }
 
@@ -29,9 +32,11 @@ namespace BackupsExtra
             {
                 for (int rp = 0; rp < backupJobExtra.GetBackupJob.RestorePoints.Count - _quantity; rp++)
                 {
-                    backupJobExtra.DeleteRestorePoints(backupJobExtra.GetBackupJob.RestorePoints[rp].Name);
+                    restorePointsToDelete.Add(backupJobExtra.GetBackupJob.RestorePoints[rp]);
                 }
             }
+
+            return restorePointsToDelete;
         }
     }
 }

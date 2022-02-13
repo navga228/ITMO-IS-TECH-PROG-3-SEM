@@ -208,14 +208,26 @@ namespace BackupsExtra
             }
         }
 
-        public void ExtrractFilesFromSplit(string archiveDirectory, string jobObjectName, string destination)
-        {
+        public void ExtractFilesFromSplit(string archiveDirectory, string jobObjectName, string destination)
+        { // Вытаскивает из архивов файлы находящиеся в определенной дериктории
+            if (string.IsNullOrEmpty(archiveDirectory))
+            {
+                throw new BackupsExtraException("archiveDirectory is null or empty");
+            }
+
+            if (string.IsNullOrEmpty(jobObjectName))
+            {
+                throw new BackupsExtraException("jobObjectName is null or empty");
+            }
+
+            if (string.IsNullOrEmpty(destination))
+            {
+                throw new BackupsExtraException("destination is null or empty");
+            }
+
             foreach (string file in Directory.EnumerateFiles(_root + "/" + archiveDirectory))
             {
-                if (!file.Equals(jobObjectName + ".zip")) continue;
-                ZipFile.ExtractToDirectory(
-                    _root + "/" + archiveDirectory + "/" + file,
-                    destination);
+                ZipFile.ExtractToDirectory(_root + "/" + archiveDirectory + "/" + file, destination);
                 break;
             }
         }

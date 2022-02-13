@@ -1,17 +1,25 @@
+using System.Collections.Generic;
+using Backups;
+
 namespace BackupsExtra
 {
-    public class StorageRPByHybrid : IDeleteRestorePoints
+    public class StorageRPByHybrid : IStorageRPMethod
     {
-        private IStorageRPByHybrid _storageRpByHybrid;
+        private IStorageRPByHybridCombination _hybridCombination;
 
-        public StorageRPByHybrid(IStorageRPByHybrid storageRpByHybrid)
+        public StorageRPByHybrid(IStorageRPByHybridCombination storageRpByHybrid)
         {
-            _storageRpByHybrid = storageRpByHybrid;
+            _hybridCombination = storageRpByHybrid;
         }
 
-        public void Delete(BackupJobExtra backupJobExtra)
+        public void SetHybridCombination(IStorageRPByHybridCombination hybridCombination)
         {
-            _storageRpByHybrid.Delete(backupJobExtra);
+            _hybridCombination = hybridCombination;
+        }
+
+        public List<RestorePoint> Select(BackupJobExtra backupJobExtra)
+        {
+            return _hybridCombination.Select(backupJobExtra);
         }
     }
 }

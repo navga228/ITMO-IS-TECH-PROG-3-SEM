@@ -11,7 +11,9 @@ namespace BackupsExtra
         private BackupJob _backupJob;
         private IRepositoryExtra _repositoryExtra;
         private ILog _logger;
-        public BackupJobExtra(string name, string projectPath, IRepository repository, IBackupAlgorithm backupAlgorithm, IRepositoryExtra repositoryExtra, ILog logger)
+        private IStorageRPMethod _storageRpMethod;
+        private IDeleteRPMethod _deleteRPMethod;
+        public BackupJobExtra(string name, string projectPath, IRepository repository, IBackupAlgorithm backupAlgorithm, IRepositoryExtra repositoryExtra, ILog logger, IStorageRPMethod storageRpMethod, IDeleteRPMethod deleteRpMethod)
         {
             if (string.IsNullOrEmpty(name))
             {
@@ -43,14 +45,48 @@ namespace BackupsExtra
                 throw new BackupsExtraException("Logger is null");
             }
 
+            if (storageRpMethod == null)
+            {
+                throw new BackupsExtraException("storageRpMethod is null");
+            }
+
+            if (deleteRpMethod == null)
+            {
+                throw new BackupsExtraException("deleteRpMethod is null");
+            }
+
             _backupJob = new BackupJob(name, projectPath, repository, backupAlgorithm);
             _repositoryExtra = repositoryExtra;
             _logger = logger;
+            _storageRpMethod = storageRpMethod;
+            _deleteRPMethod = deleteRpMethod;
         }
 
         public BackupJob GetBackupJob
         {
             get => _backupJob;
+        }
+
+        public void SetRPStorageMethod(IStorageRPMethod storageRpMethod)
+        {
+            if (_storageRpMethod == null)
+            {
+                throw new BackupsExtraException("storageRpMethod is null");
+            }
+
+            _storageRpMethod = storageRpMethod;
+            _logger.Print($"{InfoAboutClass()} Message: storageRpMethod was successfully changed!");
+        }
+
+        public void SetDeleteRPMethod(IDeleteRPMethod deleteRpMethod)
+        {
+            if (deleteRpMethod == null)
+            {
+                throw new BackupsExtraException("deleteRpMethod is null");
+            }
+
+            _deleteRPMethod = deleteRpMethod;
+            _logger.Print($"{InfoAboutClass()} Message: deleteRpMethod was successfully changed!");
         }
 
         public void BackupProcessing(string newRestorePointName)
@@ -62,9 +98,11 @@ namespace BackupsExtra
 
             _backupJob.BackupProcessing(newRestorePointName);
             _logger.Print($"{InfoAboutClass()} Message: Restore point was successfully created!");
+            _deleteRPMethod?.Delete(_storageRpMethod?.Select(this), this); // Поиск неподходящих по лимиту рп и их удаление выбраным способом
+            _logger.Print($"{InfoAboutClass()} Message: Restore points was successfully deleted by limits!");
         }
 
-        public void DeleteRestorePoints(string restorePointName)
+        public void DeleteRestorePoint(string restorePointName)
         {
             if (string.IsNullOrEmpty(restorePointName))
             {
@@ -75,42 +113,9 @@ namespace BackupsExtra
             {
                 _backupJob.RestorePoints.Remove(restorePoint);
                 _repositoryExtra.DeleteRestorePoints(this, restorePoint);
+                _logger.Print($"{InfoAboutClass()} Message: Restore points was successfully deleted!");
                 break;
             }
-
-            _logger.Print($"{InfoAboutClass()} Message: Restore points was successfully deleted!");
-        }
-
-        public void MergeRestorePoints(RestorePoint oldRestorePoint, RestorePoint newRestorePoint)
-        {
-            if (oldRestorePoint == null)
-            {
-                throw new BackupsExtraException("oldRestorePoint is null");
-            }
-
-            if (newRestorePoint == null)
-            {
-                throw new BackupsExtraException("newRestorePoint is null");
-            }
-
-            if (_backupJob.BackupAlgorithm is SingleStorageAlgorithm)
-            {
-               DeleteRestorePoints(oldRestorePoint.Name);
-            }
-            else
-            {
-                foreach (JobObject jobObject in oldRestorePoint.BachupedFiles.Where(jobObject => !newRestorePoint.BachupedFiles.Contains(jobObject)))
-                {
-                    newRestorePoint.BachupedFiles.Add(jobObject);
-                    _repositoryExtra.CopyFile(
-                        _backupJob.Name + "/" + oldRestorePoint.Name + "/" + jobObject.Name + ".zip",
-                        _backupJob.Name + "/" + newRestorePoint.Name + "/" + jobObject.Name + ".zip");
-                }
-
-                DeleteRestorePoints(oldRestorePoint.Name);
-            }
-
-            _logger.Print($"{InfoAboutClass()} Message: Restore points was successfully merged!");
         }
 
         private string InfoAboutClass()

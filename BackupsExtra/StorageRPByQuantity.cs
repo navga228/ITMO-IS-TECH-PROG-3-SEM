@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Backups;
 using BackupsExtra.Tools;
 
 namespace BackupsExtra
@@ -12,19 +13,23 @@ namespace BackupsExtra
             _quantity = quantity;
         }
 
-        public void Delete(BackupJobExtra backupJobExtra)
+        public List<RestorePoint> Select(BackupJobExtra backupJobExtra)
         {
             if (backupJobExtra == null)
             {
                 throw new BackupsExtraException("backupJobExtra is null!");
             }
 
-            if (_quantity == 0) return; // Чтобы не удалить все рп
-            if (_quantity >= backupJobExtra.GetBackupJob.RestorePoints.Count) return;
+            List<RestorePoint> restorePointsToDelete = new List<RestorePoint>();
+
+            if (_quantity == 0) return null; // Чтобы не удалить все рп
+            if (_quantity >= backupJobExtra.GetBackupJob.RestorePoints.Count) return null;
             for (int rp = 0; rp < backupJobExtra.GetBackupJob.RestorePoints.Count - _quantity; rp++)
             {
-                backupJobExtra.DeleteRestorePoints(backupJobExtra.GetBackupJob.RestorePoints[rp].Name);
+                restorePointsToDelete.Add(backupJobExtra.GetBackupJob.RestorePoints[rp]);
             }
+
+            return restorePointsToDelete;
         }
     }
 }
