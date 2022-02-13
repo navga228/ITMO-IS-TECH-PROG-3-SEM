@@ -6,9 +6,8 @@ namespace BackupsExtra
 {
     [Serializable]
     public class JobObjectExtra
-    { // Validation done but log no
+    {
         private JobObject _jobObject;
-
         public JobObjectExtra(string filePath, string name)
         {
             if (string.IsNullOrEmpty(filePath))

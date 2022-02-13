@@ -7,7 +7,7 @@ namespace BackupsExtra
 {
     [Serializable]
     public class SingleStorageAlgorithmExtra : IBackupAlgorithmExtra
-    { // validation done, log no
+    {
         private SingleStorageAlgorithm _singleStorageAlgorithm;
 
         public SingleStorageAlgorithmExtra(SingleStorageAlgorithm singleStorageAlgorithm)

@@ -7,7 +7,7 @@ namespace BackupsExtra
 {
     [Serializable]
     public class BackupJobExtra
-    { // validation and logger done
+    {
         private BackupJob _backupJob;
         private IRepositoryExtra _repositoryExtra;
         private ILog _logger;

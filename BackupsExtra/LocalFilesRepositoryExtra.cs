@@ -9,7 +9,7 @@ namespace BackupsExtra
 {
     [Serializable]
     public class LocalFilesRepositoryExtra : IRepositoryExtra
-    { // Validation done byt log no
+    {
         private string _root;
         private LocalFilesRepository _localFilesRepository;
         private ILog _logger;
@@ -176,6 +176,21 @@ namespace BackupsExtra
 
         public void ExtractFileFromAcrchive(string archivePath, string jobObjectName, string destination)
         { // Вытаскивает по одному файлу из архива
+            if (string.IsNullOrEmpty(archivePath))
+            {
+                throw new BackupsExtraException("archivePath is null or empty");
+            }
+
+            if (string.IsNullOrEmpty(jobObjectName))
+            {
+                throw new BackupsExtraException("jobObjectName is null or empty");
+            }
+
+            if (string.IsNullOrEmpty(destination))
+            {
+                throw new BackupsExtraException("destination is null or empty");
+            }
+
             using (ZipArchive zipArchive = ZipFile.Open(_root + "/" + archivePath, ZipArchiveMode.Read))
             {
                 foreach (var file in zipArchive.Entries)

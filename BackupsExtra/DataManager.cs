@@ -6,7 +6,7 @@ using BackupsExtra.Tools;
 namespace BackupsExtra
 {
     public class DataManager
-    { // validation done but logger no
+    {
         public void SaveData(BackupJobExtra backupJobExtra, string savePath)
         {
             if (backupJobExtra == null)

@@ -3,8 +3,8 @@ using BackupsExtra.Tools;
 
 namespace BackupsExtra
 {
-    public class StorageRPByQuantity : IDeleteRestorePoints
-    { // validation done, log no
+    public class StorageRPByQuantity : IStorageRPMethod
+    {
         private int _quantity;
 
         public StorageRPByQuantity(int quantity)

@@ -6,7 +6,7 @@ using BackupsExtra.Tools;
 namespace BackupsExtra
 {
     public class FileLog : ILog
-    { // validation done but log no
+    {
         private bool _includeTime;
         private string _fileLogPath;
 

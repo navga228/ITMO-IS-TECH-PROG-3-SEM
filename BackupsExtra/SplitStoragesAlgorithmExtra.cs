@@ -7,16 +7,17 @@ namespace BackupsExtra
 {
     [Serializable]
     public class SplitStoragesAlgorithmExtra : IBackupAlgorithmExtra
-    { // validation done, log no
+    {
         private SplitStoragesAlgorithm _splitStoragesAlgorithm;
 
         public SplitStoragesAlgorithmExtra(SplitStoragesAlgorithm splitStoragesAlgorithm)
         {
-            _splitStoragesAlgorithm = splitStoragesAlgorithm;
             if (splitStoragesAlgorithm == null)
             {
                 throw new BackupsExtraException("splitStoragesAlgorithm is null!");
             }
+
+            _splitStoragesAlgorithm = splitStoragesAlgorithm;
         }
 
         public RestorePoint CreateBackup(string restorePointName, string backupJobName, List<JobObject> jobObjects, IRepository repository)

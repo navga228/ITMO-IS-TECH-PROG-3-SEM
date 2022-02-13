@@ -7,7 +7,6 @@ namespace BackupsExtra
     {
         private static void Main()
         {
-            Console.WriteLine();
         }
     }
 }

@@ -3,8 +3,8 @@ using BackupsExtra.Tools;
 
 namespace BackupsExtra
 {
-    public class StorageRPByDate : IDeleteRestorePoints
-    { // validation done, log no
+    public class SelectRPByDate : IStorageRPMethod
+    {
         private DateTime _date;
 
         public StorageRPByDate(DateTime dateToDelete)

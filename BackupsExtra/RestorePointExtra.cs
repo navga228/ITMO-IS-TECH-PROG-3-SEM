@@ -6,7 +6,7 @@ namespace BackupsExtra
 {
     [Serializable]
     public class RestorePointExtra
-    { // validation done, log no
+    {
         private RestorePoint _restorePoint;
 
         public RestorePointExtra(RestorePoint restorePoint)
