@@ -13,7 +13,7 @@ namespace BackupsExtra
         private ILog _logger;
         private IStorageRPMethod _storageRpMethod;
         private IDeleteRPMethod _deleteRPMethod;
-        public BackupJobExtra(string name, string projectPath, IRepository repository, IBackupAlgorithm backupAlgorithm, IRepositoryExtra repositoryExtra, ILog logger, IStorageRPMethod storageRpMethod, IDeleteRPMethod deleteRpMethod)
+        public BackupJobExtra(string name, string projectPath, IBackupAlgorithmExtra backupAlgorithmExtra, IRepositoryExtra repositoryExtra, ILog logger, IStorageRPMethod storageRpMethod, IDeleteRPMethod deleteRpMethod)
         {
             if (string.IsNullOrEmpty(name))
             {
@@ -25,12 +25,12 @@ namespace BackupsExtra
                 throw new BackupsExtraException("Project path is null");
             }
 
-            if (repository == null)
+            if (repositoryExtra == null)
             {
                 throw new BackupsExtraException("Repository is null");
             }
 
-            if (backupAlgorithm == null)
+            if (backupAlgorithmExtra == null)
             {
                 throw new BackupsExtraException("Backup Algorithm is null");
             }
@@ -55,7 +55,7 @@ namespace BackupsExtra
                 throw new BackupsExtraException("deleteRpMethod is null");
             }
 
-            _backupJob = new BackupJob(name, projectPath, repository, backupAlgorithm);
+            _backupJob = new BackupJob(name, projectPath, repositoryExtra, backupAlgorithmExtra);
             _repositoryExtra = repositoryExtra;
             _logger = logger;
             _storageRpMethod = storageRpMethod;
@@ -65,6 +65,11 @@ namespace BackupsExtra
         public BackupJob GetBackupJob
         {
             get => _backupJob;
+        }
+
+        public void AddJobObject(JobObject jobObject)
+        {
+            _backupJob.AddJobObject(jobObject);
         }
 
         public void SetRPStorageMethod(IStorageRPMethod storageRpMethod)

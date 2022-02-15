@@ -121,9 +121,9 @@ namespace BackupsExtra
             _logger.Print($"{InfoAboutClass()} Message: Directory was successfully deleted!");
         }
 
-        public void CompressFiles(List<JobObject> jobObjects, string restorePointName, string backupJobName)
+        public void CompressFiles(JobObject jobObject, string restorePointName, string backupJobName)
         {
-            if (jobObjects == null)
+            if (jobObject == null)
             {
                 throw new BackupsExtraException("JobObjects is null!");
             }
@@ -138,7 +138,7 @@ namespace BackupsExtra
                 throw new BackupsExtraException("backupJobName is null or empty");
             }
 
-            _localFilesRepository.CompressFiles(jobObjects, restorePointName, backupJobName);
+            _localFilesRepository.CompressFiles(jobObject, restorePointName, backupJobName);
             _logger.Print($"{InfoAboutClass()} Message: Files was successfully comressed!");
         }
 
@@ -170,7 +170,9 @@ namespace BackupsExtra
                 throw new BackupsExtraException("newPath is null or empty");
             }
 
-            File.Copy(_root + "/" + path, _root + "/" + newPath);
+            _localFilesRepository.CopyFile(path, newPath);
+
+            // File.Copy(_root + "/" + path, _root + "/" + newPath);
             _logger.Print($"{InfoAboutClass()} Message: File was successfully copied!");
         }
 

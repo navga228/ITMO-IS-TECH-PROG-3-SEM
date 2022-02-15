@@ -23,7 +23,7 @@ namespace BackupsExtra
             List<RestorePoint> restorePointsToDelete = new List<RestorePoint>();
 
             if (_quantity == 0) return null; // Чтобы не удалить все рп
-            if (_quantity >= backupJobExtra.GetBackupJob.RestorePoints.Count) return null;
+            if (_quantity >= backupJobExtra.GetBackupJob.RestorePoints.Count) return restorePointsToDelete;
             for (int rp = 0; rp < backupJobExtra.GetBackupJob.RestorePoints.Count - _quantity; rp++)
             {
                 restorePointsToDelete.Add(backupJobExtra.GetBackupJob.RestorePoints[rp]);
