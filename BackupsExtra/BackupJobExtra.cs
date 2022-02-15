@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using Backups;
 using BackupsExtra.Tools;
@@ -11,9 +12,9 @@ namespace BackupsExtra
         private BackupJob _backupJob;
         private IRepositoryExtra _repositoryExtra;
         private ILog _logger;
-        private IStorageRPMethod _storageRpMethod;
+        private ISelectRPMethod _selectRpMethod;
         private IDeleteRPMethod _deleteRPMethod;
-        public BackupJobExtra(string name, string projectPath, IBackupAlgorithmExtra backupAlgorithmExtra, IRepositoryExtra repositoryExtra, ILog logger, IStorageRPMethod storageRpMethod, IDeleteRPMethod deleteRpMethod)
+        public BackupJobExtra(string name, string projectPath, IBackupAlgorithmExtra backupAlgorithmExtra, IRepositoryExtra repositoryExtra, ILog logger, ISelectRPMethod selectRpMethod, IDeleteRPMethod deleteRpMethod)
         {
             if (string.IsNullOrEmpty(name))
             {
@@ -45,9 +46,9 @@ namespace BackupsExtra
                 throw new BackupsExtraException("Logger is null");
             }
 
-            if (storageRpMethod == null)
+            if (selectRpMethod == null)
             {
-                throw new BackupsExtraException("storageRpMethod is null");
+                throw new BackupsExtraException("selectSelectRpMethod is null");
             }
 
             if (deleteRpMethod == null)
@@ -58,7 +59,7 @@ namespace BackupsExtra
             _backupJob = new BackupJob(name, projectPath, repositoryExtra, backupAlgorithmExtra);
             _repositoryExtra = repositoryExtra;
             _logger = logger;
-            _storageRpMethod = storageRpMethod;
+            _selectRpMethod = selectRpMethod;
             _deleteRPMethod = deleteRpMethod;
         }
 
@@ -72,15 +73,15 @@ namespace BackupsExtra
             _backupJob.AddJobObject(jobObject);
         }
 
-        public void SetRPStorageMethod(IStorageRPMethod storageRpMethod)
+        public void SetRPSelectMethod(ISelectRPMethod selectRpMethod)
         {
-            if (_storageRpMethod == null)
+            if (_selectRpMethod == null)
             {
-                throw new BackupsExtraException("storageRpMethod is null");
+                throw new BackupsExtraException("selectRpMethod is null");
             }
 
-            _storageRpMethod = storageRpMethod;
-            _logger.Print($"{InfoAboutClass()} Message: storageRpMethod was successfully changed!");
+            _selectRpMethod = selectRpMethod;
+            _logger.Print($"{InfoAboutClass()} Message: selectRpMethod was successfully changed!");
         }
 
         public void SetDeleteRPMethod(IDeleteRPMethod deleteRpMethod)
@@ -103,7 +104,8 @@ namespace BackupsExtra
 
             _backupJob.BackupProcessing(newRestorePointName);
             _logger.Print($"{InfoAboutClass()} Message: Restore point was successfully created!");
-            _deleteRPMethod?.Delete(_storageRpMethod?.Select(this), this); // Поиск неподходящих по лимиту рп и их удаление выбраным способом
+            List<RestorePoint> selectedRestorePoints = _selectRpMethod?.Select(this);
+            _deleteRPMethod?.Delete(selectedRestorePoints, this); // Поиск неподходящих по лимиту рп и их удаление выбраным способом
             _logger.Print($"{InfoAboutClass()} Message: Restore points was successfully deleted by limits!");
         }
 

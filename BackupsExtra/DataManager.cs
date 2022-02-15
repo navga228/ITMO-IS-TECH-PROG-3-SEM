@@ -22,7 +22,7 @@ namespace BackupsExtra
             BinaryFormatter formatter = new BinaryFormatter();
 
             // получаем поток, куда будем записывать сериализованный объект
-            using (FileStream fs = new FileStream(savePath, FileMode.Create))
+            using (FileStream fs = new FileStream(savePath, FileMode.OpenOrCreate))
             {
                 formatter.Serialize(fs, backupJobExtra);
             }

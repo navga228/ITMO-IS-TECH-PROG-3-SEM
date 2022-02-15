@@ -3,11 +3,11 @@ using Backups;
 
 namespace BackupsExtra
 {
-    public class StorageRPByHybrid : IStorageRPMethod
+    public class SelectRPByHybrid : ISelectRPMethod
     {
         private IStorageRPByHybridCombination _hybridCombination;
 
-        public StorageRPByHybrid(IStorageRPByHybridCombination storageRpByHybrid)
+        public SelectRPByHybrid(IStorageRPByHybridCombination storageRpByHybrid)
         {
             _hybridCombination = storageRpByHybrid;
         }

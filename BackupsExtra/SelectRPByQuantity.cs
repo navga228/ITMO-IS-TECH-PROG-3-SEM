@@ -4,11 +4,11 @@ using BackupsExtra.Tools;
 
 namespace BackupsExtra
 {
-    public class StorageRPByQuantity : IStorageRPMethod
+    public class SelectRPByQuantity : ISelectRPMethod
     {
         private int _quantity;
 
-        public StorageRPByQuantity(int quantity)
+        public SelectRPByQuantity(int quantity)
         {
             _quantity = quantity;
         }
