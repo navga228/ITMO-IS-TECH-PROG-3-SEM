@@ -14,8 +14,8 @@ namespace Backups
           BackupAlgorithm = backupAlgorithm;
           JobObjects = new List<JobObject>();
           RestorePoints = new List<RestorePoint>();
-          Repository.CreateDerictory(projectPath, name);
-          Repository.CreateDerictory(projectPath + name + "/", "JobObject");
+          Repository.CreateDirectory(projectPath, name);
+          Repository.CreateDirectory(projectPath + name + "/", "JobObject");
       }
 
       public string Name { get; }

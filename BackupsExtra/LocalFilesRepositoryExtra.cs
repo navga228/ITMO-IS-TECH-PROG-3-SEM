@@ -89,36 +89,36 @@ namespace BackupsExtra
             _logger.Print($"{InfoAboutClass()} Message: File was successfully deleted!");
         }
 
-        public void CreateDerictory(string path, string derictoryName)
+        public void CreateDirectory(string path, string directoryName)
         {
-            if (string.IsNullOrEmpty(path))
+            if (path == null)
             {
                 throw new BackupsExtraException("Path is null or empty!");
             }
 
-            if (string.IsNullOrEmpty(derictoryName))
+            if (string.IsNullOrEmpty(directoryName))
             {
-                throw new BackupsExtraException("DerictoryName is null or empty!");
+                throw new BackupsExtraException("DirectoryName is null or empty!");
             }
 
-            _localFilesRepository.CreateDerictory(path, derictoryName);
-            _logger.Print($"{InfoAboutClass()} Message: Derictory was successfully created!");
+            _localFilesRepository.CreateDirectory(path, directoryName);
+            _logger.Print($"{InfoAboutClass()} Message: Directory was successfully created!");
         }
 
-        public void DeleteDerictory(string path, string derictoryName)
+        public void DeleteDirectory(string path, string directoryName)
         {
             if (string.IsNullOrEmpty(path))
             {
                 throw new BackupsExtraException("Path is null or empty!");
             }
 
-            if (string.IsNullOrEmpty(derictoryName))
+            if (string.IsNullOrEmpty(directoryName))
             {
-                throw new BackupsExtraException("DerictoryNeme name is null or empty!");
+                throw new BackupsExtraException("DirectoryNeme name is null or empty!");
             }
 
-            _localFilesRepository.DeleteDerictory(path, derictoryName);
-            _logger.Print($"{InfoAboutClass()} Message: Derictory was successfully deleted!");
+            _localFilesRepository.DeleteDirectory(path, directoryName);
+            _logger.Print($"{InfoAboutClass()} Message: Directory was successfully deleted!");
         }
 
         public void CompressFiles(List<JobObject> jobObjects, string restorePointName, string backupJobName)

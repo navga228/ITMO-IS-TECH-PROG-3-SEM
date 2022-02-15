@@ -36,17 +36,17 @@ namespace Backups
             }
         }
 
-        public void CreateDerictory(string path, string derictoryName)
+        public void CreateDirectory(string path, string directoryName)
         {
-            List<string> derictory = new List<string>();
-            FileSystem.Add(path + derictoryName, derictory);
+            List<string> directory = new List<string>();
+            FileSystem.Add(path + directoryName, directory);
         }
 
-        public void DeleteDerictory(string path, string derictoryName)
+        public void DeleteDirectory(string path, string directoryName)
         {
             if (FileSystem.ContainsKey(path))
             {
-                FileSystem[path].Remove(derictoryName);
+                FileSystem[path].Remove(directoryName);
             }
         }
 
@@ -76,8 +76,6 @@ namespace Backups
             filePath = newPath.Substring(0, lastSlash);
             string[] words = newPath.Split('/');
             FileSystem[filePath].Add(words[words.Length - 1]); // то есть сохраняется и путь в систему как ключ и добавляется файл в лист той папки где он лежит
-
-            // FileSystem.Add(newPath, new List<string>());
         }
     }
 }

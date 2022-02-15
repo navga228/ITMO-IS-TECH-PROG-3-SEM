@@ -29,7 +29,7 @@ namespace Backups
             }
         }
 
-        public void CreateDerictory(string path, string fileName)
+        public void CreateDirectory(string path, string fileName)
         {
             if (!Directory.Exists(_root + path + fileName))
             {
@@ -37,11 +37,11 @@ namespace Backups
             }
         }
 
-        public void DeleteDerictory(string path, string derictoryName)
+        public void DeleteDirectory(string path, string directoryName)
         {
-            if (Directory.Exists(_root + path + derictoryName))
+            if (Directory.Exists(_root + path + directoryName))
             {
-                Directory.Delete(_root + path + derictoryName);
+                Directory.Delete(_root + path + directoryName);
             }
         }
 
