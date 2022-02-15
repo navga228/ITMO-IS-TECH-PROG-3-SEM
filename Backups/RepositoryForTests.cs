@@ -50,19 +50,16 @@ namespace Backups
             }
         }
 
-        public void CompressFiles(List<JobObject> jobObjects, string restorePointName, string backupJobName)
+        public void CompressFiles(JobObject jobObject, string restorePointName, string backupJobName)
         {
-            foreach (var jobObject in jobObjects)
+            if (!FileSystem.ContainsKey(_root + "/" + backupJobName + "/" + restorePointName))
             {
-                if (!FileSystem.ContainsKey(_root + "/" + backupJobName + "/" + restorePointName))
-                {
-                    FileSystem.Add(_root + "/" + backupJobName + "/" + restorePointName, new List<string>());
-                    FileSystem[_root + "/" + backupJobName + "/" + restorePointName].Add(jobObject.Name);
-                }
-                else
-                {
-                    FileSystem[_root + "/" + backupJobName + "/" + restorePointName].Add(jobObject.Name);
-                }
+                FileSystem.Add(_root + "/" + backupJobName + "/" + restorePointName, new List<string>());
+                FileSystem[_root + "/" + backupJobName + "/" + restorePointName].Add(jobObject.Name);
+            }
+            else
+            {
+                FileSystem[_root + "/" + backupJobName + "/" + restorePointName].Add(jobObject.Name);
             }
         }
 

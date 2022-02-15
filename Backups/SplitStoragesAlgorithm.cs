@@ -8,7 +8,12 @@ namespace Backups
     {
         public RestorePoint CreateBackup(string restorePointName, string backupJobName, List<JobObject> jobObjects, IRepository repository)
         {
-            repository.CompressFiles(jobObjects, restorePointName, backupJobName);
+            repository.CreateDerictory(backupJobName + "/", restorePointName);
+            foreach (var jobObject in jobObjects)
+            {
+                repository.CompressFiles(jobObject, restorePointName, backupJobName);
+            }
+
             return new RestorePoint(restorePointName, DateTime.Now, jobObjects);
         }
     }

@@ -45,22 +45,13 @@ namespace Backups
             }
         }
 
-        public void CompressFiles(List<JobObject> jobObjects, string restorePointName, string backupJobName)
+        public void CompressFiles(JobObject jobObject, string restorePointName, string backupJobName)
         {
-            foreach (var jobObject in jobObjects)
+            // создание нового архива
+            using (ZipArchive zipArchive = ZipFile.Open(_root + "/" + backupJobName + "/" + restorePointName + "/" + jobObject.Name + ".zip", ZipArchiveMode.Create))
             {
-                using (FileStream sourceStream = new FileStream(jobObject.FilePath, FileMode.OpenOrCreate))
-                {
-                    // поток для записи сжатого файла
-                    using (FileStream targetStream = File.Create(_root + "/" + backupJobName + "/" + restorePointName))
-                    {
-                        // поток архивации
-                        using (GZipStream compressionStream = new GZipStream(targetStream, CompressionMode.Compress))
-                        {
-                            sourceStream.CopyTo(compressionStream); // копируем байты из одного потока в другой
-                        }
-                    }
-                }
+                // вызов метода для добавления файла в архив
+                zipArchive.CreateEntryFromFile(jobObject.FilePath, jobObject.Name);
             }
         }
 
