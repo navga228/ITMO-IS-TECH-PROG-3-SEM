@@ -4,29 +4,29 @@ namespace Banks
 {
     public class CreditAccount : IAccount
     {
-        private float _creditLimit; // Кредитный лимит
-        private float _comission; // Комиссия за пользование кредитными деньгами
         private int _days;
         private float _moneyFromInterest;
-        private float _interestOnBalance;
-
-        public CreditAccount(Client client, float creditLimit, float comission, float interestOnBalance)
+        public CreditAccount(BankConditions bankConditions, bool isVerify)
         {
-            AccountOwner = client;
-            _creditLimit = creditLimit;
-            _comission = comission;
+            if (bankConditions == null)
+            {
+                throw new BankException("bankConditions is null!");
+            }
+
             _days = 0;
-            _interestOnBalance = interestOnBalance;
+            BankConditions = bankConditions;
+            IsVerify = isVerify;
         }
 
+        public bool IsVerify { get; set; }
+        public BankConditions BankConditions { get; }
         public string Name { get; } = "CreditCard";
         public Guid CardNumber { get; } = Guid.NewGuid();
 
-        public Client AccountOwner { get; }
         public float Balance { get; set; }
         public void Withdraw(float money)
         {
-            if (Balance - money < Balance - _creditLimit)
+            if (Balance - money < Balance - BankConditions.CreditLimit)
             {
                 throw new BankException("Сумма которую вы хотите вывести превышает ваш кредитный лимит");
             }
@@ -41,7 +41,12 @@ namespace Banks
 
         public void Transfer(float money, IAccount account)
         {
-            if (_creditLimit > Balance - money)
+            if (account == null)
+            {
+                throw new BankException("account is null!");
+            }
+
+            if (BankConditions.CreditLimit > Balance - money)
             {
                 throw new BankException("Сумма которую вы хотите перевести превышает ваш кредитный лимит");
             }
@@ -55,12 +60,12 @@ namespace Banks
             _days++;
             if (Balance > 0)
             {
-                _moneyFromInterest += Balance * (_interestOnBalance / 365);
+                _moneyFromInterest += Balance * (BankConditions.InterestOnCreditBalance / 365);
             }
 
             if (Balance < 0)
             {
-                _moneyFromInterest -= _comission;
+                _moneyFromInterest -= BankConditions.Comission;
             }
 
             if (_days != 30) return;

@@ -13,9 +13,9 @@ namespace Banks.Tests
         public void Setup()
         {
             _centralBank = new CentralBank("Central bank");
-            
             List<Interest> interests = new List<Interest>() { new Interest(0, 50000, 1.00f), new Interest(50000, float.MaxValue, 2.00f) };
-            _bank = _centralBank.AddNewBank("Tinkoff", interests, 100000, 50000, 500, 1.00f, 1.00f, 0);
+            BankConditions bankConditions = new BankConditions(interests, 100000, 50000, 500, 1.00f, 1.00f, 0);
+            _bank = _centralBank.AddNewBank("Tinkoff", bankConditions);
             
             _operationManager = new OperationManager();
         }
@@ -71,6 +71,8 @@ namespace Banks.Tests
         {
             Client client1 = _bank.AddNewClient("First", "Client");
             Client client2 = _bank.AddNewClient("Second", "Client");
+            client1.AddAddress("gfgfgf"); // Для верификации
+            client1.AddPassport(1623476); // Для верификации
 
             DebitAccount debitAccount1 = _bank.OpenDebitAccount(client1);
             DebitAccount debitAccount2 = _bank.OpenDebitAccount(client2);
@@ -92,6 +94,8 @@ namespace Banks.Tests
         {
             Client client1 = _bank.AddNewClient("First", "Client");
             Client client2 = _bank.AddNewClient("Second", "Client");
+            client1.AddAddress("gfgfgf"); // Для верификации
+            client1.AddPassport(1623476); // Для верификации
 
             DebitAccount debitAccount1 = _bank.OpenDebitAccount(client1);
             DebitAccount debitAccount2 = _bank.OpenDebitAccount(client2);
@@ -130,7 +134,7 @@ namespace Banks.Tests
                 debitAccount.AfterOneDay();
             }
             
-            Assert.True(debitAccount.Balance == FirstSumOnBalance + (FirstSumOnBalance * _bank.InterestOnDebitBalance / 365) * 30); // Умножаем на 30 тк у нас выплаты раз в 30 дней происходят
+            Assert.True(debitAccount.Balance == FirstSumOnBalance + (FirstSumOnBalance * _bank.BankConditions.InterestOnDebitBalance / 365) * 30); // Умножаем на 30 тк у нас выплаты раз в 30 дней происходят
         }
         
     }

@@ -15,6 +15,11 @@ namespace Banks
         public Collection<IOperation> Transactions { get; set; } = new Collection<IOperation>();
         public void AddOperation(IOperation operation)
         {
+            if (operation == null)
+            {
+                throw new BankException("operation is null!");
+            }
+
             Transactions.Add(operation);
         }
 
@@ -25,6 +30,11 @@ namespace Banks
 
         public void CancelOperation(string id)
         {
+            if (string.IsNullOrEmpty(id))
+            {
+                throw new BankException("id is null or empty!");
+            }
+
             IOperation operation = Transactions.Where(oper => oper.Id == id).FirstOrDefault();
             if (operation != null)
             {

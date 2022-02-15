@@ -11,6 +11,16 @@ namespace Banks
 
         public Transfer(IAccount payer, IAccount payee, float money)
         {
+            if (payer == null)
+            {
+                throw new BankException("payer is null!");
+            }
+
+            if (payee == null)
+            {
+                throw new BankException("payee is null!");
+            }
+
             _payerAccount = payer;
             _payeeAccount = payee;
             _money = money;
@@ -27,8 +37,8 @@ namespace Banks
 
         public void Execute()
         {
-            if (_payerAccount.AccountOwner.IsVerify || _payerAccount.AccountOwner.Bank == _payeeAccount.AccountOwner.Bank)
-            {// перевод возможен либо если акк верифицирован либо перевод производится внутри банка
+            if (_payerAccount.IsVerify)
+            {// перевод возможен если акк верифицирован
                 if (_payerAccount.Balance - _money < 0) return;
                 _payerAccount.Transfer(_money, _payeeAccount);
                 _isComplete = true;

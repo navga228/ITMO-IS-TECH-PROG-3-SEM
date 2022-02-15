@@ -11,9 +11,10 @@ namespace Banks
         private static CentralBank _centralBank = new CentralBank("ЦБРФ");
         private static OperationManager _operationManager = new OperationManager();
         private static List<Interest> interests = new List<Interest>() { new Interest(0, 50000, 1.00f), new Interest(50000, float.MaxValue, 2.00f) };
-        private static Bank _bank = _centralBank.AddNewBank("Сбер", interests, 100000, 50000, 500, 1.00f, 1.00f, 365);
+        private static BankConditions bankConditions = new BankConditions(interests, 100000, 50000, 500, 1.00f, 1.00f, 0);
+        private static Bank _bank = _centralBank.AddNewBank("Сбер", bankConditions);
         private static Client _client;
-        private static Client _clientForTransferTest = new Client("Тестовый", "Тест", _bank);
+        private static Client _clientForTransferTest = new Client("Тестовый", "Тест");
 
         private static IAccount _debitAccountForTranferTest = _bank.OpenDebitAccount(_clientForTransferTest);
         private static int ParceToInt(string str)
@@ -45,7 +46,7 @@ namespace Banks
             var name = Console.ReadLine();
             Console.WriteLine("Введите фамилию");
             var surname = Console.ReadLine();
-            _client = new Client(name, surname, _bank);
+            _client = new Client(name, surname);
             _bank.OpenDebitAccount(_client);
             _bank.OpenDepositeAccount(_client);
             _bank.OpenCreditAccount(_client);
@@ -68,9 +69,9 @@ namespace Banks
                 {
                     case 1:
                         Console.WriteLine("Введите контактный адрес");
-                        _client.AddAddress(Console.ReadLine());
+                        string address = Console.ReadLine();
                         Console.WriteLine("Введите паспортные данные");
-                        _client.AddPassport(ParceToInt(Console.ReadLine()));
+                        _bank.VerifyClient(_client, address, ParceToInt(Console.ReadLine()));
                         accountVerify = true;
                         Console.WriteLine("Ваш аккаунт успешно верифицирован!");
                         break;

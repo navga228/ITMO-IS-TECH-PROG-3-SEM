@@ -10,6 +10,11 @@ namespace Banks
 
         public Deposite(IAccount account, float money)
         {
+            if (account == null)
+            {
+                throw new BankException("account is null!");
+            }
+
             _account = account;
             _money = money;
             _isComplete = false;
@@ -32,6 +37,7 @@ namespace Banks
         public void CancelOperation()
         {
             if (_isComplete != true) throw new BankException("Операция не была совершена");
+
             _account.Balance -= _money;
         }
     }

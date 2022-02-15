@@ -5,20 +5,24 @@ namespace Banks
 {
     public class DebitAccount : IAccount
     {
-        private float _interestOnBalance; // Проценты на остаток
         private int _days;
         private float _moneyFromInterest;
-        public DebitAccount(Client accountOwner, float interestOnDebitBalance)
+        public DebitAccount(BankConditions bankConditions, bool isVerify)
         {
-            AccountOwner = accountOwner;
-            _interestOnBalance = interestOnDebitBalance;
+            if (bankConditions == null)
+            {
+                throw new BankException("bankConditions is null!");
+            }
+
+            BankConditions = bankConditions;
             _days = 0;
+            IsVerify = isVerify;
         }
 
+        public bool IsVerify { get; set; }
+        public BankConditions BankConditions { get; }
         public string Name { get; } = "DebitCard";
         public Guid CardNumber { get; } = Guid.NewGuid();
-
-        public Client AccountOwner { get; }
         public float Balance { get; set; }
 
         public void Withdraw(float money)
@@ -33,6 +37,11 @@ namespace Banks
 
         public void Transfer(float money, IAccount account)
         {
+            if (account == null)
+            {
+                throw new BankException("account is null!");
+            }
+
             Balance -= money;
             account.Balance += money;
         }
@@ -40,7 +49,7 @@ namespace Banks
         public void AfterOneDay()
         {
             _days++;
-            _moneyFromInterest += Balance * (_interestOnBalance / 365);
+            _moneyFromInterest += Balance * (BankConditions.InterestOnDebitBalance / 365);
             if (_days != 30) return;
             _days = 0;
             AfterOneMonth();

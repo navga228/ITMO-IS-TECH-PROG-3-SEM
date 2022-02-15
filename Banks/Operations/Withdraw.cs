@@ -11,6 +11,11 @@ namespace Banks
 
         public Withdraw(IAccount account, float money)
         {
+            if (account == null)
+            {
+                throw new BankException("account is null!");
+            }
+
             _account = account;
             _money = money;
             Id = Guid.NewGuid().ToString("N");
@@ -25,12 +30,12 @@ namespace Banks
 
         public void Execute()
         {
-            if (_account.AccountOwner.IsVerify && _account.Balance - _money < 0)
+            if (_account.IsVerify && _account.Balance - _money < 0)
             {
                 throw new BankException("Недостаточно средств");
             }
 
-            if (!_account.AccountOwner.IsVerify && _money > _account.AccountOwner.Bank.UnverifiedLimit)
+            if (!_account.IsVerify && _money > _account.BankConditions.UnverifiedLimit)
             { // Если аккаунт не верифицирован и клиент хочет снять сумму большую чем возможно для неверифицированных аккаунтов
                 throw new BankException("Для снятия такой суммы нужно верифицировать аккаунт");
             }

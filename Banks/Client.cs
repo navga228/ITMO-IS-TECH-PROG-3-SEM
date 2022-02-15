@@ -8,23 +8,27 @@ namespace Banks
         private string _surname;
         private string _address;
         private int _passportId;
-        private Bank _bank;
         private List<string> _messages = new List<string>();
 
-        public Client(string name, string surname, Bank bank)
+        public Client(string name, string surname)
         {
+            if (string.IsNullOrEmpty(name))
+            {
+                throw new BankException("name null or empty!");
+            }
+
+            if (string.IsNullOrEmpty(surname))
+            {
+                throw new BankException("surname null or empty!");
+            }
+
             _name = name;
             _surname = surname;
-            _bank = bank;
         }
 
         public List<IAccount> Accounts { get; } = new List<IAccount>();
-        public Bank Bank
-        {
-            get => _bank;
-        }
 
-        public bool IsVerify => !string.IsNullOrEmpty(_name) && !string.IsNullOrEmpty(_surname) && !string.IsNullOrEmpty(_address) && !(_passportId == default(int)) && !(_bank is null);
+        public bool IsVerify => !string.IsNullOrEmpty(_name) && !string.IsNullOrEmpty(_surname) && !string.IsNullOrEmpty(_address) && !(_passportId == default(int));
 
         private string Passport { get; set; }
         public void AddAddress(string address)
@@ -35,21 +39,6 @@ namespace Banks
         public void AddPassport(int passportId)
         {
             _passportId = passportId;
-        }
-
-        public void OpenDebitAccount()
-        {
-            _bank.OpenDebitAccount(this);
-        }
-
-        public void OpenDepositeAccount()
-        {
-            _bank.OpenDepositeAccount(this);
-        }
-
-        public void OpenCreditAccount()
-        {
-            _bank.OpenCreditAccount(this);
         }
 
         public void AddMessage(string message)
