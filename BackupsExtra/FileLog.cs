@@ -26,11 +26,8 @@ namespace BackupsExtra
             string finalLogMessage = string.Empty;
             if (_includeTime) finalLogMessage += "[" + DateTime.Now.ToString() + "] ";
             finalLogMessage += message + "\n";
-            using (FileStream sourceStream = new FileStream(_fileLogPath, FileMode.OpenOrCreate, FileAccess.Write))
-            {
-                byte[] info = new UTF8Encoding(true).GetBytes(finalLogMessage);
-                sourceStream.Write(info, 0, info.Length);
-            }
+
+            File.AppendAllText(_fileLogPath, finalLogMessage);
         }
     }
 }
