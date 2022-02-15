@@ -4,7 +4,7 @@ using System.Collections.Generic;
 namespace Banks
 {
     public class CentralBank
-    { // Done
+    {
         private OperationManager _operationManager = new OperationManager();
         public CentralBank(string name)
         {

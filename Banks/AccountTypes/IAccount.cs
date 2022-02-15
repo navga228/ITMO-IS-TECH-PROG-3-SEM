@@ -4,7 +4,6 @@ namespace Banks
 {
     public interface IAccount
     {
-        // public Client AccountOwner { get; }
         public float Balance { get; set; }
         public bool IsVerify { get; set; }
         public string Name { get; }

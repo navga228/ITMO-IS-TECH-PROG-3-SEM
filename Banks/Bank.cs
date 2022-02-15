@@ -3,7 +3,7 @@ using System.Collections.Generic;
 namespace Banks
 {
     public class Bank
-    { // Done
+    {
         public Bank(string name, BankConditions bankConditions)
         {
             if (string.IsNullOrEmpty(name))

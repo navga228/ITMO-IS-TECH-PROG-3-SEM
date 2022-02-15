@@ -5,7 +5,7 @@ using System.Linq;
 namespace Banks
 {
     public class DepositeAccount : IAccount
-    { // Сделать в интрфейсе аккаунтов общие методы вместо прямого доступа к полям
+    {
         private int _daysToWithdraw; // Дни после которых можно выводить деньги со счета
         private int _days;
         private float _moneyFromInterest;
