@@ -5,7 +5,7 @@ using BackupsExtra.Tools;
 
 namespace BackupsExtra
 {
-    public class SelectRPByDate : IStorageRPMethod
+    public class SelectRPByDate : ISelectRPMethod
     {
         private DateTime _date;
 
