@@ -4,12 +4,12 @@ using Backups;
 
 namespace BackupsExtra
 {
-    public class StorageRPByFirstHybridCombination : IStorageRPByHybridCombination
+    public class SelectRPByFirstHybridCombination : ISelectRPByHybridCombination
     { // нужно удалить точку, если она не подходит хотя бы под один установленный лимит
         private DateTime _date;
         private int _quantity;
 
-        public StorageRPByFirstHybridCombination(DateTime date, int quantity)
+        public SelectRPByFirstHybridCombination(DateTime date, int quantity)
         {
             _date = date;
             _quantity = quantity;

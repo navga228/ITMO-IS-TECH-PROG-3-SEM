@@ -5,14 +5,14 @@ namespace BackupsExtra
 {
     public class SelectRPByHybrid : ISelectRPMethod
     {
-        private IStorageRPByHybridCombination _hybridCombination;
+        private ISelectRPByHybridCombination _hybridCombination;
 
-        public SelectRPByHybrid(IStorageRPByHybridCombination storageRpByHybrid)
+        public SelectRPByHybrid(ISelectRPByHybridCombination selectRpByHybrid)
         {
-            _hybridCombination = storageRpByHybrid;
+            _hybridCombination = selectRpByHybrid;
         }
 
-        public void SetHybridCombination(IStorageRPByHybridCombination hybridCombination)
+        public void SetHybridCombination(ISelectRPByHybridCombination hybridCombination)
         {
             _hybridCombination = hybridCombination;
         }

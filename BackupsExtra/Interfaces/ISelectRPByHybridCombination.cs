@@ -3,7 +3,7 @@ using Backups;
 
 namespace BackupsExtra
 {
-    public interface IStorageRPByHybridCombination
+    public interface ISelectRPByHybridCombination
     {
         public List<RestorePoint> Select(BackupJobExtra backupJobExtra);
     }
