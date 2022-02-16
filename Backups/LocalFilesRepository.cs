@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.IO.Compression;
@@ -48,7 +49,7 @@ namespace Backups
         public void CompressFiles(JobObject jobObject, string restorePointName, string backupJobName)
         {
             // создание нового архива
-            using (ZipArchive zipArchive = ZipFile.Open(_root + "/" + backupJobName + "/" + restorePointName + "/" + jobObject.Name + ".zip", ZipArchiveMode.Create))
+            using (ZipArchive zipArchive = ZipFile.Open(_root + backupJobName + "/" + restorePointName + "/" + jobObject.Name + ".zip", ZipArchiveMode.Create))
             {
                 // вызов метода для добавления файла в архив
                 zipArchive.CreateEntryFromFile(jobObject.FilePath, jobObject.Name);
