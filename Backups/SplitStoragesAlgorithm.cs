@@ -4,6 +4,7 @@ using System.IO;
 
 namespace Backups
 {
+    [Serializable]
     public class SplitStoragesAlgorithm : IBackupAlgorithm
     {
         public RestorePoint CreateBackup(string restorePointName, string backupJobName, List<JobObject> jobObjects, IRepository repository)

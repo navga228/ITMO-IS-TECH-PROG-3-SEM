@@ -5,6 +5,7 @@ using BackupsExtra.Tools;
 
 namespace BackupsExtra
 {
+    [Serializable]
     public class FileLog : ILog
     {
         private bool _includeTime;

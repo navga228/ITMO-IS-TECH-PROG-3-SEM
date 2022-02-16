@@ -35,11 +35,16 @@ namespace BackupsExtra
                 throw new BackupsExtraException("Path is null or empty!");
             }
 
-            BinaryFormatter formatter = new BinaryFormatter();
-            using (FileStream fs = new FileStream(path, FileMode.Open))
+            if (File.Exists(path))
             {
-                return (BackupJobExtra)formatter.Deserialize(fs);
+                BinaryFormatter formatter = new BinaryFormatter();
+                using (FileStream fs = new FileStream(path, FileMode.Open))
+                {
+                    return (BackupJobExtra)formatter.Deserialize(fs);
+                }
             }
+
+            return null;
         }
     }
 }

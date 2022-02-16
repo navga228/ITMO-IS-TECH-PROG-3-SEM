@@ -4,6 +4,7 @@ using Backups.Tools;
 
 namespace Backups
 {
+    [Serializable]
     public class BackupJob
     {
       public BackupJob(string name, string projectPath, IRepository repository, IBackupAlgorithm backupAlgorithm)

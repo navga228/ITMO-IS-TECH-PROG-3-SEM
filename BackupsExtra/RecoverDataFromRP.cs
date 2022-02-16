@@ -1,3 +1,5 @@
+using System.IO;
+using System.IO.Compression;
 using Backups;
 using BackupsExtra.Tools;
 
@@ -17,44 +19,45 @@ namespace BackupsExtra
             _repository = repository;
         }
 
-        public void RecoverToOriginalLocation(BackupJobExtra backupJobExtra, RestorePointExtra restorePointExtra)
+        public void RecoverToOriginalLocation(BackupJobExtra backupJobExtra, RestorePoint restorePoint)
         {
             if (backupJobExtra == null)
             {
                 throw new BackupsExtraException("backupJobExtra is null!");
             }
 
-            if (restorePointExtra == null)
+            if (restorePoint == null)
             {
                 throw new BackupsExtraException("restorePointExtra is null!");
             }
 
-            string restorePointName = restorePointExtra.GetRestorePoint.Name;
+            string restorePointName = restorePoint.Name;
             string backupJobName = backupJobExtra.GetBackupJob.Name;
-            if (backupJobExtra.GetBackupJob.BackupAlgorithm is SingleStorageAlgorithm)
+            if (backupJobExtra.GetBackupJob.BackupAlgorithm is SingleStorageAlgorithmExtra)
             {
-                foreach (var jobObject in restorePointExtra.GetRestorePoint.BachupedFiles)
+                foreach (var jobObject in restorePoint.BachupedFiles)
                 {
                     _repository.ExtractFileFromAcrchive(backupJobName + "/" + restorePointName + "/" + restorePointName + ".zip", jobObject.Name, jobObject.FilePath);
                 }
             }
             else
             {
-                foreach (var jobObject in restorePointExtra.GetRestorePoint.BachupedFiles)
+                foreach (var jobObject in restorePoint.BachupedFiles)
                 {
-                    _repository.ExtractFilesFromSplit(backupJobName + "/" + restorePointName, jobObject.Name, jobObject.FilePath);
+                    string pathWithoutName = jobObject.FilePath.Substring(0, jobObject.FilePath.Length - jobObject.Name.Length - 1); // Тк восстановить нужно в место где раньше хранился файл, то у абсолютного пути отрезаем имя файла и поолучаем относительный путь в который и восстанавливаем файлы
+                    _repository.ExtractFilesFromSplit(backupJobName + "/" + restorePointName + "/" + jobObject.Name + ".zip", jobObject.Name, pathWithoutName);
                 }
             }
         }
 
-        public void RecoverToDifferentLocation(BackupJobExtra backupJobExtra, RestorePointExtra restorePointExtra, string path)
+        public void RecoverToDifferentLocation(BackupJobExtra backupJobExtra, RestorePoint restorePoint, string path)
         {
             if (backupJobExtra == null)
             {
                 throw new BackupsExtraException("backupJobExtra is null!");
             }
 
-            if (restorePointExtra == null)
+            if (restorePoint == null)
             {
                 throw new BackupsExtraException("restorePointExtra is null!");
             }
@@ -64,20 +67,20 @@ namespace BackupsExtra
                 throw new BackupsExtraException("path is null or empty!");
             }
 
-            string restorePointName = restorePointExtra.GetRestorePoint.Name;
+            string restorePointName = restorePoint.Name;
             string backupJobName = backupJobExtra.GetBackupJob.Name;
-            if (backupJobExtra.GetBackupJob.BackupAlgorithm is SingleStorageAlgorithm)
+            if (backupJobExtra.GetBackupJob.BackupAlgorithm is SingleStorageAlgorithmExtra)
             {
-                foreach (var jobObject in restorePointExtra.GetRestorePoint.BachupedFiles)
+                foreach (var jobObject in restorePoint.BachupedFiles)
                 {
-                    _repository.ExtractFileFromAcrchive(backupJobName + "/" + restorePointName + "/" + restorePointName + ".zip", jobObject.Name, path + "/" + jobObject.Name);
+                    _repository.ExtractFilesFromSplit(backupJobName + "/" + restorePointName + "/" + restorePointName + ".zip", jobObject.Name, path);
                 }
             }
             else
             {
-                foreach (var jobObject in restorePointExtra.GetRestorePoint.BachupedFiles)
+                foreach (var jobObject in restorePoint.BachupedFiles)
                 {
-                    _repository.ExtractFilesFromSplit(backupJobName + "/" + restorePointName, jobObject.Name, path + "/" + jobObject.Name);
+                    _repository.ExtractFilesFromSplit(backupJobName + "/" + restorePointName + "/" + jobObject.Name + ".zip", jobObject.Name, path);
                 }
             }
         }

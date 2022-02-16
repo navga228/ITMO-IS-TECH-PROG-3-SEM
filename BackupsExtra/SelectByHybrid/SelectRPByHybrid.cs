@@ -1,8 +1,10 @@
+using System;
 using System.Collections.Generic;
 using Backups;
 
 namespace BackupsExtra
 {
+    [Serializable]
     public class SelectRPByHybrid : ISelectRPMethod
     {
         private ISelectRPByHybridCombination _hybridCombination;

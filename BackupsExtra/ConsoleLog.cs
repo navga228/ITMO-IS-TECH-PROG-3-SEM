@@ -2,6 +2,7 @@ using System;
 
 namespace BackupsExtra
 {
+    [Serializable]
     public class ConsoleLog : ILog
     {
         private bool _includeTime;

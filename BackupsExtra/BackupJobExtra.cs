@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using Backups;
 using BackupsExtra.Tools;
@@ -16,52 +17,66 @@ namespace BackupsExtra
         private IDeleteRPMethod _deleteRPMethod;
         public BackupJobExtra(string name, string projectPath, IBackupAlgorithmExtra backupAlgorithmExtra, IRepositoryExtra repositoryExtra, ILog logger, ISelectRPMethod selectRpMethod, IDeleteRPMethod deleteRpMethod)
         {
-            if (string.IsNullOrEmpty(name))
-            {
-                throw new BackupsExtraException("Name is null or empty");
+            if (File.Exists(repositoryExtra.GetRoot() + name + "/" + "BackupJobExtraData" + ".dat"))
+            { // Если джоба существовала, то восстанавливаем ее состояние
+                BackupJobExtra backupJobExtra = repositoryExtra.GetData(name);
+                _backupJob = backupJobExtra._backupJob;
+                _repositoryExtra = backupJobExtra._repositoryExtra;
+                _logger = backupJobExtra._logger;
+                _selectRpMethod = backupJobExtra._selectRpMethod;
+                _deleteRPMethod = backupJobExtra._deleteRPMethod;
+                _logger.Print($"{InfoAboutClass()} Message: BackupJobExtra was successfully recovered!");
             }
+            else
+            { // если джобы не было, то создаем заново
+                if (string.IsNullOrEmpty(name))
+                {
+                    throw new BackupsExtraException("Name is null or empty");
+                }
 
-            if (projectPath == null)
-            {
-                throw new BackupsExtraException("Project path is null");
+                if (projectPath == null)
+                {
+                    throw new BackupsExtraException("Project path is null");
+                }
+
+                if (repositoryExtra == null)
+                {
+                    throw new BackupsExtraException("Repository is null");
+                }
+
+                if (backupAlgorithmExtra == null)
+                {
+                    throw new BackupsExtraException("Backup Algorithm is null");
+                }
+
+                if (repositoryExtra == null)
+                {
+                    throw new BackupsExtraException("RepositoryExtra is null");
+                }
+
+                if (logger == null)
+                {
+                    throw new BackupsExtraException("Logger is null");
+                }
+
+                if (selectRpMethod == null)
+                {
+                    throw new BackupsExtraException("selectSelectRpMethod is null");
+                }
+
+                if (deleteRpMethod == null)
+                {
+                    throw new BackupsExtraException("deleteRpMethod is null");
+                }
+
+                _backupJob = new BackupJob(name, projectPath, repositoryExtra, backupAlgorithmExtra);
+                _repositoryExtra = repositoryExtra;
+                _logger = logger;
+                _selectRpMethod = selectRpMethod;
+                _deleteRPMethod = deleteRpMethod;
+                _repositoryExtra.SaveData(this);
+                _logger.Print($"{InfoAboutClass()} Message: BackupJobExtra was successfully created!");
             }
-
-            if (repositoryExtra == null)
-            {
-                throw new BackupsExtraException("Repository is null");
-            }
-
-            if (backupAlgorithmExtra == null)
-            {
-                throw new BackupsExtraException("Backup Algorithm is null");
-            }
-
-            if (repositoryExtra == null)
-            {
-                throw new BackupsExtraException("RepositoryExtra is null");
-            }
-
-            if (logger == null)
-            {
-                throw new BackupsExtraException("Logger is null");
-            }
-
-            if (selectRpMethod == null)
-            {
-                throw new BackupsExtraException("selectSelectRpMethod is null");
-            }
-
-            if (deleteRpMethod == null)
-            {
-                throw new BackupsExtraException("deleteRpMethod is null");
-            }
-
-            _backupJob = new BackupJob(name, projectPath, repositoryExtra, backupAlgorithmExtra);
-            _repositoryExtra = repositoryExtra;
-            _logger = logger;
-            _selectRpMethod = selectRpMethod;
-            _deleteRPMethod = deleteRpMethod;
-            _logger.Print($"{InfoAboutClass()} Message: BackupJobExtra was successfully created!");
         }
 
         public BackupJob GetBackupJob
@@ -72,6 +87,8 @@ namespace BackupsExtra
         public void AddJobObject(JobObject jobObject)
         {
             _backupJob.AddJobObject(jobObject);
+            _repositoryExtra.SaveData(this);
+            _logger.Print($"{InfoAboutClass()} Message: JobObject was successfully added!");
         }
 
         public void SetRPSelectMethod(ISelectRPMethod selectRpMethod)
@@ -82,6 +99,7 @@ namespace BackupsExtra
             }
 
             _selectRpMethod = selectRpMethod;
+            _repositoryExtra.SaveData(this);
             _logger.Print($"{InfoAboutClass()} Message: selectRpMethod was successfully changed!");
         }
 
@@ -93,6 +111,7 @@ namespace BackupsExtra
             }
 
             _deleteRPMethod = deleteRpMethod;
+            _repositoryExtra.SaveData(this);
             _logger.Print($"{InfoAboutClass()} Message: deleteRpMethod was successfully changed!");
         }
 
@@ -107,6 +126,7 @@ namespace BackupsExtra
             _logger.Print($"{InfoAboutClass()} Message: Restore point was successfully created!");
             List<RestorePoint> selectedRestorePoints = _selectRpMethod?.Select(this);
             _deleteRPMethod?.Delete(selectedRestorePoints, this); // Поиск неподходящих по лимиту рп и их удаление выбраным способом
+            _repositoryExtra.SaveData(this);
             if (selectedRestorePoints.Any()) _logger.Print($"{InfoAboutClass()} Message: Restore points was successfully deleted by limits!");
         }
 
@@ -121,6 +141,7 @@ namespace BackupsExtra
             {
                 _backupJob.RestorePoints.Remove(restorePoint);
                 _repositoryExtra.DeleteRestorePoints(this, restorePoint);
+                _repositoryExtra.SaveData(this);
                 _logger.Print($"{InfoAboutClass()} Message: Restore points was successfully deleted!");
                 break;
             }

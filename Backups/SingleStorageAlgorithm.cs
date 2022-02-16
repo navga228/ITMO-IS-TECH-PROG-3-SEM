@@ -5,6 +5,7 @@ using System.IO.Compression;
 
 namespace Backups
 {
+    [Serializable]
     public class SingleStorageAlgorithm : IBackupAlgorithm
     {
         public RestorePoint CreateBackup(string restorePointName, string backupJobName, List<JobObject> jobObjects, IRepository repository)

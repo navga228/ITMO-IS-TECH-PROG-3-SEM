@@ -1,9 +1,11 @@
+using System;
 using System.Collections.Generic;
 using Backups;
 using BackupsExtra.Tools;
 
 namespace BackupsExtra
 {
+    [Serializable]
     public class SelectRPByQuantity : ISelectRPMethod
     {
         private int _quantity;

@@ -6,6 +6,9 @@ namespace BackupsExtra
     {
         public void DeleteRestorePoints(BackupJobExtra backupJobExtra, RestorePoint restorePoint);
         public void ExtractFileFromAcrchive(string archivePath, string jobObjectName, string destination);
-        public void ExtractFilesFromSplit(string archiveDirectory, string jobObjectName, string destination);
+        public void ExtractFilesFromSplit(string archiveDirectory,  string jobObjectName, string destination);
+        public string GetRoot();
+        public void SaveData(BackupJobExtra backupJobExtra);
+        public BackupJobExtra GetData(string backupJobExtraName);
     }
 }

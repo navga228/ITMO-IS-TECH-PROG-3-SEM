@@ -2,6 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.IO.Compression;
+using System.Linq;
+using System.Runtime.Serialization.Formatters.Binary;
 using Backups;
 using BackupsExtra.Tools;
 
@@ -171,13 +173,11 @@ namespace BackupsExtra
             }
 
             _localFilesRepository.CopyFile(path, newPath);
-
-            // File.Copy(_root + "/" + path, _root + "/" + newPath);
             _logger.Print($"{InfoAboutClass()} Message: File was successfully copied!");
         }
 
         public void ExtractFileFromAcrchive(string archivePath, string jobObjectName, string destination)
-        { // Вытаскивает по одному файлу из архива
+        {
             if (string.IsNullOrEmpty(archivePath))
             {
                 throw new BackupsExtraException("archivePath is null or empty");
@@ -193,33 +193,24 @@ namespace BackupsExtra
                 throw new BackupsExtraException("destination is null or empty");
             }
 
-            using (ZipArchive zipArchive = ZipFile.Open(_root + "/" + archivePath, ZipArchiveMode.Read))
+            using (ZipArchive zipArchive = ZipFile.Open(_root + archivePath, ZipArchiveMode.Read))
             {
-                foreach (var file in zipArchive.Entries)
+                foreach (var entry in zipArchive.Entries)
                 {
-                    if (file.Name.Equals(jobObjectName))
+                    if (entry.Name.Equals(jobObjectName))
                     {
-                        if (File.Exists(destination))
-                        {
-                            File.Delete(destination);
-                        }
-
-                        file.ExtractToFile(destination);
+                        entry.ExtractToFile(destination);
                     }
                 }
             }
         }
 
         public void ExtractFilesFromSplit(string archiveDirectory, string jobObjectName, string destination)
-        { // Вытаскивает из архивов файлы находящиеся в определенной дериктории
+        {
+            // Вытаскивает из архива файл и восстанавливает его по относительному пути
             if (string.IsNullOrEmpty(archiveDirectory))
             {
                 throw new BackupsExtraException("archiveDirectory is null or empty");
-            }
-
-            if (string.IsNullOrEmpty(jobObjectName))
-            {
-                throw new BackupsExtraException("jobObjectName is null or empty");
             }
 
             if (string.IsNullOrEmpty(destination))
@@ -227,10 +218,39 @@ namespace BackupsExtra
                 throw new BackupsExtraException("destination is null or empty");
             }
 
-            foreach (string file in Directory.EnumerateFiles(_root + "/" + archiveDirectory))
+            ZipFile.ExtractToDirectory(_root + archiveDirectory, destination);
+        }
+
+        public void SaveData(BackupJobExtra backupJobExtra)
+        {
+            if (backupJobExtra == null)
             {
-                ZipFile.ExtractToDirectory(_root + "/" + archiveDirectory + "/" + file, destination);
-                break;
+                throw new BackupsExtraException("BackupJobExtra is null!");
+            }
+
+            BinaryFormatter formatter = new BinaryFormatter();
+
+            // получаем поток, куда будем записывать сериализованный объект
+            using (FileStream fs = new FileStream(_root + backupJobExtra.GetBackupJob.Name + "/" + "BackupJobExtraData" + ".dat", FileMode.OpenOrCreate))
+            {
+                formatter.Serialize(fs, backupJobExtra);
+            }
+
+            _logger.Print($"{InfoAboutClass()} Message: File with data was successfully overwritten!");
+        }
+
+        public BackupJobExtra GetData(string backupJobExtraName)
+        {
+            if (string.IsNullOrEmpty(backupJobExtraName))
+            {
+                throw new BackupsExtraException("backupJobExtraName is null or empty!");
+            }
+
+            BinaryFormatter formatter = new BinaryFormatter();
+            using (FileStream fs = new FileStream(_root + backupJobExtraName + "/" + "BackupJobExtraData" + ".dat", FileMode.Open))
+            {
+                _logger.Print($"{InfoAboutClass()} Message: File with data was successfully deserialized!");
+                return (BackupJobExtra)formatter.Deserialize(fs);
             }
         }
 

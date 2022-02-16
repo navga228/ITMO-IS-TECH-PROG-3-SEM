@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Backups;
@@ -5,6 +6,7 @@ using BackupsExtra.Tools;
 
 namespace BackupsExtra
 {
+    [Serializable]
     public class MergeRestorePoints : IDeleteRPMethod
     {
         private LocalFilesRepositoryExtra _repositoryExtra;

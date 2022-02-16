@@ -5,6 +5,7 @@ using System.IO.Compression;
 
 namespace Backups
 {
+    [Serializable]
     public class LocalFilesRepository : IRepository
     {
         private string _root;

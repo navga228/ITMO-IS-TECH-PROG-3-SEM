@@ -4,6 +4,7 @@ using Backups;
 
 namespace BackupsExtra
 {
+    [Serializable]
     public class SelectRPByFirstHybridCombination : ISelectRPByHybridCombination
     { // нужно удалить точку, если она не подходит хотя бы под один установленный лимит
         private DateTime _date;
