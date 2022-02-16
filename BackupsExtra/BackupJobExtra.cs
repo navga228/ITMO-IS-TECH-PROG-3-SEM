@@ -61,6 +61,7 @@ namespace BackupsExtra
             _logger = logger;
             _selectRpMethod = selectRpMethod;
             _deleteRPMethod = deleteRpMethod;
+            _logger.Print($"{InfoAboutClass()} Message: BackupJobExtra was successfully created!");
         }
 
         public BackupJob GetBackupJob
@@ -106,7 +107,7 @@ namespace BackupsExtra
             _logger.Print($"{InfoAboutClass()} Message: Restore point was successfully created!");
             List<RestorePoint> selectedRestorePoints = _selectRpMethod?.Select(this);
             _deleteRPMethod?.Delete(selectedRestorePoints, this); // Поиск неподходящих по лимиту рп и их удаление выбраным способом
-            _logger.Print($"{InfoAboutClass()} Message: Restore points was successfully deleted by limits!");
+            if (selectedRestorePoints.Any()) _logger.Print($"{InfoAboutClass()} Message: Restore points was successfully deleted by limits!");
         }
 
         public void DeleteRestorePoint(string restorePointName)

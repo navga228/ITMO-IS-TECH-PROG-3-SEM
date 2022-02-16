@@ -139,7 +139,7 @@ namespace BackupsExtra
             }
 
             _localFilesRepository.CompressFiles(jobObject, restorePointName, backupJobName);
-            _logger.Print($"{InfoAboutClass()} Message: Files was successfully comressed!");
+            _logger.Print($"{InfoAboutClass()} Message: Files was successfully compressed!");
         }
 
         public void MakeArchive(string pathToDirectory, string newArchiveFileName)
