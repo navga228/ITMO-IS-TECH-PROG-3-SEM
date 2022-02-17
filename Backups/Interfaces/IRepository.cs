@@ -4,6 +4,7 @@ namespace Backups
 {
     public interface IRepository
     {
+        public string GetRoot();
         void CreateFile(string path, string fileName);
         void DeleteFile(string path, string fileName);
         void CreateDirectory(string path, string directoryName);

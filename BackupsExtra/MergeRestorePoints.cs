@@ -49,8 +49,8 @@ namespace BackupsExtra
                         {
                             rpForDelete[rp2].BachupedFiles.Add(jobObject);
                             _repositoryExtra.CopyFile(
-                                backupJobExtra.GetBackupJob.Name + "/" + rpForDelete[rp1].Name + "/" + jobObject.Name + ".zip",
-                                backupJobExtra.GetBackupJob.Name + "/" + rpForDelete[rp2].Name + "/" + jobObject.Name + ".zip");
+                                _repositoryExtra.GetRoot() + backupJobExtra.GetBackupJob.Name + "/" + rpForDelete[rp1].Name + "/" + jobObject.Name + ".zip",
+                                _repositoryExtra.GetRoot() + backupJobExtra.GetBackupJob.Name + "/" + rpForDelete[rp2].Name + "/" + jobObject.Name + ".zip");
                         }
 
                         backupJobExtra.DeleteRestorePoint(rpForDelete[rp1].Name);
@@ -68,8 +68,8 @@ namespace BackupsExtra
                             {
                                 lastRP.BachupedFiles.Add(jobObject);
                                 _repositoryExtra.CopyFile(
-                                    backupJobExtra.GetBackupJob.Name + "/" + rpForDelete[rpForDelete.Count - 1].Name + "/" + jobObject.Name + ".zip",
-                                    backupJobExtra.GetBackupJob.Name + "/" + lastRP.Name + "/" + jobObject.Name + ".zip");
+                                    _repositoryExtra.GetRoot() + backupJobExtra.GetBackupJob.Name + "/" + rpForDelete[rpForDelete.Count - 1].Name + "/" + jobObject.Name + ".zip",
+                                    _repositoryExtra.GetRoot() + backupJobExtra.GetBackupJob.Name + "/" + lastRP.Name + "/" + jobObject.Name + ".zip");
                             }
 
                             backupJobExtra.DeleteRestorePoint(rpForDelete[rpForDelete.Count - 1].Name);

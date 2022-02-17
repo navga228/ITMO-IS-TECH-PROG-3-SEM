@@ -10,6 +10,11 @@ namespace Backups
         public Dictionary<string, List<string>> FileSystem { get; } = new Dictionary<string, List<string>>(); // Ключ это путь до папки а значение файлы
 
         // Будем проверять кол-во файлов в системе
+        public string GetRoot()
+        {
+            return _root;
+        }
+
         public void CreateFile(string path, string fileName)
         {
             if (!FileSystem.ContainsKey(path))

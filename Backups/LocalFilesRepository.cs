@@ -15,6 +15,11 @@ namespace Backups
             _root = root;
         }
 
+        public string GetRoot()
+        {
+            return _root;
+        }
+
         public void CreateFile(string path, string fileName)
         {
             if (!File.Exists(path + fileName))
@@ -33,9 +38,9 @@ namespace Backups
 
         public void CreateDirectory(string path, string fileName)
         {
-            if (!Directory.Exists(_root + path + fileName))
+            if (!Directory.Exists(path + fileName))
             {
-                Directory.CreateDirectory(_root + path + fileName);
+                Directory.CreateDirectory(path + fileName);
             }
         }
 
@@ -66,7 +71,7 @@ namespace Backups
         {
             if (File.Exists(path))
             {
-                File.Copy(path, _root + newPath, true);
+                File.Copy(path, newPath, true);
             }
         }
     }
