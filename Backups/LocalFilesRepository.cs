@@ -46,9 +46,9 @@ namespace Backups
 
         public void DeleteDirectory(string path, string directoryName)
         {
-            if (Directory.Exists(_root + path + directoryName))
+            if (Directory.Exists(path + directoryName))
             {
-                Directory.Delete(_root + path + directoryName);
+                Directory.Delete(path + directoryName, true);
             }
         }
 
