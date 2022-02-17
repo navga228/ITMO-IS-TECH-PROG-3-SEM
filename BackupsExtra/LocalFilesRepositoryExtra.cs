@@ -190,6 +190,7 @@ namespace BackupsExtra
             }
 
             ZipFile.ExtractToDirectory(_root + archivePath, _root + destination);
+            _logger.Print($"{InfoAboutClass()} Message: Files were successfully extracted!");
         }
 
         public void ExtractFilesToDirectory(string archiveDirectory, string destination)
@@ -206,6 +207,7 @@ namespace BackupsExtra
             }
 
             ZipFile.ExtractToDirectory(_root + archiveDirectory, destination);
+            _logger.Print($"{InfoAboutClass()} Message: Files were successfully extracted!");
         }
 
         public void SaveData(BackupJobExtra backupJobExtra)
