@@ -176,16 +176,12 @@ namespace BackupsExtra
             _logger.Print($"{InfoAboutClass()} Message: File was successfully copied!");
         }
 
-        public void ExtractFileFromAcrchive(string archivePath, string jobObjectName, string destination)
+        public void ExtractFilesToTemporaryDirectory(string archivePath, string destination)
         {
+            // Разархивирует файлы во временную директорию, из которой потом они будут распрделяться в нужные места
             if (string.IsNullOrEmpty(archivePath))
             {
                 throw new BackupsExtraException("archivePath is null or empty");
-            }
-
-            if (string.IsNullOrEmpty(jobObjectName))
-            {
-                throw new BackupsExtraException("jobObjectName is null or empty");
             }
 
             if (string.IsNullOrEmpty(destination))
@@ -193,19 +189,10 @@ namespace BackupsExtra
                 throw new BackupsExtraException("destination is null or empty");
             }
 
-            using (ZipArchive zipArchive = ZipFile.Open(_root + archivePath, ZipArchiveMode.Read))
-            {
-                foreach (var entry in zipArchive.Entries)
-                {
-                    if (entry.Name.Equals(jobObjectName))
-                    {
-                        entry.ExtractToFile(destination);
-                    }
-                }
-            }
+            ZipFile.ExtractToDirectory(_root + archivePath, _root + destination);
         }
 
-        public void ExtractFilesFromSplit(string archiveDirectory, string jobObjectName, string destination)
+        public void ExtractFilesToDirectory(string archiveDirectory, string destination)
         {
             // Вытаскивает из архива файл и восстанавливает его по относительному пути
             if (string.IsNullOrEmpty(archiveDirectory))
