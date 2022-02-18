@@ -235,12 +235,24 @@ namespace BackupsExtra
                 throw new BackupsExtraException("backupJobExtraName is null or empty!");
             }
 
-            BinaryFormatter formatter = new BinaryFormatter();
-            using (FileStream fs = new FileStream(_root + backupJobExtraName + "/" + "BackupJobExtraData" + ".dat", FileMode.Open))
+            if (File.Exists(_root + backupJobExtraName + "/" + "BackupJobExtraData" + ".dat"))
             {
-                _logger.Print($"{InfoAboutClass()} Message: File with data was successfully deserialized!");
-                return (BackupJobExtra)formatter.Deserialize(fs);
+                BinaryFormatter formatter = new BinaryFormatter();
+                using (FileStream fs = new FileStream(_root + backupJobExtraName + "/" + "BackupJobExtraData" + ".dat", FileMode.Open))
+                {
+                    _logger.Print($"{InfoAboutClass()} Message: File with data was successfully deserialized!");
+                    return (BackupJobExtra)formatter.Deserialize(fs);
+                }
             }
+            else
+            {
+                return null;
+            }
+        }
+
+        public List<string> EnumerateFiles(string path)
+        {
+            return Directory.EnumerateFiles(path).ToList();
         }
 
         private string InfoAboutClass()

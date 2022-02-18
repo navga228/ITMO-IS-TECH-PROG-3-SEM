@@ -17,9 +17,9 @@ namespace BackupsExtra
         private IDeleteRPMethod _deleteRPMethod;
         public BackupJobExtra(string name, string projectPath, IBackupAlgorithmExtra backupAlgorithmExtra, IRepositoryExtra repositoryExtra, ILog logger, ISelectRPMethod selectRpMethod, IDeleteRPMethod deleteRpMethod)
         {
-            if (File.Exists(repositoryExtra.GetRoot() + name + "/" + "BackupJobExtraData" + ".dat"))
+            BackupJobExtra backupJobExtra = repositoryExtra.GetData(name);
+            if (backupJobExtra != null)
             { // Если джоба существовала, то восстанавливаем ее состояние
-                BackupJobExtra backupJobExtra = repositoryExtra.GetData(name);
                 _backupJob = backupJobExtra._backupJob;
                 _repositoryExtra = backupJobExtra._repositoryExtra;
                 _logger = backupJobExtra._logger;
@@ -89,6 +89,11 @@ namespace BackupsExtra
             _backupJob.AddJobObject(jobObject);
             _repositoryExtra.SaveData(this);
             _logger.Print($"{InfoAboutClass()} Message: JobObject was successfully added!");
+        }
+
+        public void RemoveJobObject(JobObject jobObject)
+        {
+            _backupJob.RemoveJobObject(jobObject);
         }
 
         public void SetRPSelectMethod(ISelectRPMethod selectRpMethod)

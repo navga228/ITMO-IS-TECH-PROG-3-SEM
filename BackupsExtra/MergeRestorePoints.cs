@@ -9,9 +9,9 @@ namespace BackupsExtra
     [Serializable]
     public class MergeRestorePoints : IDeleteRPMethod
     {
-        private LocalFilesRepositoryExtra _repositoryExtra;
+        private IRepositoryExtra _repositoryExtra;
 
-        public MergeRestorePoints(LocalFilesRepositoryExtra localFilesRepositoryExtra)
+        public MergeRestorePoints(IRepositoryExtra localFilesRepositoryExtra)
         {
             if (localFilesRepositoryExtra == null)
             {
@@ -34,7 +34,7 @@ namespace BackupsExtra
                 throw new BackupsExtraException("backupJobExtra is null!");
             }
 
-            var lastRP = backupJobExtra.GetBackupJob.RestorePoints[rpForDelete.Count + 1]; // Точка в которую будут вмердживаться все точки из списка
+            var lastRP = backupJobExtra.GetBackupJob.RestorePoints[rpForDelete.Count]; // Точка в которую будут вмердживаться все точки из списка
             for (int rp1 = 0; rp1 < rpForDelete.Count - 1; rp1++)
             {
                 for (int rp2 = 0; rp2 < rpForDelete.Count; rp2++)

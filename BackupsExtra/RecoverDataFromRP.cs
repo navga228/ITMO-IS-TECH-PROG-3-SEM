@@ -40,7 +40,7 @@ namespace BackupsExtra
                 _repository.ExtractFilesToTemporaryDirectory(backupJobName + "/" + restorePointName + "/" + restorePoint.Name + ".zip", "temporaryDirectory");
                 foreach (var jobObject in restorePoint.BachupedFiles)
                 {
-                    foreach (string file in Directory.EnumerateFiles(_repository.GetRoot() + "temporaryDirectory"))
+                    foreach (string file in _repository.EnumerateFiles(_repository.GetRoot() + "temporaryDirectory"))
                     {
                         string nameOfFile;
                         int lastSlash;
@@ -87,7 +87,7 @@ namespace BackupsExtra
             if (backupJobExtra.GetBackupJob.BackupAlgorithm is SingleStorageAlgorithmExtra)
             {
                 _repository.ExtractFilesToTemporaryDirectory(backupJobName + "/" + restorePointName + "/" + restorePoint.Name + ".zip", "temporaryDirectory");
-                foreach (string file in Directory.EnumerateFiles(_repository.GetRoot() + "temporaryDirectory"))
+                foreach (string file in _repository.EnumerateFiles(_repository.GetRoot() + "temporaryDirectory"))
                 {
                     string nameOfFile;
                     int lastSlash;

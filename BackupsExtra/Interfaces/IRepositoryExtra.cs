@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using Backups;
 
 namespace BackupsExtra
@@ -9,5 +10,6 @@ namespace BackupsExtra
         public void ExtractFilesToDirectory(string archiveDirectory, string destination);
         public void SaveData(BackupJobExtra backupJobExtra);
         public BackupJobExtra GetData(string backupJobExtraName);
+        public List<string> EnumerateFiles(string path);
     }
 }
