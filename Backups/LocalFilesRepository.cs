@@ -30,9 +30,9 @@ namespace Backups
 
         public void DeleteFile(string path, string fileName)
         {
-            if (File.Exists(_root + path))
+            if (File.Exists(_root + path + "/" + fileName))
             {
-                File.Delete(_root + path);
+                File.Delete(_root + path + "/" + fileName);
             }
         }
 
