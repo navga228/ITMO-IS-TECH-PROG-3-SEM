@@ -13,7 +13,7 @@ namespace BackupsExtra.Tests
         public void SingleStorageTest()
         {
             // Создаем логер и репозиторий для тестов
-            FileLog fileLog = new FileLog(@"/Users/navga228/Desktop/BackupFiles/logs", true);
+            ConsoleLog consoleLog = new ConsoleLog(true);
             RepositoryForTestsExtra repositoryForTestsExtra = new RepositoryForTestsExtra(@"/Users/navga228/Desktop/BackupFiles/");
 
             // Указываем сингл метод для создания рестор поинтов(рп)
@@ -26,7 +26,7 @@ namespace BackupsExtra.Tests
             DeleteRestorPoints deleteRestorPoints = new DeleteRestorPoints();
             
             // Создаем джобу
-            BackupJobExtra backupJobExtra = new BackupJobExtra("BackupJob1", @"/Users/navga228/Desktop/BackupFiles/", singleStorageAlgorithmExtra, repositoryForTestsExtra, fileLog, selectRpByQuantity, deleteRestorPoints);
+            BackupJobExtra backupJobExtra = new BackupJobExtra("BackupJob1", @"/Users/navga228/Desktop/BackupFiles/", singleStorageAlgorithmExtra, repositoryForTestsExtra, consoleLog, selectRpByQuantity, deleteRestorPoints);
             
             // Создаем первый объект джобы
             JobObject file1 = new JobObject(@"/Users/navga228/Desktop/BackupFiles/", "JobObject1");
@@ -49,14 +49,14 @@ namespace BackupsExtra.Tests
         [Test]
         public void SplitStoragesTest()
         {
-            FileLog fileLog = new FileLog(@"/Users/navga228/Desktop/BackupFiles/logs", true);
+            ConsoleLog consoleLog = new ConsoleLog(true);
             RepositoryForTestsExtra repositoryForTestsExtra = new RepositoryForTestsExtra(@"/Users/navga228/Desktop/BackupFiles/");
             
             SplitStoragesAlgorithmExtra splitStoragesAlgorithmExtra = new SplitStoragesAlgorithmExtra(new SplitStoragesAlgorithm());
             
             SelectRPByQuantity selectRpByQuantity = new SelectRPByQuantity(5);
             DeleteRestorPoints deleteRestorPoints = new DeleteRestorPoints();
-            BackupJobExtra backupJobExtra = new BackupJobExtra("BackupJob1", @"/Users/navga228/Desktop/BackupFiles/", splitStoragesAlgorithmExtra, repositoryForTestsExtra, fileLog, selectRpByQuantity, deleteRestorPoints);
+            BackupJobExtra backupJobExtra = new BackupJobExtra("BackupJob1", @"/Users/navga228/Desktop/BackupFiles/", splitStoragesAlgorithmExtra, repositoryForTestsExtra, consoleLog, selectRpByQuantity, deleteRestorPoints);
             
             JobObject file1 = new JobObject(@"/Users/navga228/Desktop/BackupFiles/", "JobObject1");
             repositoryForTestsExtra.CreateFile(@"/Users/navga228/Desktop/BackupFiles/", "JobObject1");
@@ -83,14 +83,14 @@ namespace BackupsExtra.Tests
         [Test]
         public void MergePoints()
         {
-            FileLog fileLog = new FileLog(@"/Users/navga228/Desktop/BackupFiles/logs", true);
+            ConsoleLog consoleLog = new ConsoleLog(true);
             RepositoryForTestsExtra repositoryForTestsExtra = new RepositoryForTestsExtra(@"/Users/navga228/Desktop/BackupFiles/");
             
             SplitStoragesAlgorithmExtra splitStoragesAlgorithmExtra = new SplitStoragesAlgorithmExtra(new SplitStoragesAlgorithm());
             
             SelectRPByQuantity selectRpByQuantity = new SelectRPByQuantity(1);
             MergeRestorePoints mergeRestorePoints = new MergeRestorePoints(repositoryForTestsExtra);
-            BackupJobExtra backupJobExtra = new BackupJobExtra("BackupJob1", @"/Users/navga228/Desktop/BackupFiles/", splitStoragesAlgorithmExtra, repositoryForTestsExtra, fileLog, selectRpByQuantity, mergeRestorePoints);
+            BackupJobExtra backupJobExtra = new BackupJobExtra("BackupJob1", @"/Users/navga228/Desktop/BackupFiles/", splitStoragesAlgorithmExtra, repositoryForTestsExtra, consoleLog, selectRpByQuantity, mergeRestorePoints);
             
             JobObject file1 = new JobObject(@"/Users/navga228/Desktop/BackupFiles/", "JobObject1");
             repositoryForTestsExtra.CreateFile(@"/Users/navga228/Desktop/BackupFiles/", "JobObject1");
@@ -119,14 +119,14 @@ namespace BackupsExtra.Tests
         [Test]
         public void RecoverFilesToDifferentLocationForSingle()
         { // тестирую только differentLocation тк в для воосстановления в пржднее значение просто меняется path
-            FileLog fileLog = new FileLog(@"/Users/navga228/Desktop/BackupFiles/logs", true);
+            ConsoleLog consoleLog = new ConsoleLog(true);
             RepositoryForTestsExtra repositoryForTestsExtra = new RepositoryForTestsExtra(@"/Users/navga228/Desktop/BackupFiles/");
 
             SingleStorageAlgorithmExtra singleStorageAlgorithmExtra = new SingleStorageAlgorithmExtra(new SingleStorageAlgorithm());
             
             SelectRPByQuantity selectRpByQuantity = new SelectRPByQuantity(1);
             MergeRestorePoints mergeRestorePoints = new MergeRestorePoints(repositoryForTestsExtra);
-            BackupJobExtra backupJobExtra = new BackupJobExtra("BackupJob1", @"/Users/navga228/Desktop/BackupFiles/", singleStorageAlgorithmExtra, repositoryForTestsExtra, fileLog, selectRpByQuantity, mergeRestorePoints);
+            BackupJobExtra backupJobExtra = new BackupJobExtra("BackupJob1", @"/Users/navga228/Desktop/BackupFiles/", singleStorageAlgorithmExtra, repositoryForTestsExtra, consoleLog, selectRpByQuantity, mergeRestorePoints);
             
             JobObject file1 = new JobObject(@"/Users/navga228/Desktop/BackupFiles/", "JobObject1");
             repositoryForTestsExtra.CreateFile(@"/Users/navga228/Desktop/BackupFiles/", "JobObject1");
@@ -146,14 +146,14 @@ namespace BackupsExtra.Tests
         [Test]
         public void RecoverFilesToDifferentLocationForSplit()
         {
-            FileLog fileLog = new FileLog(@"/Users/navga228/Desktop/BackupFiles/logs", true);
+            ConsoleLog consoleLog = new ConsoleLog(true);
             RepositoryForTestsExtra repositoryForTestsExtra = new RepositoryForTestsExtra(@"/Users/navga228/Desktop/BackupFiles/");
 
             SplitStoragesAlgorithmExtra splitStoragesAlgorithmExtra = new SplitStoragesAlgorithmExtra(new SplitStoragesAlgorithm());
             
             SelectRPByQuantity selectRpByQuantity = new SelectRPByQuantity(1);
             MergeRestorePoints mergeRestorePoints = new MergeRestorePoints(repositoryForTestsExtra);
-            BackupJobExtra backupJobExtra = new BackupJobExtra("BackupJob1", @"/Users/navga228/Desktop/BackupFiles/", splitStoragesAlgorithmExtra, repositoryForTestsExtra, fileLog, selectRpByQuantity, mergeRestorePoints);
+            BackupJobExtra backupJobExtra = new BackupJobExtra("BackupJob1", @"/Users/navga228/Desktop/BackupFiles/", splitStoragesAlgorithmExtra, repositoryForTestsExtra, consoleLog, selectRpByQuantity, mergeRestorePoints);
             
             JobObject file1 = new JobObject(@"/Users/navga228/Desktop/BackupFiles/", "JobObject1");
             repositoryForTestsExtra.CreateFile(@"/Users/navga228/Desktop/BackupFiles/", "JobObject1");
