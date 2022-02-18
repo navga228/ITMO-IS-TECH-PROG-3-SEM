@@ -6,7 +6,7 @@ namespace Backups
 {
     public class RepositoryForTests : IRepository
     {
-        private string _root = "/Users/navga228/Desktop/3лабаООП";
+        private string _root = "/Users/navga228/Desktop/3лабаООП/";
         public Dictionary<string, List<string>> FileSystem { get; } = new Dictionary<string, List<string>>(); // Ключ это путь до папки а значение файлы
 
         // Будем проверять кол-во файлов в системе
@@ -34,10 +34,10 @@ namespace Backups
 
         public void DeleteFile(string path, string fileName)
         {
-            string newPath = path.Substring(0, path.Length - 1);
-            if (FileSystem.ContainsKey(_root + "/" + newPath))
+            string newPath = path.Substring(0, path.Length);
+            if (FileSystem.ContainsKey(_root + newPath))
             {
-                FileSystem[_root + "/" + newPath].Remove(fileName);
+                FileSystem[_root + newPath].Remove(fileName);
             }
         }
 
@@ -57,14 +57,14 @@ namespace Backups
 
         public void CompressFiles(JobObject jobObject, string restorePointName, string backupJobName)
         {
-            if (!FileSystem.ContainsKey(_root + "/" + backupJobName + "/" + restorePointName))
+            if (!FileSystem.ContainsKey(_root + backupJobName + "/" + restorePointName))
             {
-                FileSystem.Add(_root + "/" + backupJobName + "/" + restorePointName, new List<string>());
-                FileSystem[_root + "/" + backupJobName + "/" + restorePointName].Add(jobObject.Name);
+                FileSystem.Add(_root + backupJobName + "/" + restorePointName, new List<string>());
+                FileSystem[_root + backupJobName + "/" + restorePointName].Add(jobObject.Name);
             }
             else
             {
-                FileSystem[_root + "/" + backupJobName + "/" + restorePointName].Add(jobObject.Name);
+                FileSystem[_root + backupJobName + "/" + restorePointName].Add(jobObject.Name);
             }
         }
 
