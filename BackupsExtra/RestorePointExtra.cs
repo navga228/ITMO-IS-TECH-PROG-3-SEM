@@ -11,12 +11,7 @@ namespace BackupsExtra
 
         public RestorePointExtra(RestorePoint restorePoint)
         {
-            if (restorePoint == null)
-            {
-                throw new BackupsExtraException("RestorePoint is null!");
-            }
-
-            _restorePoint = restorePoint;
+            _restorePoint = restorePoint ?? throw new BackupsExtraException("RestorePoint is null!");
         }
 
         public RestorePoint GetRestorePoint

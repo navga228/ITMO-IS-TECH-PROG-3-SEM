@@ -12,12 +12,7 @@ namespace BackupsExtra
 
         public SingleStorageAlgorithmExtra(SingleStorageAlgorithm singleStorageAlgorithm)
         {
-            if (singleStorageAlgorithm == null)
-            {
-                throw new BackupsExtraException("singleStorageAlgorithm is null!");
-            }
-
-            _singleStorageAlgorithm = singleStorageAlgorithm;
+            _singleStorageAlgorithm = singleStorageAlgorithm ?? throw new BackupsExtraException("singleStorageAlgorithm is null!");
         }
 
         public RestorePoint CreateBackup(string restorePointName, string backupJobName, List<JobObject> jobObjects, IRepository repository)

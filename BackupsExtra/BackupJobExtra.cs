@@ -98,10 +98,7 @@ namespace BackupsExtra
 
         public void SetRPSelectMethod(ISelectRPMethod selectRpMethod)
         {
-            if (_selectRpMethod == null)
-            {
-                throw new BackupsExtraException("selectRpMethod is null");
-            }
+            _selectRpMethod = selectRpMethod ?? throw new BackupsExtraException("selectRpMethod is null");
 
             _selectRpMethod = selectRpMethod;
             _repositoryExtra.SaveData(this);
@@ -110,10 +107,7 @@ namespace BackupsExtra
 
         public void SetDeleteRPMethod(IDeleteRPMethod deleteRpMethod)
         {
-            if (deleteRpMethod == null)
-            {
-                throw new BackupsExtraException("deleteRpMethod is null");
-            }
+            _deleteRPMethod = deleteRpMethod ?? throw new BackupsExtraException("deleteRpMethod is null");
 
             _deleteRPMethod = deleteRpMethod;
             _repositoryExtra.SaveData(this);

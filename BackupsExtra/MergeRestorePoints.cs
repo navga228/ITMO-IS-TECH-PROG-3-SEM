@@ -13,12 +13,7 @@ namespace BackupsExtra
 
         public MergeRestorePoints(IRepositoryExtra localFilesRepositoryExtra)
         {
-            if (localFilesRepositoryExtra == null)
-            {
-                throw new BackupsExtraException("localFilesRepositoryExtra is null!");
-            }
-
-            _repositoryExtra = localFilesRepositoryExtra;
+            _repositoryExtra = localFilesRepositoryExtra ?? throw new BackupsExtraException("localFilesRepositoryExtra is null!");
         }
 
         public void Delete(List<RestorePoint> rpForDelete, BackupJobExtra backupJobExtra)
@@ -72,9 +67,7 @@ namespace BackupsExtra
                                     _repositoryExtra.GetRoot() + backupJobExtra.GetBackupJob.Name + "/" + lastRP.Name + "/" + jobObject.Name + ".zip");
                             }
 
-                            backupJobExtra.DeleteRestorePoint(rpForDelete[rpForDelete.Count - 1].Name);
-                        }
-                    }
+                    backupJobExtra.DeleteRestorePoint(rp.Name);
                 }
             }
         }

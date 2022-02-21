@@ -13,12 +13,7 @@ namespace BackupsExtra
 
         public RecoverDataFromRP(IRepositoryExtra repository)
         {
-            if (repository == null)
-            {
-                throw new BackupsExtraException("repository is null!");
-            }
-
-            _repository = repository;
+            _repository = repository ?? throw new BackupsExtraException("repository is null!");
         }
 
         public void RecoverToOriginalLocation(BackupJobExtra backupJobExtra, RestorePoint restorePoint)

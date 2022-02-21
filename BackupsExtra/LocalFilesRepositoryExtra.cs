@@ -23,14 +23,9 @@ namespace BackupsExtra
                 throw new BackupsExtraException("Message is null or empty!");
             }
 
-            if (logger == null)
-            {
-                throw new BackupsExtraException("Logger is null!");
-            }
-
             _localFilesRepository = new LocalFilesRepository(root);
             _root = root;
-            _logger = logger;
+            _logger = logger ?? throw new BackupsExtraException("Logger is null!");
         }
 
         public string GetRoot()
@@ -253,6 +248,21 @@ namespace BackupsExtra
         public List<string> EnumerateFiles(string path)
         {
             return Directory.EnumerateFiles(path).ToList();
+        }
+
+        public Stream OpenWriteStream(string path)
+        {
+            return new FileStream(path, FileMode.OpenOrCreate);
+        }
+
+        public Stream OpenReadStrem(string path)
+        {
+            return new FileStream(path, FileMode.Open);
+        }
+
+        public bool SearchFile(string path)
+        {
+            return File.Exists(path);
         }
 
         private string InfoAboutClass()

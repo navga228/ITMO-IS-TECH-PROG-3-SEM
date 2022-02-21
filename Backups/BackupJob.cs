@@ -12,7 +12,7 @@ namespace Backups
           Repository = repository;
           ProjectPath = projectPath;
           Name = name;
-          BackupAlgorithm = backupAlgorithm;
+          BackupAlgorithm = backupAlgorithm ?? throw new BackupsException("Backup Algorithm is null");
           JobObjects = new List<JobObject>();
           RestorePoints = new List<RestorePoint>();
           Repository.CreateDirectory(projectPath, name);

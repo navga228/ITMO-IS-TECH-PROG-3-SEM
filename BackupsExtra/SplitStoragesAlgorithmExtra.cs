@@ -12,12 +12,7 @@ namespace BackupsExtra
 
         public SplitStoragesAlgorithmExtra(SplitStoragesAlgorithm splitStoragesAlgorithm)
         {
-            if (splitStoragesAlgorithm == null)
-            {
-                throw new BackupsExtraException("splitStoragesAlgorithm is null!");
-            }
-
-            _splitStoragesAlgorithm = splitStoragesAlgorithm;
+            _splitStoragesAlgorithm = splitStoragesAlgorithm ?? throw new BackupsExtraException("singleStorageAlgorithm is null!");
         }
 
         public RestorePoint CreateBackup(string restorePointName, string backupJobName, List<JobObject> jobObjects, IRepository repository)
