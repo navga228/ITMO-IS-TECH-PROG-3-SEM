@@ -32,12 +32,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Banks", "Banks\Banks.csproj
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Banks.Tests", "Banks.Tests\Banks.Tests.csproj", "{3845CD18-DD04-4B8F-B0DC-74EF9354F6DC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Reports.Clients", "..\..\Desktop\oop-repository-template\Reports\Reports.Clients\Reports.Clients.csproj", "{529D78DD-0999-4679-A384-9BFB7C3BC7C1}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Reports.DAL", "..\..\Desktop\oop-repository-template\Reports\Reports.DAL\Reports.DAL.csproj", "{A450C437-F30A-45FD-AB70-9DCB0D4E58A3}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Reports.Server", "..\..\Desktop\oop-repository-template\Reports\Reports.Server\Reports.Server.csproj", "{0DFCB83F-385E-4AC8-8FFA-14E907D20BE2}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
