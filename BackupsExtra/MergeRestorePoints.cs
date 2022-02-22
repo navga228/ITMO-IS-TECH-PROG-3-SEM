@@ -17,8 +17,7 @@ namespace BackupsExtra
         }
 
         public void Delete(List<RestorePoint> rpForDelete, BackupJobExtra backupJobExtra)
-        { // Мерджим точки паровозиком сначала мерджим все точки из списка(точек на удаление) до последней и последнюю мерджим с самой старой точкой цепочке рп, которая не будет удаляться.
-            // По итогу наш список для удаления схлопнется и все смерджится в самую старую точку, которая останется в цепочке рестор поинтов дальше.
+        { // По итогу наш список для удаления схлопнется и все смерджится в самую старую точку, которая останется в цепочке рестор поинтов дальше.
             if (rpForDelete == null)
             {
                 throw new BackupsExtraException("rpForDelete is null!");
@@ -30,42 +29,24 @@ namespace BackupsExtra
             }
 
             var lastRP = backupJobExtra.GetBackupJob.RestorePoints[rpForDelete.Count]; // Точка в которую будут вмердживаться все точки из списка
-            for (int rp1 = 0; rp1 < rpForDelete.Count - 1; rp1++)
+            if (backupJobExtra.GetBackupJob.BackupAlgorithm is SingleStorageAlgorithm)
             {
-                for (int rp2 = 0; rp2 < rpForDelete.Count; rp2++)
+                foreach (var rp in rpForDelete)
                 {
-                    if (backupJobExtra.GetBackupJob.BackupAlgorithm is SingleStorageAlgorithm)
+                    backupJobExtra.DeleteRestorePoint(rp.Name);
+                }
+            }
+            else
+            {
+                foreach (var rp in rpForDelete)
+                {
+                    foreach (var jobObject in rp.BachupedFiles.Where(jobObject => !lastRP.BachupedFiles.Contains(jobObject)))
                     {
-                        backupJobExtra.DeleteRestorePoint(rpForDelete[rp1].Name);
+                        lastRP.BachupedFiles.Add(jobObject);
+                        _repositoryExtra.CopyFile(
+                            _repositoryExtra.GetRoot() + backupJobExtra.GetBackupJob.Name + "/" + rp.Name + "/" + jobObject.Name + ".zip",
+                            _repositoryExtra.GetRoot() + backupJobExtra.GetBackupJob.Name + "/" + lastRP.Name + "/" + jobObject.Name + ".zip");
                     }
-                    else
-                    {
-                        foreach (JobObject jobObject in rpForDelete[rp1].BachupedFiles.Where(jobObject => !rpForDelete[rp2].BachupedFiles.Contains(jobObject)))
-                        {
-                            rpForDelete[rp2].BachupedFiles.Add(jobObject);
-                            _repositoryExtra.CopyFile(
-                                _repositoryExtra.GetRoot() + backupJobExtra.GetBackupJob.Name + "/" + rpForDelete[rp1].Name + "/" + jobObject.Name + ".zip",
-                                _repositoryExtra.GetRoot() + backupJobExtra.GetBackupJob.Name + "/" + rpForDelete[rp2].Name + "/" + jobObject.Name + ".zip");
-                        }
-
-                        backupJobExtra.DeleteRestorePoint(rpForDelete[rp1].Name);
-                    }
-
-                    if (backupJobExtra.GetBackupJob.RestorePoints.Count == backupJobExtra.GetBackupJob.RestorePoints.Count - rpForDelete.Count - 1)
-                    { // если осталась действительно только одна точка из списка на удаление, то мерджим эту точку с lastRP
-                        if (backupJobExtra.GetBackupJob.BackupAlgorithm is SingleStorageAlgorithm)
-                        {
-                            backupJobExtra.DeleteRestorePoint(rpForDelete[rpForDelete.Count - 1].Name);
-                        }
-                        else
-                        {
-                            foreach (JobObject jobObject in rpForDelete[rpForDelete.Count - 1].BachupedFiles.Where(jobObject => !lastRP.BachupedFiles.Contains(jobObject)))
-                            {
-                                lastRP.BachupedFiles.Add(jobObject);
-                                _repositoryExtra.CopyFile(
-                                    _repositoryExtra.GetRoot() + backupJobExtra.GetBackupJob.Name + "/" + rpForDelete[rpForDelete.Count - 1].Name + "/" + jobObject.Name + ".zip",
-                                    _repositoryExtra.GetRoot() + backupJobExtra.GetBackupJob.Name + "/" + lastRP.Name + "/" + jobObject.Name + ".zip");
-                            }
 
                     backupJobExtra.DeleteRestorePoint(rp.Name);
                 }

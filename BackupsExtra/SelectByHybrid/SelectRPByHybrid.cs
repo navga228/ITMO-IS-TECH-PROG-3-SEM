@@ -1,27 +1,53 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Backups;
 
 namespace BackupsExtra
 {
-    [Serializable]
-    public class SelectRPByHybrid : ISelectRPMethod
+    public enum HybridCondition
     {
-        private ISelectRPByHybridCombination _hybridCombination;
+        /// <summary>strict Condition</summary>
+        StrictCondition,
 
-        public SelectRPByHybrid(ISelectRPByHybridCombination selectRpByHybrid)
+        /// <summary>non-strict condition</summary>
+        NonStrictCondition,
+    }
+
+    [Serializable]
+    public class SelectRPByHybrid
+    {
+        private HybridCondition _condition;
+        public SelectRPByHybrid(HybridCondition hybridCondition)
         {
-            _hybridCombination = selectRpByHybrid;
+            _condition = hybridCondition;
         }
 
-        public void SetHybridCombination(ISelectRPByHybridCombination hybridCombination)
+        public void SetCondition(HybridCondition newHybridCondition)
         {
-            _hybridCombination = hybridCombination;
+            _condition = newHybridCondition;
         }
 
-        public List<RestorePoint> Select(BackupJobExtra backupJobExtra)
-        {
-            return _hybridCombination.Select(backupJobExtra);
+        public List<RestorePoint> Select(BackupJobExtra backupJobExtra, List<ISelectRPMethod> selectRpMethods)
+        { // Строгий метод и нестрогий. В нестрогом мы делаем пересечение точек, а в строгом их объединение.
+            List<RestorePoint> restorePointsToDelete = selectRpMethods[0].Select(backupJobExtra);
+            selectRpMethods.Remove(selectRpMethods[0]);
+            if (_condition == HybridCondition.StrictCondition)
+            {
+                foreach (var selectMethod in selectRpMethods)
+                {
+                    restorePointsToDelete.Union(selectMethod.Select(backupJobExtra));
+                }
+            }
+            else
+            {
+                foreach (var selectMethod in selectRpMethods)
+                {
+                    restorePointsToDelete.Intersect(selectMethod.Select(backupJobExtra));
+                }
+            }
+
+            return restorePointsToDelete;
         }
     }
 }

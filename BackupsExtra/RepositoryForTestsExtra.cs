@@ -201,5 +201,20 @@ namespace BackupsExtra
 
             return answer;
         }
+
+        public Stream OpenWriteStream(string path)
+        {
+            return Stream.Null;
+        }
+
+        public Stream OpenReadStrem(string path)
+        {
+            return Stream.Null;
+        }
+
+        public bool SearchFile(string path)
+        {
+            return false;
+        }
     }
 }
