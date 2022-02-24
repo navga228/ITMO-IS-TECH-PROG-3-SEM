@@ -6,11 +6,14 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
+using Reports.Server.Contexts;
+using Reports.Server.Services;
 
 namespace Reports.Server
 {
@@ -31,6 +34,10 @@ namespace Reports.Server
             {
                 c.SwaggerDoc("v1", new OpenApiInfo {Title = "Reports.Server", Version = "v1"});
             });
+            services.AddDbContext<ReportContext>(optionsAction => optionsAction.UseInMemoryDatabase("Reports")); // определяет контекст данных, используемый для взаимодействия с базой данных.
+            services.AddScoped<EmployeeService>();
+            services.AddScoped<TaskService>();
+            services.AddScoped<ReportService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -47,7 +54,7 @@ namespace Reports.Server
 
             app.UseRouting();
 
-            app.UseAuthorization();
+            // app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
             {
