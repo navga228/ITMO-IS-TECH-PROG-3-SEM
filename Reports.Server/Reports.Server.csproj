@@ -2,13 +2,13 @@
 
     <PropertyGroup>
         <LangVersion>preview</LangVersion>
-        <TargetFrameworks>net5.0;netcoreapp3.1</TargetFrameworks>
+        <TargetFramework>netcoreapp3.1</TargetFramework>
     </PropertyGroup>
 
     <ItemGroup>
       <PackageReference Include="EntityFramework" Version="5.0.0" />
       <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="5.0.14" />
-      <PackageReference Include="Swashbuckle.AspNetCore" Version="5.0.0" />
+      <PackageReference Include="Swashbuckle.AspNetCore" Version="6.2.3" />
     </ItemGroup>
 
     <ItemGroup>

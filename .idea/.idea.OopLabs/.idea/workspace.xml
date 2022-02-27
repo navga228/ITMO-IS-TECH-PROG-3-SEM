@@ -18,21 +18,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="1d396650-4680-45e0-a994-3cc62f9477dd" name="Changes" comment="Добавил модели">
-      <change afterPath="$PROJECT_DIR$/Reports.DataAccessLayer/Database/ReportsContext.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Reports.Server/Controllers/EmployeeController.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Reports.Server/Controllers/ReportController.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Reports.Server/Controllers/TaskController.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Reports.Server/Services/EmployeeService.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Reports.Server/Services/IEmployeeService.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Reports.Server/Services/IReportService.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Reports.Server/Services/ITaskService.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Reports.Server/Services/ReportService.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Reports.Server/Services/TaskService.cs" afterDir="false" />
+    <list default="true" id="1d396650-4680-45e0-a994-3cc62f9477dd" name="Changes" comment="Все работает, но надо подправить некоторые моменты">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.OopLabs/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.OopLabs/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Reports.DataAccessLayer/Models/TaskModel.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Reports.DataAccessLayer/Models/TaskModel.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Reports.DataAccessLayer/Reports.DataAccessLayer.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/Reports.DataAccessLayer/Reports.DataAccessLayer.csproj" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Reports.Server/Reports.Server.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/Reports.Server/Reports.Server.csproj" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Reports.Server/Startup.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Reports.Server/Startup.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -310,7 +299,7 @@
       <workItem from="1645787434184" duration="478000" />
       <workItem from="1645792781894" duration="2789000" />
       <workItem from="1645967555722" duration="1491000" />
-      <workItem from="1645970122674" duration="9070000" />
+      <workItem from="1645970122674" duration="9678000" />
     </task>
     <task id="LOCAL-00001" summary="какая-то фигня">
       <created>1645791972195</created>
@@ -347,7 +336,14 @@
       <option name="project" value="LOCAL" />
       <updated>1645974091865</updated>
     </task>
-    <option name="localTasksCounter" value="6" />
+    <task id="LOCAL-00006" summary="Все работает, но надо подправить некоторые моменты">
+      <created>1645984318735</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1645984318735</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -375,6 +371,7 @@
     <MESSAGE value="Пофиксил проблему с версиями" />
     <MESSAGE value="Добавил нужные пакеты и пофиксил версию" />
     <MESSAGE value="Добавил модели" />
-    <option name="LAST_COMMIT_MESSAGE" value="Добавил модели" />
+    <MESSAGE value="Все работает, но надо подправить некоторые моменты" />
+    <option name="LAST_COMMIT_MESSAGE" value="Все работает, но надо подправить некоторые моменты" />
   </component>
 </project>
