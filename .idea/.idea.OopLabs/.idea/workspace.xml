@@ -19,7 +19,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="1d396650-4680-45e0-a994-3cc62f9477dd" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/OopLabs.sln" beforeDir="false" afterPath="$PROJECT_DIR$/OopLabs.sln" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/.idea.OopLabs/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.OopLabs/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Reports.DataAccessLayer/Reports.DataAccessLayer.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/Reports.DataAccessLayer/Reports.DataAccessLayer.csproj" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Reports.Server/Reports.Server.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/Reports.Server/Reports.Server.csproj" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -35,7 +37,10 @@
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="HighlightingSettingsPerFile">
+    <setting file="file://$PROJECT_DIR$/Reports.Server/Program.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Reports.DataAccessLayer/Program.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Reports.Server/WeatherForecast.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Reports.Server/Startup.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/WebApplication/WeatherForecast.cs" root0="SKIP_HIGHLIGHTING" />
   </component>
   <component name="ProjectId" id="25Y9OSVwBEK22yIohChxlnkfEJ3" />
@@ -57,7 +62,7 @@
     <property name="settings.editor.selected.configurable" value="preferences.pluginManager" />
     <property name="vue.rearranger.settings.migration" value="true" />
   </component>
-  <component name="RunManager" selected=".NET Project.Reports.DataAccessLayer">
+  <component name="RunManager" selected=".NET Launch Settings Profile.Reports.Server">
     <configuration name="Backups" type="DotNetProject" factoryName=".NET Project">
       <option name="EXE_PATH" value="" />
       <option name="PROGRAM_PARAMETERS" value="" />
@@ -293,7 +298,7 @@
       <workItem from="1645787366044" duration="43000" />
       <workItem from="1645787434184" duration="478000" />
       <workItem from="1645792781894" duration="2789000" />
-      <workItem from="1645967555722" duration="305000" />
+      <workItem from="1645967555722" duration="1491000" />
     </task>
     <task id="LOCAL-00001" summary="какая-то фигня">
       <created>1645791972195</created>
@@ -302,7 +307,21 @@
       <option name="project" value="LOCAL" />
       <updated>1645791972195</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="Создал два проекта для лабы">
+      <created>1645967887881</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1645967887881</updated>
+    </task>
+    <task id="LOCAL-00003" summary="Пофиксил проблему с версиями">
+      <created>1645968044427</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1645968044427</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -326,6 +345,8 @@
   <component name="VcsManagerConfiguration">
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
     <MESSAGE value="какая-то фигня" />
-    <option name="LAST_COMMIT_MESSAGE" value="какая-то фигня" />
+    <MESSAGE value="Создал два проекта для лабы" />
+    <MESSAGE value="Пофиксил проблему с версиями" />
+    <option name="LAST_COMMIT_MESSAGE" value="Пофиксил проблему с версиями" />
   </component>
 </project>
