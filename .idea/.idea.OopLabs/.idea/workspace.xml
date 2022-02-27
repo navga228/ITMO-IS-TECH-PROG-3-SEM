@@ -18,10 +18,21 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="1d396650-4680-45e0-a994-3cc62f9477dd" name="Changes" comment="">
+    <list default="true" id="1d396650-4680-45e0-a994-3cc62f9477dd" name="Changes" comment="Добавил модели">
+      <change afterPath="$PROJECT_DIR$/Reports.DataAccessLayer/Database/ReportsContext.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Reports.Server/Controllers/EmployeeController.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Reports.Server/Controllers/ReportController.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Reports.Server/Controllers/TaskController.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Reports.Server/Services/EmployeeService.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Reports.Server/Services/IEmployeeService.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Reports.Server/Services/IReportService.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Reports.Server/Services/ITaskService.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Reports.Server/Services/ReportService.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Reports.Server/Services/TaskService.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.OopLabs/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.OopLabs/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Reports.DataAccessLayer/Reports.DataAccessLayer.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/Reports.DataAccessLayer/Reports.DataAccessLayer.csproj" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Reports.DataAccessLayer/Models/TaskModel.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Reports.DataAccessLayer/Models/TaskModel.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Reports.Server/Reports.Server.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/Reports.Server/Reports.Server.csproj" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Reports.Server/Startup.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Reports.Server/Startup.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -37,9 +48,9 @@
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="HighlightingSettingsPerFile">
+    <setting file="mock:///Users/navga228/RiderProjects/lab-62/Reports.Server/Startup.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Reports.Server/Program.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Reports.DataAccessLayer/Program.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/Reports.Server/WeatherForecast.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Reports.Server/Startup.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/WebApplication/WeatherForecast.cs" root0="SKIP_HIGHLIGHTING" />
   </component>
@@ -299,6 +310,7 @@
       <workItem from="1645787434184" duration="478000" />
       <workItem from="1645792781894" duration="2789000" />
       <workItem from="1645967555722" duration="1491000" />
+      <workItem from="1645970122674" duration="9070000" />
     </task>
     <task id="LOCAL-00001" summary="какая-то фигня">
       <created>1645791972195</created>
@@ -321,7 +333,21 @@
       <option name="project" value="LOCAL" />
       <updated>1645968044427</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="Добавил нужные пакеты и пофиксил версию">
+      <created>1645970272589</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1645970272590</updated>
+    </task>
+    <task id="LOCAL-00005" summary="Добавил модели">
+      <created>1645974091865</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1645974091865</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -347,6 +373,8 @@
     <MESSAGE value="какая-то фигня" />
     <MESSAGE value="Создал два проекта для лабы" />
     <MESSAGE value="Пофиксил проблему с версиями" />
-    <option name="LAST_COMMIT_MESSAGE" value="Пофиксил проблему с версиями" />
+    <MESSAGE value="Добавил нужные пакеты и пофиксил версию" />
+    <MESSAGE value="Добавил модели" />
+    <option name="LAST_COMMIT_MESSAGE" value="Добавил модели" />
   </component>
 </project>
