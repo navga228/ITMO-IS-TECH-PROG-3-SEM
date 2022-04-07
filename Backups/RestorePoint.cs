@@ -4,6 +4,7 @@ using System.Security.Cryptography;
 
 namespace Backups
 {
+    [Serializable]
     public class RestorePoint
     {
       public RestorePoint(string name, DateTime dateTimeCreation, List<JobObject> bachupedFiles)

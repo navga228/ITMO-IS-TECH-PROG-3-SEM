@@ -6,10 +6,15 @@ namespace Backups
 {
     public class RepositoryForTests : IRepository
     {
-        private string _root = "/Users/navga228/Desktop/3лабаООП";
+        private string _root = "/Users/navga228/Desktop/3лабаООП/";
         public Dictionary<string, List<string>> FileSystem { get; } = new Dictionary<string, List<string>>(); // Ключ это путь до папки а значение файлы
 
         // Будем проверять кол-во файлов в системе
+        public string GetRoot()
+        {
+            return _root;
+        }
+
         public void CreateFile(string path, string fileName)
         {
             if (!FileSystem.ContainsKey(path))
@@ -29,40 +34,37 @@ namespace Backups
 
         public void DeleteFile(string path, string fileName)
         {
-            string newPath = path.Substring(0, path.Length - 1);
-            if (FileSystem.ContainsKey(_root + "/" + newPath))
+            string newPath = path.Substring(0, path.Length);
+            if (FileSystem.ContainsKey(_root + newPath))
             {
-                FileSystem[_root + "/" + newPath].Remove(fileName);
+                FileSystem[_root + newPath].Remove(fileName);
             }
         }
 
-        public void CreateDerictory(string path, string derictoryName)
+        public void CreateDirectory(string path, string directoryName)
         {
-            List<string> derictory = new List<string>();
-            FileSystem.Add(path + derictoryName, derictory);
+            List<string> directory = new List<string>();
+            FileSystem.Add(path + directoryName, directory);
         }
 
-        public void DeleteDerictory(string path, string derictoryName)
+        public void DeleteDirectory(string path, string directoryName)
         {
             if (FileSystem.ContainsKey(path))
             {
-                FileSystem[path].Remove(derictoryName);
+                FileSystem[path].Remove(directoryName);
             }
         }
 
-        public void CompressFiles(List<JobObject> jobObjects, string restorePointName, string backupJobName)
+        public void CompressFiles(JobObject jobObject, string restorePointName, string backupJobName)
         {
-            foreach (var jobObject in jobObjects)
+            if (!FileSystem.ContainsKey(_root + backupJobName + "/" + restorePointName))
             {
-                if (!FileSystem.ContainsKey(_root + "/" + backupJobName + "/" + restorePointName))
-                {
-                    FileSystem.Add(_root + "/" + backupJobName + "/" + restorePointName, new List<string>());
-                    FileSystem[_root + "/" + backupJobName + "/" + restorePointName].Add(jobObject.Name);
-                }
-                else
-                {
-                    FileSystem[_root + "/" + backupJobName + "/" + restorePointName].Add(jobObject.Name);
-                }
+                FileSystem.Add(_root + backupJobName + "/" + restorePointName, new List<string>());
+                FileSystem[_root + backupJobName + "/" + restorePointName].Add(jobObject.Name);
+            }
+            else
+            {
+                FileSystem[_root + backupJobName + "/" + restorePointName].Add(jobObject.Name);
             }
         }
 
@@ -79,8 +81,6 @@ namespace Backups
             filePath = newPath.Substring(0, lastSlash);
             string[] words = newPath.Split('/');
             FileSystem[filePath].Add(words[words.Length - 1]); // то есть сохраняется и путь в систему как ключ и добавляется файл в лист той папки где он лежит
-
-            // FileSystem.Add(newPath, new List<string>());
         }
     }
 }

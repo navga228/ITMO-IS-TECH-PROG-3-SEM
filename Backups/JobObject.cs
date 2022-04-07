@@ -1,7 +1,9 @@
+using System;
 using System.Collections.Generic;
 
 namespace Backups
 {
+    [Serializable]
     public class JobObject
     {
         // Файл которыq будут бэкапится

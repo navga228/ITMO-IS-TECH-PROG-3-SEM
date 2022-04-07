@@ -1,9 +1,11 @@
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.IO.Compression;
 
 namespace Backups
 {
+    [Serializable]
     public class LocalFilesRepository : IRepository
     {
         private string _root;
@@ -11,6 +13,11 @@ namespace Backups
         public LocalFilesRepository(string root)
         {
             _root = root;
+        }
+
+        public string GetRoot()
+        {
+            return _root;
         }
 
         public void CreateFile(string path, string fileName)
@@ -23,44 +30,35 @@ namespace Backups
 
         public void DeleteFile(string path, string fileName)
         {
-            if (File.Exists(_root + path))
+            if (File.Exists(_root + path + "/" + fileName))
             {
-                File.Delete(_root + path);
+                File.Delete(_root + path + "/" + fileName);
             }
         }
 
-        public void CreateDerictory(string path, string fileName)
+        public void CreateDirectory(string path, string fileName)
         {
-            if (!Directory.Exists(_root + path + fileName))
+            if (!Directory.Exists(path + fileName))
             {
-                Directory.CreateDirectory(_root + path + fileName);
+                Directory.CreateDirectory(path + fileName);
             }
         }
 
-        public void DeleteDerictory(string path, string derictoryName)
+        public void DeleteDirectory(string path, string directoryName)
         {
-            if (Directory.Exists(_root + path + derictoryName))
+            if (Directory.Exists(path + directoryName))
             {
-                Directory.CreateDirectory(_root + path + derictoryName);
+                Directory.Delete(path + directoryName, true);
             }
         }
 
-        public void CompressFiles(List<JobObject> jobObjects, string restorePointName, string backupJobName)
+        public void CompressFiles(JobObject jobObject, string restorePointName, string backupJobName)
         {
-            foreach (var jobObject in jobObjects)
+            // создание нового архива
+            using (ZipArchive zipArchive = ZipFile.Open(_root + backupJobName + "/" + restorePointName + "/" + jobObject.Name + ".zip", ZipArchiveMode.Create))
             {
-                using (FileStream sourceStream = new FileStream(jobObject.FilePath, FileMode.OpenOrCreate))
-                {
-                    // поток для записи сжатого файла
-                    using (FileStream targetStream = File.Create(_root + "/" + backupJobName + "/" + restorePointName))
-                    {
-                        // поток архивации
-                        using (GZipStream compressionStream = new GZipStream(targetStream, CompressionMode.Compress))
-                        {
-                            sourceStream.CopyTo(compressionStream); // копируем байты из одного потока в другой
-                        }
-                    }
-                }
+                // вызов метода для добавления файла в архив
+                zipArchive.CreateEntryFromFile(jobObject.FilePath, jobObject.Name);
             }
         }
 
@@ -73,7 +71,7 @@ namespace Backups
         {
             if (File.Exists(path))
             {
-                File.Copy(path, _root + newPath, true);
+                File.Copy(path, newPath, true);
             }
         }
     }

@@ -4,6 +4,7 @@ using Backups.Tools;
 
 namespace Backups
 {
+    [Serializable]
     public class BackupJob
     {
       public BackupJob(string name, string projectPath, IRepository repository, IBackupAlgorithm backupAlgorithm)
@@ -11,11 +12,11 @@ namespace Backups
           Repository = repository;
           ProjectPath = projectPath;
           Name = name;
-          BackupAlgorithm = backupAlgorithm;
+          BackupAlgorithm = backupAlgorithm ?? throw new BackupsException("Backup Algorithm is null");
           JobObjects = new List<JobObject>();
           RestorePoints = new List<RestorePoint>();
-          Repository.CreateDerictory(projectPath, name);
-          Repository.CreateDerictory(projectPath + name + "/", "JobObject");
+          Repository.CreateDirectory(projectPath, name);
+          Repository.CreateDirectory(projectPath + name + "/", "JobObject");
       }
 
       public string Name { get; }
@@ -45,7 +46,7 @@ namespace Backups
           if (JobObjects.Contains(jobObject))
           {
               JobObjects.Remove(jobObject);
-              Repository.DeleteFile(Name + "/JobObject/", jobObject.Name);
+              Repository.DeleteFile(Name + "/JobObject", jobObject.Name);
           }
       }
 
