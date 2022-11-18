@@ -157,6 +157,11 @@ namespace Banks
             Notify += client.AddMessage;
         }
 
+        public Bank AddBankNew(Bank bank)
+        {
+            return bank;
+        }
+
         public void UnSubscribe(Client client)
         {
             if (client == null)
