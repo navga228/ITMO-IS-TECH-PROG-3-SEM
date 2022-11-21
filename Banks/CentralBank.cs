@@ -4,7 +4,7 @@ using System.Collections.Generic;
 namespace Banks
 {
     public class CentralBank
-    {
+    { // "Реализован синглтон"
         private OperationManager _operationManager = new OperationManager();
         public CentralBank(string name)
         {
@@ -16,8 +16,9 @@ namespace Banks
             Name = name;
         }
 
-        public Guid Id { get; } = Guid.NewGuid();
         public List<Bank> Banks { get; } = new List<Bank>();
+
+        public Guid Id { get; } = Guid.NewGuid();
         private string Name { get; }
         public Bank AddNewBank(string name, BankConditions bankConditions)
         {
