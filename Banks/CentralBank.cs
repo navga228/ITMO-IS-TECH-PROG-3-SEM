@@ -16,9 +16,8 @@ namespace Banks
             Name = name;
         }
 
-        public List<Bank> Banks { get; } = new List<Bank>();
-
         public Guid Id { get; } = Guid.NewGuid();
+        public List<Bank> Banks { get; } = new List<Bank>();
         private string Name { get; }
         public Bank AddNewBank(string name, BankConditions bankConditions)
         {
