@@ -1,0 +1,54 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Banks.Tests</name>
+    </assembly>
+    <members>
+        <member name="T:Banks.Tests.BankTests">
+            <summary>
+            Тесты банков
+            </summary>
+        </member>
+        <member name="M:Banks.Tests.BankTests.Setup">
+            <summary>
+            сетап
+            </summary>
+        </member>
+        <member name="M:Banks.Tests.BankTests.DepositeMoneyToAccountAndCreditsAddedOnBalance(System.Single)">
+            <summary>
+            тест депозита на баланс
+            </summary>
+            <param name="moneyToDeposite"></param>
+        </member>
+        <member name="M:Banks.Tests.BankTests.WithdrawMoneyFromAccountAndCreditsWithdrawdedFromAccount(System.Single,System.Single)">
+            <summary>
+            тест вывода денег с карты
+            </summary>
+            <param name="moneyToDeposite"></param>
+            <param name="moneyToWithDraw"></param>
+        </member>
+        <member name="M:Banks.Tests.BankTests.TransferMoneyTest(System.Single,System.Single,System.Single)">
+            <summary>
+            тест перевода денег
+            </summary>
+            <param name="firstBalance"></param>
+            <param name="secondBalance"></param>
+            <param name="moneyToTransfer"></param>
+        </member>
+        <member name="M:Banks.Tests.BankTests.CancelTransactionTest(System.Single,System.Single,System.Single)">
+            <summary>
+            тест отмена транзакции
+            </summary>
+            <param name="firstBalance"></param>
+            <param name="secondBalance"></param>
+            <param name="moneyToTransfer"></param>
+        </member>
+        <member name="M:Banks.Tests.BankTests.TimeRewindMachanismTest(System.Single,System.Int32)">
+            <summary>
+            тест перевод времени
+            </summary>
+            <param name="FirstSumOnBalance"></param>
+            <param name="daysToRewind"></param>
+        </member>
+    </members>
+</doc>
